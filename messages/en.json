@@ -1,0 +1,118 @@
+{
+  "nav": {
+    "about": "About",
+    "stack": "Stack",
+    "experience": "Experience",
+    "projects": "Projects",
+    "blog": "Blog",
+    "contact": "Contact"
+  },
+  "hero": {
+    "tagline": "System Architect Core",
+    "headline": "I don't return undefined.",
+    "ctaGame": "Wanna play a game?",
+    "ctaContact": "Protocol_Initialize"
+  },
+  "about": {
+    "title": "Structural Engineer",
+    "headline": "I architect systems where reliability is the baseline.",
+    "desc": "From technical flowcharts and PRDs to backend infrastructure and mobile cores, I own the entire lifecycle. I thrive in the complexity that others avoid, delivering robust, maintainable solutions with a commitment to lifetime maintenance.",
+    "stats": {
+      "e2e": "Lifecycle Ownership",
+      "zero": "Tolerance for Fluff",
+      "tdd": "Quality Standard"
+    }
+  },
+  "skills": {
+    "title": "Technical Skills"
+  },
+  "experience": {
+    "title": "Professional Trajectory"
+  },
+  "projects": {
+    "title": "System Architecture & Deployment",
+    "cta": "ACCESS_SYSTEM_ARCHIVE",
+    "viewDetail": "View_Detail",
+    "metadata": {
+      "access": "Access: Granted",
+      "checksum": "Checksum: Validated",
+      "target": "Target: Prod_Env"
+    }
+  },
+  "blog": {
+    "title": "Technical Logs",
+    "cta": "ACCESS_FULL_ARCHIVE",
+    "readEntry": "READ_LOG_ENTRY"
+  },
+  "contact": {
+    "headline": "Let's engineer solutions together.",
+    "labels": {
+      "title": "01 / Request_Title",
+      "payload": "02 / Query_Payload"
+    },
+    "placeholders": {
+      "title": "Enter project subject...",
+      "payload": "Describe project architecture constraints..."
+    },
+    "buttons": {
+      "transmit": "Transmit_Protocol",
+      "copyUid": "COPY_UID"
+    }
+  },
+  "footer": {
+    "role": "Senior Systems Engineer"
+  },
+  "hireBanner": {
+    "badge": "SYSTEM_AVAILABILITY :: OPEN_FOR_MISSIONS",
+    "headline": "Need an Architect to Scale Your Vision?",
+    "cta": "INITIALIZE_Recruitment_Protocol"
+  },
+  "game": {
+    "badge": "[ ENTER_SIMULATION ]",
+    "hud": {
+      "sessionScore": "Session_Score",
+      "terminalHigh": "Terminal_High_Mark",
+      "nearRecord": "Near_Record",
+      "newHighScore": "New_High_Score"
+    },
+    "preGame": {
+      "title": "System_Simulation",
+      "waiting": "Awaiting defensive deployment..."
+    },
+    "countdown": {
+      "go": "GO",
+      "syncing": "Sync_In_Progress"
+    },
+    "gameOver": {
+      "title": "FALLEN",
+      "subtitle": "Simulation_Terminated",
+      "finalHarvest": "Final_Harvest"
+    },
+    "highScore": {
+      "newMark": "New_Terminal_Mark",
+      "pilotId": "PILOT_ID",
+      "commitIdentity": "COMMIT_IDENTITY",
+      "identitySecured": "Identity_Secured:",
+      "sharePerformance": "SHARE_PERFORMANCE",
+      "redeploy": "RE-DEPLOY"
+    }
+  },
+  "seo": {
+    "homeTitle": "Daniansyah - Systems Architect & Fullstack Engineer",
+    "homeDescription": "Systems Architect specializing in distributed systems, mobile cores, and high-performance backends. Building fault-tolerant solutions with end-to-end technical ownership.",
+    "blogTitle": "Technical Logs",
+    "blogDescription": "Technical documentation and engineering field logs by Daniansyah Chusyaidin.",
+    "projectsTitle": "System Architecture Archives",
+    "projectsDescription": "Comprehensive technical case studies and system designs by Daniansyah Chusyaidin."
+  },
+  "dateFormat": {
+    "locale": "en-US",
+    "months": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+  },
+  "phrases": [
+    "Systems Architect",
+    "Fullstack Engineer",
+    "Mobile Core Developer",
+    "Automation Specialist"
+  ]
+}
