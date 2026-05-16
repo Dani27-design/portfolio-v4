@@ -5,7 +5,10 @@ dist/
 coverage/
 .DS_Store
 *.log
-.env*
-.env.example
+.env
+.env.local
+.env.production.local
 next-env.d.ts
+*.tsbuildinfo
 .claude
+portfolio-88003-firebase-adminsdk-fbsvc-0f32ea547d.json

@@ -1,20 +1,58 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Daniansyah Chusyaidin — Portfolio
 
-# Run and deploy your AI Studio app
+High-fidelity portfolio website for Daniansyah Chusyaidin, Fullstack & Mobile Engineer.
 
-This contains everything you need to run your app locally.
+**Live**: https://daniansyah.dev
 
-View your app in AI Studio: https://ai.studio/apps/8b400248-5ce1-4394-8731-796a8838a9fc
+## Tech Stack
 
-## Run Locally
+- **Framework**: Next.js 16 (App Router, Turbopack, React 19)
+- **Styling**: Tailwind CSS v4
+- **Animation**: motion/react
+- **i18n**: next-intl (EN/ID)
+- **Data**: Firebase Firestore + Firebase Admin SDK
+- **Auth**: Firebase Auth + next-firebase-auth-edge
+- **Deployment**: Vercel
+- **Testing**: Vitest + Testing Library
 
-**Prerequisites:**  Node.js
+## Getting Started
 
+```bash
+npm install
+npm run dev
+```
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server (port 3000) |
+| `npm run build` | Production build |
+| `npm run start` | Start production server |
+| `npm run lint` | Type-check with tsc |
+| `npm run test` | Run tests in watch mode |
+| `npm run test:run` | Run tests once |
+
+## Environment Variables
+
+Copy `.env.example` and fill in your Firebase credentials:
+
+```bash
+cp .env.example .env.local
+```
+
+## Project Structure
+
+```
+src/
+  app/              # Next.js App Router pages
+  components/       # React components (sections/, ui/, gimmicks/, game/, layout/, pages/, admin/)
+  context/          # ThemeProvider, AuthContext
+  i18n/             # next-intl routing, navigation, request config
+  lib/              # Firebase client/admin, Firestore queries
+  actions/          # Server actions (CRUD)
+  types/            # TypeScript interfaces
+  test/             # Vitest tests
+messages/           # Translation JSON files (en.json, id.json)
+scripts/            # Seed scripts
+```

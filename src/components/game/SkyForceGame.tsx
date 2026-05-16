@@ -877,7 +877,8 @@ export const SkyForceGame = () => {
           {/* UI Overlays */}
           <AnimatePresence>
             {!isPlaying && (
-              <motion.div 
+              <motion.div
+                key="pre-game"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -895,7 +896,7 @@ export const SkyForceGame = () => {
             )}
 
             {isPlaying && gameState.current.isEntering && (
-               <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-30">
+               <div key="countdown" className="absolute inset-0 flex items-center justify-center pointer-events-none z-30">
                   <AnimatePresence mode="wait">
                     {countdown !== null && (
                       <motion.div
@@ -919,7 +920,8 @@ export const SkyForceGame = () => {
             )}
 
              {gameOver && (
-              <motion.div 
+              <motion.div
+                key="game-over"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 className="absolute inset-0 flex flex-col items-center bg-red-950/90 backdrop-blur-md z-50 overflow-y-auto px-4 py-4"

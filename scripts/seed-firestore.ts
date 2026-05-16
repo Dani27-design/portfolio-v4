@@ -34,332 +34,353 @@ const now = new Date().toISOString();
 
 // ─────────────────────────────────────────────
 // PROJECTS
-// Source: constants.ts PROJECTS + en.ts/id.ts projectItems
+// Source: Actual work from CV
 // ─────────────────────────────────────────────
 const projects = [
   {
-    id: 'distributed-iot-orchestration',
-    name: { en: 'Distributed IoT Orchestration', id: 'Orkestrasi IoT Terdistribusi' },
-    desc: {
-      en: 'Engineered a high-availability telemetry gateway using MQTT and AMQP (RabbitMQ) to handle real-time data from 5,000+ nodes. Implemented circuit breakers and message persistence to ensure zero data loss during network partitions.',
-      id: 'Membangun gateway telemetri ketersediaan tinggi menggunakan MQTT dan AMQP (RabbitMQ) untuk menangani data real-time dari 5.000+ node. Mengimplementasikan circuit breaker dan persistensi pesan untuk memastikan nol kehilangan data selama partisi jaringan.',
+    id: 'omnichannel-marketplace-platform',
+    name: {
+      en: 'Omnichannel Marketplace Platform',
+      id: 'Platform Marketplace Omnichannel',
     },
-    tech: ['Node.js', 'RabbitMQ', 'PostgreSQL', 'MQTT'],
-    version: 'v4.2.1',
+    desc: {
+      en: 'Built an Omnichannel One Gate Solution Marketplace for online store management. Integrated with Shopee, Lazada, Tokopedia, and TikTokShop Open API Marketplace for centralized product listing, order sync, and inventory management.',
+      id: 'Membangun Platform Marketplace Omnichannel One Gate Solution untuk manajemen toko online. Terintegrasi dengan Shopee, Lazada, Tokopedia, dan TikTokShop Open API Marketplace untuk listing produk terpusat, sinkronisasi pesanan, dan manajemen inventaris.',
+    },
+    tech: ['React TypeScript', 'Node.js', 'Express', 'Firebase', 'Redis', 'REST API'],
+    version: 'v2.0.0',
     status: 'PRODUCTION',
     order: 1,
   },
   {
-    id: 'enterprise-mobile-core-v2',
-    name: { en: 'Enterprise Mobile Core v2', id: 'Inti Mobile Enterprise v2' },
-    desc: {
-      en: 'Architected an offline-first mobile sync engine for React Native using SQLite and custom TCP/IP protocols. Developed a robust resolution logic for data conflicts between distributed local stores and a centralized PostgreSQL cluster.',
-      id: 'Merancang mesin sinkronisasi mobile offline-first untuk React Native menggunakan SQLite dan protokol TCP/IP kustom. Mengembangkan logika resolusi yang robust untuk konflik data antara penyimpanan lokal terdistribusi dan kluster PostgreSQL terpusat.',
+    id: 'fulfilment-app',
+    name: {
+      en: 'Fulfilment App Server & Mobile',
+      id: 'Aplikasi Fulfilment Server & Mobile',
     },
-    tech: ['React Native', 'SQLite', 'TypeScript', 'TCP/IP'],
-    version: 'v1.0.5',
-    status: 'STABLE',
+    desc: {
+      en: 'Developed a Fulfilment application with server and mobile components for warehouse operations. Implemented real-time communication using MQTT and RabbitMQ message broker for order processing and shipment tracking.',
+      id: 'Mengembangkan aplikasi Fulfilment dengan komponen server dan mobile untuk operasi gudang. Mengimplementasikan komunikasi real-time menggunakan message broker MQTT dan RabbitMQ untuk pemrosesan pesanan dan pelacakan pengiriman.',
+    },
+    tech: ['React Native', 'MQTT', 'RabbitMQ', 'REST API', 'Node.js'],
+    version: 'v1.5.0',
+    status: 'PRODUCTION',
     order: 2,
   },
   {
-    id: 'financial-ledger-engine',
-    name: { en: 'Financial Ledger Engine', id: 'Mesin Ledger Keuangan' },
-    desc: {
-      en: 'Designed and implemented a strictly consistent transactional ledger using Prisma ORM and PostgreSQL. Ensured atomicity across multi-step financial operations with row-level locking and comprehensive TDD coverage.',
-      id: 'Mendesain dan mengimplementasikan ledger transaksional yang konsisten ketat menggunakan Prisma ORM dan PostgreSQL. Memastikan atomisitas di operasi keuangan multi-langkah dengan row-level locking dan cakupan TDD komprehensif.',
+    id: 'port-information-system',
+    name: {
+      en: 'Port Information System',
+      id: 'Sistem Informasi Pelabuhan',
     },
-    tech: ['Next.js', 'Prisma ORM', 'PostgreSQL', 'Docker'],
-    version: 'v2.2.0',
+    desc: {
+      en: 'Engineered a Port Information System across web and Android platforms for enterprise client. Built with React TypeScript on the frontend, Node.js backend, and PostgreSQL database with Prisma ORM for type-safe data access.',
+      id: 'Merekayasa Sistem Informasi Pelabuhan lintas platform web dan Android untuk klien perusahaan. Dibangun dengan React TypeScript di frontend, backend Node.js, dan database PostgreSQL dengan Prisma ORM untuk akses data type-safe.',
+    },
+    tech: ['React TypeScript', 'Node.js', 'Capacitor', 'Android Studio', 'Prisma ORM', 'PostgreSQL'],
+    version: 'v3.0.0',
     status: 'DEPLOYED',
     order: 3,
   },
   {
-    id: 'realtime-analytics-pipeline',
-    name: { en: 'Real-time Analytics Pipeline', id: 'Pipeline Analitik Real-time' },
-    desc: {
-      en: 'Built a high-throughput streaming analytics platform using Apache Kafka and Go. Successfully reduced data processing latency by 45% while handling ingress bursts of 50k events per second.',
-      id: 'Membangun platform analitik streaming throughput tinggi menggunakan Apache Kafka dan Go. Berhasil mengurangi latensi pemrosesan data sebesar 45% sambil menangani lonjakan ingress 50k event per detik.',
+    id: 'company-management-dashboard',
+    name: {
+      en: 'Company Management Dashboard',
+      id: 'Dashboard Manajemen Perusahaan',
     },
-    tech: ['Go', 'Kafka', 'Redis', 'Prometheus'],
-    version: 'v3.1.0',
-    status: 'OPTIMIZED',
+    desc: {
+      en: 'Developed a corporate website and admin dashboard with multi-language support, SEO optimization, and management features for products, contracts, customers, and maintenance tracking.',
+      id: 'Mengembangkan website perusahaan dan dashboard admin dengan dukungan multi-bahasa, optimasi SEO, dan fitur manajemen produk, kontrak, pelanggan, dan pelacakan maintenance.',
+    },
+    tech: ['Next.js', 'TypeScript', 'Firebase', 'Tailwind CSS'],
+    version: 'v1.0.0',
+    status: 'PRODUCTION',
     order: 4,
   },
   {
-    id: 'security-auth-middleware',
-    name: { en: 'Security Auth Middleware', id: 'Middleware Autentikasi Keamanan' },
-    desc: {
-      en: 'Developed a distributed authentication service with JWT and multi-provider OAuth integration. Implemented high-entropy secret rotation and brute-force protection using rate-limiting layers.',
-      id: 'Mengembangkan layanan autentikasi terdistribusi dengan JWT dan integrasi OAuth multi-provider. Mengimplementasikan rotasi secret entropi tinggi dan perlindungan brute-force menggunakan lapisan rate-limiting.',
+    id: 'firecheck-mobile-app',
+    name: {
+      en: 'FireCheck Mobile App',
+      id: 'Aplikasi Mobile FireCheck',
     },
-    tech: ['Node.js', 'Redis', 'OAuth 2.0', 'Auth0'],
-    version: 'v2.0.4',
-    status: 'SECURITY_OK',
+    desc: {
+      en: 'Built an inspection mobile application with Firebase integration featuring QR code scanning, location tracking, photo documentation, and real-time push notifications for field operations.',
+      id: 'Membangun aplikasi mobile inspeksi terintegrasi Firebase dengan fitur QR scan, pelacakan lokasi, dokumentasi foto, dan notifikasi push real-time untuk operasi lapangan.',
+    },
+    tech: ['React Native', 'Firebase', 'TypeScript'],
+    version: 'v1.2.0',
+    status: 'PRODUCTION',
     order: 5,
   },
   {
-    id: 'cloud-resource-monitor',
-    name: { en: 'Cloud Resource Monitor', id: 'Monitor Sumber Daya Cloud' },
-    desc: {
-      en: 'Designed a centralized visualizer for multi-cloud resource consumption (AWS/GCP). Integrated real-time billing alerts and automated node-scaling protocols based on predictive load modeling.',
-      id: 'Mendesain visualizer terpusat untuk konsumsi sumber daya multi-cloud (AWS/GCP). Mengintegrasikan alert billing real-time dan protokol auto-scaling node berdasarkan pemodelan beban prediktif.',
+    id: 'warehouse-management-system',
+    name: {
+      en: 'Warehouse Management System',
+      id: 'Sistem Manajemen Gudang',
     },
-    tech: ['Python', 'React', 'GCP SDK', 'TensorFlow'],
-    version: 'v1.5.2',
-    status: 'LIVE',
+    desc: {
+      en: 'Developed a web-based Warehouse Management System for enterprise client handling inventory tracking, stock movements, and logistics coordination with a React TypeScript frontend and PostgreSQL backend.',
+      id: 'Mengembangkan Sistem Manajemen Gudang berbasis web untuk klien perusahaan yang menangani pelacakan inventaris, pergerakan stok, dan koordinasi logistik dengan frontend React TypeScript dan backend PostgreSQL.',
+    },
+    tech: ['React TypeScript', 'Tailwind CSS', 'Node.js', 'Prisma ORM', 'PostgreSQL'],
+    version: 'v2.1.0',
+    status: 'DEPLOYED',
     order: 6,
   },
 ];
 
 // ─────────────────────────────────────────────
 // BLOGS
-// Source: constants.ts BLOGS + en.ts/id.ts blogEntries
 // ─────────────────────────────────────────────
 const blogs = [
   {
-    id: 'debugging-rabbitmq-race-conditions',
-    slug: 'debugging-rabbitmq-race-conditions',
+    id: 'memahami-mqtt-untuk-developer',
+    slug: 'memahami-mqtt-untuk-developer',
     title: {
-      en: 'Debugging Race Conditions in RabbitMQ',
-      id: 'Debugging Race Condition di RabbitMQ',
+      en: 'Understanding MQTT: A Lightweight Protocol That Deserves More Attention',
+      id: 'Memahami MQTT: Protokol Ringan yang Layak Mendapat Perhatian Lebih',
     },
     excerpt: {
-      en: 'An analysis of message acknowledgment patterns and prefetch configurations in high-throughput Node.js consumers.',
-      id: 'Analisis pola acknowledgment pesan dan konfigurasi prefetch di consumer Node.js throughput tinggi.',
+      en: 'A practical look at MQTT from a developer perspective — how publish-subscribe works, choosing the right QoS level, and lessons I learned from real implementation mistakes.',
+      id: 'Pandangan praktis tentang MQTT dari sudut pandang developer — bagaimana publish-subscribe bekerja, memilih level QoS yang tepat, dan pelajaran dari kesalahan implementasi yang pernah saya alami.',
     },
-    content: `# Debugging Race Conditions in RabbitMQ
+    content: `# Memahami MQTT: Protokol Ringan yang Layak Mendapat Perhatian Lebih
 
-Race conditions in message brokers can be elusive and destructive. In our high-throughput Node.js environment, we encountered situations where messages were being processed multiple times or out of order due to improper acknowledgment patterns.
+Awalnya saya tidak terlalu menaruh perhatian pada MQTT. Bagi saya waktu itu, HTTP sudah cukup untuk kebanyakan kebutuhan komunikasi antar service. Pandangan ini berubah ketika saya menghadapi kebutuhan membangun sistem yang menghubungkan server dengan banyak perangkat secara real-time — di mana polling setiap beberapa detik jelas bukan opsi yang efisien. Di situlah saya mulai mendalami MQTT, dan ternyata protokol ini jauh lebih menarik dari yang saya perkirakan.
 
-## The Challenge
-We were handling over 5,000 telemetry packets per second. Our initial implementation used dynamic prefetch counts, which led to a "greedy consumer" problem.
+Tulisan ini saya buat berdasarkan apa yang saya pelajari dan alami. Bukan teori dari dokumentasi saja, tapi termasuk kesalahan yang pernah saya buat dan bagaimana saya mengatasinya.
 
-## Key Findings
-1. **Manual Acknowledgments**: Switching from automatic to manual acks (\`noAck: false\`) was critical for reliability.
-2. **Prefetch Tuning**: We found that setting a global prefetch limit across channels helped balance the load more effectively than per-consumer limits.
-3. **Dead Letter Exchanges (DLX)**: Implementing DLX allowed us to isolate "poison pills" that were causing infinite retry loops.
+## Sekilas Tentang MQTT
 
-## Conclusion
-System architecture isn't just about moving data; it's about ensuring state consistency across distributed nodes.`,
-    date: '2023-10-24',
+MQTT (Message Queuing Telemetry Transport) adalah protokol messaging yang sangat ringan. Kalau HTTP itu seperti mengirim surat resmi — ada amplop, ada format, ada prosedur balasan — maka MQTT lebih seperti mengirim pesan singkat. Kecil, cepat, dan langsung sampai.
+
+Yang membuat MQTT berbeda adalah pola **publish-subscribe** yang digunakannya. Tidak ada konsep "client mengirim request ke server lalu menunggu response". Yang ada adalah: satu pihak publish pesan ke sebuah topik, dan semua pihak yang subscribe ke topik tersebut otomatis menerima pesan itu. Mereka bahkan tidak perlu tahu siapa yang mengirim.
+
+Protokol ini awalnya dibuat tahun 1999 untuk monitoring pipa minyak lewat koneksi satelit. Koneksinya lambat, bandwidth-nya terbatas, tapi data harus tetap sampai. Kalau MQTT bisa beroperasi di kondisi seperti itu, kebanyakan skenario aplikasi modern seharusnya bisa dia tangani dengan baik.
+
+## Pola Publish-Subscribe dalam Praktik
+
+Cara paling mudah memahami publish-subscribe adalah dengan membayangkan sebuah papan pengumuman digital. Siapapun bisa menempel pengumuman (publish), dan siapapun yang memantau papan tersebut (subscribe) akan langsung melihat pengumuman baru.
+
+Contoh sederhananya:
+
+\`\`\`
+Device A publish ke: building/floor-2/temperature
+Device B subscribe ke: building/floor-2/temperature
+\`\`\`
+
+Device B menerima data tanpa perlu tahu Device A ada. Begitu juga sebaliknya. Decoupling seperti ini memberikan fleksibilitas yang besar — kita bisa menambah atau mengurangi publisher dan subscriber tanpa mengubah kode di sisi lain.
+
+Dalam pengalaman saya, pola ini sangat efektif untuk skenario di mana banyak perangkat perlu menerima informasi yang sama secara bersamaan. Tidak ada polling, tidak ada bandwidth terbuang, dan tidak ada delay dari mekanisme "tanya-jawab" yang berulang.
+
+## Memahami QoS — Bagian yang Sering Terlewat
+
+Satu hal yang menurut saya wajib dipahami sebelum implementasi MQTT adalah mekanisme Quality of Service (QoS). Ada tiga level, dan memilih yang tepat cukup berpengaruh terhadap performa dan reliability sistem.
+
+**QoS 0** mengirim pesan satu kali tanpa konfirmasi. Terdengar tidak reliable, tapi justru cocok untuk data yang terus mengalir seperti pembacaan sensor — kalau satu terlewat, data berikutnya sudah siap menggantikan.
+
+**QoS 1** memastikan pesan sampai minimal satu kali. Ada mekanisme retry sampai penerima mengirim acknowledgment. Ini level yang paling sering saya gunakan. Kalaupun ada duplikasi, biasanya bisa ditangani di sisi penerima dengan pengecekan idempotency.
+
+**QoS 2** menjamin pesan diterima tepat satu kali melalui four-step handshake. Diperlukan untuk kasus di mana duplikasi benar-benar tidak boleh terjadi, seperti pencatatan transaksi atau audit log. Perlu diketahui bahwa throughput-nya turun cukup signifikan dibandingkan QoS 1, jadi pertimbangkan trade-off-nya dengan matang.
+
+## Pelajaran dari Kesalahan Implementasi
+
+Selama bekerja dengan MQTT, ada beberapa hal yang saya pelajari lewat cara yang kurang menyenangkan.
+
+**Mengabaikan Last Will and Testament.** MQTT punya fitur di mana client bisa mendaftarkan pesan yang akan di-publish broker kalau client tersebut disconnect secara tiba-tiba. Di salah satu proyek, saya melewatkan konfigurasi ini. Akibatnya, perangkat yang sudah tidak aktif masih tampil berstatus "online" di dashboard selama berjam-jam. Perbaikannya ternyata sangat simpel — hanya dua baris konfigurasi. Tapi mencari akar masalahnya memakan waktu hampir dua hari karena gejalanya tidak langsung terlihat.
+
+**Struktur topik yang tidak direncanakan.** Ini kesalahan yang dampaknya baru terasa seiring sistem berkembang. Struktur topik yang flat dan tidak konsisten membuat manajemen subscription semakin rumit. Pendekatan yang jauh lebih efektif adalah menggunakan hierarki yang jelas:
+
+\`\`\`
+{domain}/{area}/{device_id}/{action}
+\`\`\`
+
+Dengan struktur seperti ini, wildcard menjadi sangat berguna. Misalnya, subscribe ke \`building/floor-2/#\` langsung mencakup seluruh event di satu area. Pelajarannya sederhana: rencanakan struktur topik di awal, karena refactoring di production berisiko tinggi.
+
+**Reconnection yang tidak di-handle dengan benar.** Perangkat kehilangan koneksi itu bukan soal "kalau", tapi "kapan". Yang tidak saya sadari awalnya adalah beberapa MQTT client library tidak otomatis melakukan resubscribe setelah reconnect. Akibatnya, perangkat terhubung kembali tapi berhenti menerima pesan karena subscription-nya hilang. Solusi yang saya terapkan: selalu lakukan subscribe ulang di callback \`onConnect\`, bukan hanya pada koneksi awal.
+
+## Kapan Sebaiknya Tidak Menggunakan MQTT
+
+Saya perlu menekankan bahwa MQTT bukan solusi universal. Untuk komunikasi request-response standar, REST API masih lebih tepat. Untuk transfer file berukuran besar, MQTT bukan medianya. Dan untuk aplikasi dengan jumlah pengguna terbatas di jaringan yang stabil, WebSocket atau polling biasa mungkin sudah memadai.
+
+MQTT paling optimal digunakan ketika ada banyak perangkat yang perlu berkomunikasi, jaringannya tidak selalu reliable, atau ketika kita perlu mendistribusikan update ke banyak subscriber secara bersamaan.
+
+## Catatan Penutup
+
+Setelah beberapa kali menggunakan MQTT di proyek production, saya bisa mengatakan bahwa protokol ini memberikan dampak nyata terhadap bagaimana saya mendesain arsitektur komunikasi antar service. Bukan karena sempurna, tapi karena sesuai dengan kebutuhan spesifik yang saya hadapi.
+
+Bagi rekan-rekan developer yang tertarik memulai, saya sarankan untuk langsung mencoba membangun implementasi sederhana — misalnya dua client yang saling kirim pesan lewat broker Mosquitto. Dari situ, simulasikan skenario disconnect, coba berbagai level QoS, dan perhatikan bagaimana sistem merespons. Pemahaman paling kuat terbentuk dari pengalaman langsung, bukan hanya dari membaca dokumentasi.`,
+    date: '2025-03-15',
     order: 1,
-  },
-  {
-    id: 'prisma-orm-performance',
-    slug: 'prisma-orm-performance',
-    title: {
-      en: 'Prisma ORM: Performance Trade-offs',
-      id: 'Prisma ORM: Trade-off Performa',
-    },
-    excerpt: {
-      en: 'Evaluating query batching and connection pooling strategies in serverless vs. long-running Express environments.',
-      id: 'Evaluasi strategi query batching dan connection pooling di lingkungan serverless vs Express long-running.',
-    },
-    content: `# Prisma ORM: Performance Analysis
-
-Prisma changed how we interact with databases, but it's not a silver bullet. Understanding the engine under the hood is vital for scaling.
-
-## The n+1 Problem
-Even with type safety, it's easy to fall into the n+1 trap. We leveraged Prisma's \`include\` and \`select\` features to flatten our queries, reducing database trips by 70%.
-
-## Connection Pooling
-In serverless environments (AWS Lambda), connection exhaustion is a real threat. We implemented **Prisma Accelerate** to manage connection proxies, ensuring our lambdas didn't lock up the RDS instance.
-
-## Query Raw as a Last Resort
-Sometimes, the abstraction is too heavy. For complex analytical queries involving multiple joins and window functions, we reverted to \`$queryRaw\`.`,
-    date: '2023-08-12',
-    order: 2,
-  },
-  {
-    id: 'reliable-mobile-sync-mqtt',
-    slug: 'reliable-mobile-sync-mqtt',
-    title: {
-      en: 'Reliable Mobile Sync over MQTT',
-      id: 'Sinkronisasi Mobile Andal via MQTT',
-    },
-    excerpt: {
-      en: 'Implementing QOS-2 guarantees in React Native applications for mission-critical industrial telemetry.',
-      id: 'Implementasi jaminan QOS-2 di aplikasi React Native untuk telemetri industri mission-critical.',
-    },
-    content: `# Reliable Mobile Sync over MQTT
-
-Industrial environments have terrible connectivity. When building mobile cores for these sites, "online-first" is a recipe for failure.
-
-## QoS 2: Exactly Once
-Most developers stick to QoS 0 (Fire and Forget) or QoS 1 (At least once). For our financial audit logs, we needed QoS 2 (Exactly once). This involves a 4-step handshake that ensures the packet is received and processed only once.
-
-## The Bridge Problem
-Syncing mobile local storage with a central cloud via MQTT requires a robust "Last Will and Testament" (LWT) strategy to handle unexpected disconnects.
-
-## Battery Optimization
-Maintaining a persistent TCP connection is expensive. We implemented a dynamic heartbeat that scales based on the device's battery level and network stability.`,
-    date: '2023-05-05',
-    order: 3,
-  },
-  {
-    id: 'optimizing-postgresql-indexing',
-    slug: 'optimizing-postgresql-indexing',
-    title: {
-      en: 'Optimizing PostgreSQL for 10M+ Rows',
-      id: 'Optimasi PostgreSQL untuk 10M+ Baris',
-    },
-    excerpt: {
-      en: 'Exploring strategic indexing, partitioning, and vacuuming strategies for high-volume relational data.',
-      id: 'Eksplorasi strategi pengindeksan, partisi, dan vacuuming untuk data relasional volume tinggi.',
-    },
-    content: `# Optimizing PostgreSQL for Scale
-
-When your tables cross the 10 million row mark, standard indexes start to feel sluggish.
-
-## BRIN and GIN Indexes
-For time-series data or logs, B-tree indexes get bloated. We switched to **BRIN (Block Range Indexes)**, which are 99% smaller while maintaining high performance for sorted data.
-
-## Table Partitioning
-Querying a year's worth of data was slow. Partitioning the database by month allowed PostgreSQL to prune entire sections of the table during scans, cutting execution time from 2s to 150ms.
-
-## Autovacuum Tuning
-Default vacuum settings are too conservative for write-heavy apps. We tuned our autovacuum parameters to prevent table bloat and maintain index efficiency.`,
-    date: '2023-12-15',
-    order: 4,
-  },
-  {
-    id: 'monorepo-engineering-workflow',
-    slug: 'monorepo-engineering-workflow',
-    title: {
-      en: 'The Case for Mono-repos in 2024',
-      id: 'Kasus untuk Mono-repo di 2024',
-    },
-    excerpt: {
-      en: 'Refining the engineering workflow using Turborepo and strictly versioned internal package structures.',
-      id: 'Menyempurnakan alur kerja engineering menggunakan Turborepo dan struktur paket internal berversi ketat.',
-    },
-    content: `# Mono-repos: Engineering Velocity
-
-Managing 15 separate repositories was killing our productivity. Dependency hell was a daily reality.
-
-## The Turborepo Revolution
-We consolidated our stack into a single repository managed by **Turborepo**. The remote caching feature alone reduced our CI/CD times from 12 minutes to 3 minutes.
-
-## Shared Schema
-By keeping our frontend and backend in one place, we could share Zod schemas and TypeScript interfaces natively. No more broken API contracts.
-
-## Conclusion
-A monorepo isn't just about putting code together; it's about building a unified system where every component evolves in sync.`,
-    date: '2024-01-10',
-    order: 5,
-  },
-  {
-    id: 'memory-management-react-native',
-    slug: 'memory-management-react-native',
-    title: {
-      en: 'Memory Management in React Native',
-      id: 'Manajemen Memori di React Native',
-    },
-    excerpt: {
-      en: 'Deep dive into garbage collection cycles and the performance impact of heavy Reanimated 2 transforms.',
-      id: 'Deep dive ke siklus garbage collection dan dampak performa dari transform Reanimated 2 yang berat.',
-    },
-    content: `# Memory Management in React Native
-
-Smooth 60FPS animations require more than just code; they require respect for the JS bridge and the device's RAM.
-
-## The Image Leak
-Most memory issues in React Native stem from un-optimized images. We implemented **FastImage** with aggressive cache clearing to prevent the native heap from ballooning.
-
-## Reanimated and UI-Threads
-Moving complex logic from the JS thread to the UI thread using **Reanimated 2** worklets was the single biggest performance boost. It decoupled our animations from the garbage collector's whims.
-
-## Memory Leak Detection
-Using the Xcode Memory Graph and Android Profiler, we identified that our custom event listeners weren't being properly cleaned up in \`useEffect\` returns.`,
-    date: '2024-02-28',
-    order: 6,
   },
 ];
 
 // ─────────────────────────────────────────────
 // EXPERIENCE
-// Source: en.ts/id.ts experience.jobs[]
+// Source: Actual CV of M. Daniansyah Chusyaidin
 // ─────────────────────────────────────────────
 const experience = [
   {
-    id: 'senior-systems-engineer',
-    title: { en: 'Senior Systems Engineer', id: 'Insinyur Sistem Senior' },
-    company: 'DataNode Solutions',
-    period: { en: 'Jan 2022 — Present', id: 'Jan 2022 — Sekarang' },
+    id: 'brilian-eka-saetama',
+    title: { en: 'FullStack Developer', id: 'Pengembang FullStack' },
+    company: 'PT. Brilian Eka Saetama',
+    period: { en: 'Jan 2025 — Present', id: 'Jan 2025 — Sekarang' },
     points: {
       en: [
-        'Architected an AMQP-based message broker system (RabbitMQ) handling multi-node telemetry data for industrial sensors.',
-        'Engineered a strictly-typed React Native core with offline-first synchronization via SQLite, ensuring continuous data integrity in remote environments.',
-        'Designed and maintained a PostgreSQL schema for 10M+ records, optimizing query latency through strategic indexing and Prisma ORM abstraction.',
+        'Developed a corporate website and admin dashboard using Next.js, TypeScript, Firebase, and Tailwind CSS with multi-language, SEO, and management features for products, contracts, customers, and maintenance.',
+        'Built FireCheck mobile application with React Native integrated with Firebase for inspection, QR scanning, location tracking, photo documentation, and real-time notifications.',
       ],
       id: [
-        'Merancang sistem message broker berbasis AMQP (RabbitMQ) yang menangani data telemetri multi-node untuk sensor industri.',
-        'Membangun inti React Native dengan tipe ketat dan sinkronisasi offline-first via SQLite, memastikan integritas data berkelanjutan di lingkungan terpencil.',
-        'Mendesain dan memelihara skema PostgreSQL untuk 10M+ rekaman, mengoptimalkan latensi query melalui pengindeksan strategis dan abstraksi Prisma ORM.',
+        'Mengembangkan website perusahaan dan dashboard admin menggunakan Next.js, TypeScript, Firebase, dan Tailwind CSS dengan fitur multi-bahasa, SEO, serta manajemen produk, kontrak, pelanggan, dan maintenance.',
+        'Membangun aplikasi mobile FireCheck berbasis React Native terintegrasi Firebase untuk inspeksi, QR scan, pelacakan lokasi, dokumentasi foto, dan notifikasi real-time.',
       ],
     },
     isCurrent: true,
     order: 1,
   },
   {
-    id: 'fullstack-developer',
-    title: { en: 'Fullstack Developer', id: 'Pengembang Fullstack' },
-    company: 'Protocol Digital',
-    period: { en: 'Mar 2020 — Dec 2021', id: 'Mar 2020 — Des 2021' },
+    id: 'adi-media-expertindo',
+    title: { en: 'FullStack Developer', id: 'Pengembang FullStack' },
+    company: 'PT. Adi Media Expertindo (AMX Group)',
+    period: { en: 'Dec 2023 — Present', id: 'Des 2023 — Sekarang' },
     points: {
       en: [
-        'Debugged and refactored a legacy Node.js monolith into a Dockerized modular architecture, improving deployment reliability by 60%.',
-        'Developed custom TCP/IP protocols for secure hardware-software communication in proprietary IoT devices.',
-        'Refined frontend performance in Next.js applications by implementing meticulous state management and Tailwind CSS optimization.',
+        'Developed an Omnichannel One Gate Solution Marketplace for online store management using React TypeScript, Bootstrap, Node.js, Express, Firebase, and Redis. Integrated with Shopee, Lazada, Tokopedia, and TikTokShop Open API Marketplace.',
+        'Built a Fulfilment App with server and mobile components using MQTT, RabbitMQ, React Native, and REST API for warehouse operations and shipment processing.',
       ],
       id: [
-        'Melakukan debugging dan refaktor monolit Node.js legacy menjadi arsitektur modular berbasis Docker, meningkatkan reliabilitas deployment sebesar 60%.',
-        'Mengembangkan protokol TCP/IP kustom untuk komunikasi hardware-software yang aman di perangkat IoT proprietary.',
-        'Menyempurnakan performa frontend di aplikasi Next.js dengan menerapkan manajemen state yang teliti dan optimasi Tailwind CSS.',
+        'Mengembangkan Sistem Omnichannel One Gate Solution Marketplace untuk kebutuhan toko online menggunakan React TypeScript, Bootstrap, Node JS, Express, Firebase, API Marketplace, Redis. Terintegrasi dengan Shopee, Lazada, Tokopedia dan TikTokShop Open API Marketplace.',
+        'Mengembangkan Software Fulfilment App Server & Mobile based dengan MQTT, RabbitMQ, React Native & REST API untuk operasi gudang dan pemrosesan pengiriman.',
       ],
     },
-    isCurrent: false,
+    isCurrent: true,
     order: 2,
   },
   {
-    id: 'mobile-core-specialist',
-    title: { en: 'Mobile Core Specialist', id: 'Spesialis Inti Mobile' },
-    company: 'Systemic Soft',
-    period: { en: 'June 2018 — Feb 2020', id: 'Jun 2018 — Feb 2020' },
+    id: 'avolut-global-indonesia',
+    title: { en: 'Technical Analyst', id: 'Analis Teknis' },
+    company: 'PT. Avolut Global Indonesia (Andromedia Group)',
+    period: { en: 'Aug 2022 — Nov 2023', id: 'Agu 2022 — Nov 2023' },
     points: {
       en: [
-        'Owned the full delivery of 5+ production-grade React Native applications from flowchart mapping to App Store deployment.',
-        'Implemented real-time data streaming via MQTT for low-latency command sets in smart-infrastructure projects.',
-        'Maintained high-availability Firestore databases, ensuring 99.9% uptime through rigorous schema validation and security rules.',
+        'Developed an Android-based Port Information System for enterprise client using React TypeScript, Tailwind CSS, Node.js, Capacitor, Android Studio, Prisma ORM, and PostgreSQL.',
+        'Built a web-based Warehouse Management System for enterprise client using React TypeScript, Tailwind CSS, Node.js, Prisma ORM, and PostgreSQL.',
       ],
       id: [
-        'Memiliki penuh delivery 5+ aplikasi React Native kelas produksi dari pemetaan flowchart hingga deployment App Store.',
-        'Mengimplementasikan streaming data real-time via MQTT untuk command set latensi rendah di proyek infrastruktur pintar.',
-        'Memelihara database Firestore dengan ketersediaan tinggi, memastikan uptime 99.9% melalui validasi skema dan aturan keamanan yang ketat.',
+        'Mengembangkan Sistem Informasi Pelabuhan berbasis Android untuk klien perusahaan menggunakan React TypeScript, Tailwind CSS, Node JS, Capacitor, Android Studio, Prisma ORM dan PostgreSQL.',
+        'Mengembangkan Sistem Manajemen Gudang berbasis Website untuk klien perusahaan menggunakan React TypeScript, Tailwind CSS, Node JS, Prisma ORM dan PostgreSQL.',
       ],
     },
     isCurrent: false,
     order: 3,
   },
+  {
+    id: 'hacktiv8',
+    title: { en: 'Backend Developer Intern', id: 'Magang Backend Developer' },
+    company: 'PT. Hacktivate Teknologi Indonesia (Hacktiv8)',
+    period: { en: 'Jul 2022 — Dec 2022', id: 'Jul 2022 — Des 2022' },
+    points: {
+      en: [
+        'Developed backend systems using Node.js, Express.js, and MySQL for web applications.',
+      ],
+      id: [
+        'Mengembangkan sistem backend menggunakan Node JS, Express JS, dan MySQL untuk aplikasi website.',
+      ],
+    },
+    isCurrent: false,
+    order: 4,
+  },
+  {
+    id: 'plants-society',
+    title: { en: 'FullStack Developer', id: 'Pengembang FullStack' },
+    company: 'PT. Global Plants Society Trade (Plants Society)',
+    period: { en: 'Apr 2022 — Nov 2022', id: 'Apr 2022 — Nov 2022' },
+    points: {
+      en: [
+        'Designed UI/UX for the company profile website.',
+        'Built a responsive company profile website using React.js, Node.js, Express.js, Tailwind CSS, and Firebase.',
+      ],
+      id: [
+        'Merancang desain UI/UX Website Profil perusahaan.',
+        'Mengembangkan Website Responsive Profil Perusahaan menggunakan React JS, Node JS, Express JS, Tailwind dan Firebase.',
+      ],
+    },
+    isCurrent: false,
+    order: 5,
+  },
+  {
+    id: 'andromedia-indonesia',
+    title: { en: 'FullStack Developer Intern', id: 'Magang Pengembang FullStack' },
+    company: 'PT. Andromedia Indonesia (Andromedia Group)',
+    period: { en: 'Feb 2022 — Jul 2022', id: 'Feb 2022 — Jul 2022' },
+    points: {
+      en: [
+        'Developed a web-based Port Information System for enterprise client using React TypeScript, Tailwind CSS, Node.js, Prisma ORM, and PostgreSQL.',
+        'Built a Sales and Logistics Marketing System for enterprise client using React TypeScript, Tailwind CSS, Node.js, Prisma ORM, and PostgreSQL.',
+      ],
+      id: [
+        'Mengembangkan Sistem Informasi Pelabuhan berbasis website untuk klien perusahaan menggunakan React TypeScript, Tailwind CSS, Node JS, Prisma ORM dan PostgreSQL.',
+        'Mengembangkan Sistem Penjualan dan Pemasaran Logistik berbasis website untuk klien perusahaan menggunakan React TypeScript, Tailwind CSS, Node JS, Prisma ORM dan PostgreSQL.',
+      ],
+    },
+    isCurrent: false,
+    order: 6,
+  },
+  {
+    id: 'giga-computer',
+    title: { en: 'Microsoft Course Instructor', id: 'Instruktur Kursus Microsoft' },
+    company: 'Giga Computer Training and Education Center',
+    period: { en: 'Aug 2021 — Dec 2023', id: 'Agu 2021 — Des 2023' },
+    points: {
+      en: [
+        'Taught Microsoft Word, Excel, PowerPoint, and Access classes.',
+        'Developed learning modules and course materials.',
+      ],
+      id: [
+        'Mengajar kelas Microsoft Word, Microsoft Excel, Microsoft PowerPoint, dan Microsoft Access.',
+        'Menyusun modul pembelajaran.',
+      ],
+    },
+    isCurrent: false,
+    order: 7,
+  },
+  {
+    id: 'rumah-belajar-amanah',
+    title: { en: 'Coding Kids Class Instructor', id: 'Instruktur Kelas Coding Anak' },
+    company: 'Rumah Belajar Amanah',
+    period: { en: 'Sep 2021 — Dec 2023', id: 'Sep 2021 — Des 2023' },
+    points: {
+      en: [
+        'Taught game development and programming logic classes using Scratch MIT Edu platform.',
+        'Developed learning modules and structured curriculum.',
+      ],
+      id: [
+        'Mengajar kelas pengembangan game dan metode pemahaman logika pemrograman menggunakan platform Scratch MIT Edu.',
+        'Menyusun modul pembelajaran.',
+      ],
+    },
+    isCurrent: false,
+    order: 8,
+  },
 ];
 
 // ─────────────────────────────────────────────
 // SKILLS
-// Source: Skills.tsx hardcoded data (structure with tags/context)
-//         merged with bilingual titles/context
+// Source: CV KEMAMPUAN + expanded categories
 // ─────────────────────────────────────────────
 const skills = [
   {
     id: 'core-engineering',
     title: { en: 'Core Engineering', id: 'Rekayasa Inti' },
     context: {
-      en: 'Implementing strictly-typed, scalable service architectures and logic layers.',
-      id: 'Mengimplementasikan arsitektur layanan bertipe ketat dan lapisan logika yang skalabel.',
+      en: 'Building strictly-typed, scalable service architectures and server-side logic layers.',
+      id: 'Membangun arsitektur layanan bertipe ketat, skalabel, dan lapisan logika sisi server.',
     },
     skills: [
       { name: 'TypeScript', tag: 'STRICT' },
-      { name: 'Node.js', tag: 'RUNTIME' },
-      { name: 'Express.js', tag: 'SERVER' },
+      { name: 'JavaScript', tag: 'RUNTIME' },
+      { name: 'Node.js', tag: 'SERVER' },
+      { name: 'Express.js', tag: 'FRAMEWORK' },
     ],
     order: 1,
   },
@@ -367,12 +388,13 @@ const skills = [
     id: 'client-interface',
     title: { en: 'Client & Interface', id: 'Klien & Antarmuka' },
     context: {
-      en: 'Architecting state-heavy applications and modular cross-platform interfaces.',
-      id: 'Merancang aplikasi dengan state kompleks dan antarmuka lintas platform yang modular.',
+      en: 'Architecting responsive web applications and modular cross-platform mobile interfaces.',
+      id: 'Merancang aplikasi web responsif dan antarmuka mobile lintas platform yang modular.',
     },
     skills: [
-      { name: 'React / Next.js', tag: 'SPA/SSR' },
-      { name: 'React Native', tag: 'MOBILE CORE' },
+      { name: 'React.js', tag: 'SPA' },
+      { name: 'Next.js', tag: 'SSR/SSG' },
+      { name: 'React Native', tag: 'MOBILE' },
       { name: 'Tailwind CSS', tag: 'UTILITY' },
     ],
     order: 2,
@@ -381,12 +403,13 @@ const skills = [
     id: 'persistence-data',
     title: { en: 'Persistence & Data', id: 'Persistensi & Data' },
     context: {
-      en: 'Designing strictly consistent schemas and high-performance data abstraction layers.',
-      id: 'Mendesain skema yang konsisten ketat dan lapisan abstraksi data berperforma tinggi.',
+      en: 'Designing consistent schemas and high-performance data access layers across SQL and NoSQL stores.',
+      id: 'Mendesain skema yang konsisten dan lapisan akses data berperforma tinggi di SQL dan NoSQL.',
     },
     skills: [
-      { name: 'PostgreSQL / Prisma', tag: 'ORCHESTRATION' },
-      { name: 'MySQL / SQLite', tag: 'RELATIONAL' },
+      { name: 'PostgreSQL', tag: 'RELATIONAL' },
+      { name: 'MySQL', tag: 'RELATIONAL' },
+      { name: 'Prisma ORM', tag: 'ABSTRACTION' },
       { name: 'Firebase', tag: 'REAL-TIME' },
     ],
     order: 3,
@@ -395,13 +418,14 @@ const skills = [
     id: 'communication-layers',
     title: { en: 'Communication Layers', id: 'Lapisan Komunikasi' },
     context: {
-      en: 'Handling asynchronous message brokering and low-level protocol orchestration.',
-      id: 'Menangani brokering pesan asinkron dan orkestrasi protokol level rendah.',
+      en: 'Handling real-time messaging, asynchronous event brokering, and API contract design.',
+      id: 'Menangani messaging real-time, brokering event asinkron, dan desain kontrak API.',
     },
     skills: [
-      { name: 'RabbitMQ / MQTT', tag: 'MESSAGING' },
-      { name: 'TCP/IP / Serial', tag: 'HARDWARE' },
+      { name: 'RabbitMQ', tag: 'BROKER' },
+      { name: 'MQTT', tag: 'IOT' },
       { name: 'REST API', tag: 'CONTRACTS' },
+      { name: 'Redis', tag: 'CACHE' },
     ],
     order: 4,
   },
@@ -409,27 +433,28 @@ const skills = [
     id: 'devops-tooling',
     title: { en: 'DevOps & Tooling', id: 'DevOps & Peralatan' },
     context: {
-      en: 'Managing containerized environments and automated version control pipelines.',
-      id: 'Mengelola lingkungan terkontainerisasi dan pipeline version control otomatis.',
+      en: 'Managing version control workflows, CI/CD pipelines, and development toolchain.',
+      id: 'Mengelola alur kerja version control, pipeline CI/CD, dan toolchain pengembangan.',
     },
     skills: [
-      { name: 'Docker', tag: 'CONTAINERS' },
       { name: 'Git', tag: 'VERSIONING' },
+      { name: 'GitHub / GitLab / Bitbucket', tag: 'PLATFORM' },
+      { name: 'Docker', tag: 'CONTAINERS' },
       { name: 'Linux', tag: 'SYSTEM' },
     ],
     order: 5,
   },
   {
-    id: 'ai-design-ecosystem',
-    title: { en: 'AI & Design Ecosystem', id: 'Ekosistem AI & Desain' },
+    id: 'mobile-platform',
+    title: { en: 'Mobile & Platform', id: 'Mobile & Platform' },
     context: {
-      en: 'Leveraging generative tooling and systematic components for engineering velocity.',
-      id: 'Memanfaatkan peralatan generatif dan komponen sistematis untuk kecepatan engineering.',
+      en: 'Developing native-bridge mobile apps and cross-platform deployment targets.',
+      id: 'Mengembangkan aplikasi mobile native-bridge dan target deployment lintas platform.',
     },
     skills: [
-      { name: 'Claude / Gemini', tag: 'AI_AUG' },
-      { name: 'Figma / Stitch', tag: 'SYSTEMS' },
-      { name: 'Figma Make', tag: 'GEN_UI' },
+      { name: 'Android Studio', tag: 'NATIVE' },
+      { name: 'Capacitor', tag: 'HYBRID' },
+      { name: 'jQuery', tag: 'LEGACY' },
     ],
     order: 6,
   },

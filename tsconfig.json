@@ -37,26 +37,6 @@
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules",
-    "src/_pages",
-    "src/App.tsx",
-    "src/App.test.tsx",
-    "src/main.tsx",
-    "src/components/*.tsx",
-    "src/components/*.test.tsx",
-    "src/context/ThemeContext.tsx",
-    "src/i18n/LanguageContext.tsx",
-    "src/i18n/LanguageContext.test.tsx",
-    "src/i18n/LanguageLayout.tsx",
-    "src/i18n/LanguageLayout.test.tsx",
-    "src/i18n/LanguageRedirect.tsx",
-    "src/i18n/LanguageRedirect.test.tsx",
-    "src/i18n/useLocalizedPath.tsx",
-    "src/i18n/useLocalizedPath.test.tsx",
-    "src/i18n/index.ts",
-    "src/i18n/types.ts",
-    "src/i18n/translations",
-    "src/constants.ts",
-    "src/index.css"
+    "node_modules"
   ]
 }
