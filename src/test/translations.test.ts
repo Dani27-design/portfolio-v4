@@ -117,10 +117,10 @@ describe('Hero Section Translations', () => {
   });
 
   it('should have ID hero content', () => {
-    expect(id.hero.tagline).toBe('Inti Arsitek Sistem');
+    expect(id.hero.tagline).toBe('System Architect Core');
     expect(id.hero.headline).toBe('Saya tidak mengembalikan undefined.');
     expect(id.hero.ctaGame).toBe('Mau main game?');
-    expect(id.hero.ctaContact).toBe('Inisialisasi_Protokol');
+    expect(id.hero.ctaContact).toBe('Protocol_Initialize');
   });
 });
 
@@ -134,10 +134,10 @@ describe('About Section Translations', () => {
   });
 
   it('should have ID about content', () => {
-    expect(id.about.title).toBe('Insinyur Struktural');
-    expect(id.about.headline).toBe('Saya merancang sistem di mana keandalan adalah dasar.');
-    expect(id.about.stats.e2e).toBe('Kepemilikan Siklus Hidup');
-    expect(id.about.stats.zero).toBe('Toleransi terhadap Omong Kosong');
+    expect(id.about.title).toBe('Software Developer');
+    expect(id.about.headline).toBe('Saya membangun sistem yang mengutamakan keandalan.');
+    expect(id.about.stats.e2e).toBe('End-to-End Ownership');
+    expect(id.about.stats.zero).toBe('Zero Tolerance for Fluff');
     expect(id.about.stats.tdd).toBe('Standar Kualitas');
   });
 });
@@ -150,7 +150,7 @@ describe('Section Titles', () => {
 
   it('should have experience title', () => {
     expect(en.experience.title).toBe('Professional Trajectory');
-    expect(id.experience.title).toBe('Trajektori Profesional');
+    expect(id.experience.title).toBe('Pengalaman Kerja');
   });
 });
 
@@ -166,10 +166,10 @@ describe('Projects Section Translations', () => {
 
   it('should have ID projects section content', () => {
     expect(id.projects.title).toBe('Arsitektur Sistem & Deployment');
-    expect(id.projects.cta).toBe('AKSES_ARSIP_SISTEM');
-    expect(id.projects.viewDetail).toBe('Lihat_Detail');
-    expect(id.projects.metadata.access).toBe('Akses: Diberikan');
-    expect(id.projects.metadata.checksum).toBe('Checksum: Divalidasi');
+    expect(id.projects.cta).toBe('ACCESS_SYSTEM_ARCHIVE');
+    expect(id.projects.viewDetail).toBe('View_Detail');
+    expect(id.projects.metadata.access).toBe('Access: Granted');
+    expect(id.projects.metadata.checksum).toBe('Checksum: Validated');
     expect(id.projects.metadata.target).toBe('Target: Prod_Env');
   });
 });
@@ -182,9 +182,9 @@ describe('Blog Section Translations', () => {
   });
 
   it('should have ID blog section content', () => {
-    expect(id.blog.title).toBe('Log Teknis');
-    expect(id.blog.cta).toBe('AKSES_ARSIP_LENGKAP');
-    expect(id.blog.readEntry).toBe('BACA_ENTRI_LOG');
+    expect(id.blog.title).toBe('Catatan Teknis');
+    expect(id.blog.cta).toBe('ACCESS_FULL_ARCHIVE');
+    expect(id.blog.readEntry).toBe('READ_LOG_ENTRY');
   });
 });
 
@@ -200,20 +200,20 @@ describe('Contact Section Translations', () => {
   });
 
   it('should have ID contact content', () => {
-    expect(id.contact.headline).toBe('Mari rekayasa solusi bersama.');
-    expect(id.contact.labels.title).toBe('01 / Judul_Permintaan');
-    expect(id.contact.labels.payload).toBe('02 / Muatan_Pertanyaan');
-    expect(id.contact.placeholders.title).toBe('Masukkan subjek proyek...');
-    expect(id.contact.placeholders.payload).toBe('Jelaskan batasan arsitektur proyek...');
-    expect(id.contact.buttons.transmit).toBe('Transmisi_Protokol');
-    expect(id.contact.buttons.copyUid).toBe('SALIN_UID');
+    expect(id.contact.headline).toBe('Mari bangun solusi bersama.');
+    expect(id.contact.labels.title).toBe('01 / Judul Pesan');
+    expect(id.contact.labels.payload).toBe('02 / Isi Pesan');
+    expect(id.contact.placeholders.title).toBe('Tulis subjek proyek...');
+    expect(id.contact.placeholders.payload).toBe('Jelaskan kebutuhan proyek Anda...');
+    expect(id.contact.buttons.transmit).toBe('Transmit_Protocol');
+    expect(id.contact.buttons.copyUid).toBe('COPY_UID');
   });
 });
 
 describe('Footer Translations', () => {
   it('should have footer role', () => {
-    expect(en.footer.role).toBe('Senior Systems Engineer');
-    expect(id.footer.role).toBe('Insinyur Sistem Senior');
+    expect(en.footer.role).toBe('Software Developer');
+    expect(id.footer.role).toBe('Software Developer');
   });
 });
 
@@ -225,9 +225,9 @@ describe('HireBanner Translations', () => {
   });
 
   it('should have ID hire banner content', () => {
-    expect(id.hireBanner.badge).toBe('KETERSEDIAAN_SISTEM :: TERBUKA_UNTUK_MISI');
-    expect(id.hireBanner.headline).toBe('Perlu Arsitek untuk Menskalakan Visi Anda?');
-    expect(id.hireBanner.cta).toBe('INISIALISASI_Protokol_PEREKRUTAN');
+    expect(id.hireBanner.badge).toBe('SYSTEM_AVAILABILITY :: OPEN_FOR_MISSIONS');
+    expect(id.hireBanner.headline).toBe('Butuh Developer untuk Mewujudkan Visi Anda?');
+    expect(id.hireBanner.cta).toBe('INITIALIZE_Recruitment_Protocol');
   });
 });
 
@@ -253,25 +253,25 @@ describe('SkyForceGame Translations', () => {
     expect(en.game.highScore.redeploy).toBe('RE-DEPLOY');
   });
 
-  it('should have ID game UI content', () => {
-    expect(id.game.badge).toBe('[ MASUK_SIMULASI ]');
-    expect(id.game.hud.sessionScore).toBe('Skor_Sesi');
-    expect(id.game.hud.terminalHigh).toBe('Rekor_Terminal');
-    expect(id.game.hud.nearRecord).toBe('Mendekati_Rekor');
-    expect(id.game.hud.newHighScore).toBe('Rekor_Baru');
-    expect(id.game.preGame.title).toBe('Simulasi_Sistem');
-    expect(id.game.preGame.waiting).toBe('Menunggu deployment defensif...');
-    expect(id.game.countdown.go).toBe('MULAI');
-    expect(id.game.countdown.syncing).toBe('Sinkronisasi_Berlangsung');
-    expect(id.game.gameOver.title).toBe('GUGUR');
-    expect(id.game.gameOver.subtitle).toBe('Simulasi_Dihentikan');
-    expect(id.game.gameOver.finalHarvest).toBe('Hasil_Akhir');
-    expect(id.game.highScore.newMark).toBe('Rekor_Terminal_Baru');
-    expect(id.game.highScore.pilotId).toBe('ID_PILOT');
-    expect(id.game.highScore.commitIdentity).toBe('KOMIT_IDENTITAS');
-    expect(id.game.highScore.identitySecured).toBe('Identitas_Diamankan:');
-    expect(id.game.highScore.sharePerformance).toBe('BAGIKAN_PERFORMA');
-    expect(id.game.highScore.redeploy).toBe('DEPLOY_ULANG');
+  it('should have ID game UI content (same as EN — design language)', () => {
+    expect(id.game.badge).toBe('[ ENTER_SIMULATION ]');
+    expect(id.game.hud.sessionScore).toBe('Session_Score');
+    expect(id.game.hud.terminalHigh).toBe('Terminal_High_Mark');
+    expect(id.game.hud.nearRecord).toBe('Near_Record');
+    expect(id.game.hud.newHighScore).toBe('New_High_Score');
+    expect(id.game.preGame.title).toBe('System_Simulation');
+    expect(id.game.preGame.waiting).toBe('Menunggu deployment...');
+    expect(id.game.countdown.go).toBe('GO');
+    expect(id.game.countdown.syncing).toBe('Sync_In_Progress');
+    expect(id.game.gameOver.title).toBe('FALLEN');
+    expect(id.game.gameOver.subtitle).toBe('Simulation_Terminated');
+    expect(id.game.gameOver.finalHarvest).toBe('Final_Harvest');
+    expect(id.game.highScore.newMark).toBe('New_Terminal_Mark');
+    expect(id.game.highScore.pilotId).toBe('PILOT_ID');
+    expect(id.game.highScore.commitIdentity).toBe('COMMIT_IDENTITY');
+    expect(id.game.highScore.identitySecured).toBe('Identity_Secured:');
+    expect(id.game.highScore.sharePerformance).toBe('SHARE_PERFORMANCE');
+    expect(id.game.highScore.redeploy).toBe('RE-DEPLOY');
   });
 });
 
@@ -309,16 +309,16 @@ describe('Date Formatting', () => {
 
 describe('Phrases', () => {
   it('should have EN phrases', () => {
-    expect(en.phrases).toContain('Systems Architect');
+    expect(en.phrases).toContain('Software Developer');
     expect(en.phrases).toContain('Fullstack Engineer');
-    expect(en.phrases).toContain('Mobile Core Developer');
-    expect(en.phrases).toContain('Automation Specialist');
+    expect(en.phrases).toContain('Mobile Developer');
+    expect(en.phrases).toContain('React & Node.js');
   });
 
   it('should have ID phrases', () => {
-    expect(id.phrases).toContain('Arsitek Sistem');
-    expect(id.phrases).toContain('Insinyur Fullstack');
-    expect(id.phrases).toContain('Pengembang Inti Mobile');
-    expect(id.phrases).toContain('Spesialis Otomasi');
+    expect(id.phrases).toContain('Software Developer');
+    expect(id.phrases).toContain('Fullstack Engineer');
+    expect(id.phrases).toContain('Mobile Developer');
+    expect(id.phrases).toContain('React & Node.js');
   });
 });

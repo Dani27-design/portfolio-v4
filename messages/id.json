@@ -8,18 +8,18 @@
     "contact": "Kontak"
   },
   "hero": {
-    "tagline": "Inti Arsitek Sistem",
+    "tagline": "System Architect Core",
     "headline": "Saya tidak mengembalikan undefined.",
     "ctaGame": "Mau main game?",
-    "ctaContact": "Inisialisasi_Protokol"
+    "ctaContact": "Protocol_Initialize"
   },
   "about": {
-    "title": "Insinyur Struktural",
-    "headline": "Saya merancang sistem di mana keandalan adalah dasar.",
-    "desc": "Dari flowchart teknis dan PRD hingga infrastruktur backend dan inti mobile, saya memiliki seluruh siklus hidup. Saya berkembang dalam kompleksitas yang dihindari orang lain, memberikan solusi yang robust dan dapat dipelihara dengan komitmen untuk pemeliharaan seumur hidup.",
+    "title": "Software Developer",
+    "headline": "Saya membangun sistem yang mengutamakan keandalan.",
+    "desc": "Mulai dari flowchart teknis dan PRD hingga infrastruktur backend dan aplikasi mobile, saya menangani keseluruhan proses pengembangan. Saya terbiasa menghadapi kompleksitas yang sering dihindari, dan menghasilkan solusi yang solid serta mudah di-maintain.",
     "stats": {
-      "e2e": "Kepemilikan Siklus Hidup",
-      "zero": "Toleransi terhadap Omong Kosong",
+      "e2e": "End-to-End Ownership",
+      "zero": "Zero Tolerance for Fluff",
       "tdd": "Standar Kualitas"
     }
   },
@@ -27,92 +27,92 @@
     "title": "Keahlian Teknis"
   },
   "experience": {
-    "title": "Trajektori Profesional"
+    "title": "Pengalaman Kerja"
   },
   "projects": {
     "title": "Arsitektur Sistem & Deployment",
-    "cta": "AKSES_ARSIP_SISTEM",
-    "viewDetail": "Lihat_Detail",
+    "cta": "ACCESS_SYSTEM_ARCHIVE",
+    "viewDetail": "View_Detail",
     "metadata": {
-      "access": "Akses: Diberikan",
-      "checksum": "Checksum: Divalidasi",
+      "access": "Access: Granted",
+      "checksum": "Checksum: Validated",
       "target": "Target: Prod_Env"
     }
   },
   "blog": {
-    "title": "Log Teknis",
-    "cta": "AKSES_ARSIP_LENGKAP",
-    "readEntry": "BACA_ENTRI_LOG"
+    "title": "Catatan Teknis",
+    "cta": "ACCESS_FULL_ARCHIVE",
+    "readEntry": "READ_LOG_ENTRY"
   },
   "contact": {
-    "headline": "Mari rekayasa solusi bersama.",
+    "headline": "Mari bangun solusi bersama.",
     "labels": {
-      "title": "01 / Judul_Permintaan",
-      "payload": "02 / Muatan_Pertanyaan"
+      "title": "01 / Judul Pesan",
+      "payload": "02 / Isi Pesan"
     },
     "placeholders": {
-      "title": "Masukkan subjek proyek...",
-      "payload": "Jelaskan batasan arsitektur proyek..."
+      "title": "Tulis subjek proyek...",
+      "payload": "Jelaskan kebutuhan proyek Anda..."
     },
     "buttons": {
-      "transmit": "Transmisi_Protokol",
-      "copyUid": "SALIN_UID"
+      "transmit": "Transmit_Protocol",
+      "copyUid": "COPY_UID"
     }
   },
   "footer": {
-    "role": "Insinyur Sistem Senior"
+    "role": "Software Developer"
   },
   "hireBanner": {
-    "badge": "KETERSEDIAAN_SISTEM :: TERBUKA_UNTUK_MISI",
-    "headline": "Perlu Arsitek untuk Menskalakan Visi Anda?",
-    "cta": "INISIALISASI_Protokol_PEREKRUTAN"
+    "badge": "SYSTEM_AVAILABILITY :: OPEN_FOR_MISSIONS",
+    "headline": "Butuh Developer untuk Mewujudkan Visi Anda?",
+    "cta": "INITIALIZE_Recruitment_Protocol"
   },
   "game": {
-    "badge": "[ MASUK_SIMULASI ]",
+    "badge": "[ ENTER_SIMULATION ]",
     "hud": {
-      "sessionScore": "Skor_Sesi",
-      "terminalHigh": "Rekor_Terminal",
-      "nearRecord": "Mendekati_Rekor",
-      "newHighScore": "Rekor_Baru"
+      "sessionScore": "Session_Score",
+      "terminalHigh": "Terminal_High_Mark",
+      "nearRecord": "Near_Record",
+      "newHighScore": "New_High_Score"
     },
     "preGame": {
-      "title": "Simulasi_Sistem",
-      "waiting": "Menunggu deployment defensif..."
+      "title": "System_Simulation",
+      "waiting": "Menunggu deployment..."
     },
     "countdown": {
-      "go": "MULAI",
-      "syncing": "Sinkronisasi_Berlangsung"
+      "go": "GO",
+      "syncing": "Sync_In_Progress"
     },
     "gameOver": {
-      "title": "GUGUR",
-      "subtitle": "Simulasi_Dihentikan",
-      "finalHarvest": "Hasil_Akhir"
+      "title": "FALLEN",
+      "subtitle": "Simulation_Terminated",
+      "finalHarvest": "Final_Harvest"
     },
     "highScore": {
-      "newMark": "Rekor_Terminal_Baru",
-      "pilotId": "ID_PILOT",
-      "commitIdentity": "KOMIT_IDENTITAS",
-      "identitySecured": "Identitas_Diamankan:",
-      "sharePerformance": "BAGIKAN_PERFORMA",
-      "redeploy": "DEPLOY_ULANG"
+      "newMark": "New_Terminal_Mark",
+      "pilotId": "PILOT_ID",
+      "commitIdentity": "COMMIT_IDENTITY",
+      "identitySecured": "Identity_Secured:",
+      "sharePerformance": "SHARE_PERFORMANCE",
+      "redeploy": "RE-DEPLOY"
     }
   },
   "seo": {
-    "homeTitle": "Daniansyah - Arsitek Sistem & Insinyur Fullstack",
-    "homeDescription": "Arsitek Sistem yang berspesialisasi dalam sistem terdistribusi, inti mobile, dan backend performa tinggi. Membangun solusi fault-tolerant dengan kepemilikan teknis end-to-end.",
-    "blogTitle": "Log Teknis",
-    "blogDescription": "Dokumentasi teknis dan log lapangan rekayasa oleh Daniansyah Chusyaidin.",
-    "projectsTitle": "Arsip Arsitektur Sistem",
-    "projectsDescription": "Studi kasus teknis komprehensif dan desain sistem oleh Daniansyah Chusyaidin."
+    "homeTitle": "Daniansyah - Software Developer",
+    "homeDescription": "Software Developer berpengalaman dalam pengembangan web dan mobile. Mengembangkan solusi fullstack dengan JavaScript, TypeScript, React, Next.js, dan Node.js.",
+    "blogTitle": "Catatan Teknis",
+    "blogDescription": "Dokumentasi teknis dan catatan pengembangan oleh Daniansyah Chusyaidin.",
+    "projectsTitle": "Arsip Proyek",
+    "projectsDescription": "Kumpulan proyek dan studi kasus teknis oleh Daniansyah Chusyaidin."
   },
   "dateFormat": {
     "locale": "id-ID",
     "months": ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"]
   },
   "phrases": [
-    "Arsitek Sistem",
-    "Insinyur Fullstack",
-    "Pengembang Inti Mobile",
-    "Spesialis Otomasi"
+    "Software Developer",
+    "Fullstack Engineer",
+    "Mobile Developer",
+    "React & Node.js"
   ]
 }

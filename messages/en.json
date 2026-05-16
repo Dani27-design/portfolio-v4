@@ -60,7 +60,7 @@
     }
   },
   "footer": {
-    "role": "Senior Systems Engineer"
+    "role": "Software Developer"
   },
   "hireBanner": {
     "badge": "SYSTEM_AVAILABILITY :: OPEN_FOR_MISSIONS",
@@ -110,9 +110,9 @@
     "months": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
   },
   "phrases": [
-    "Systems Architect",
+    "Software Developer",
     "Fullstack Engineer",
-    "Mobile Core Developer",
-    "Automation Specialist"
+    "Mobile Developer",
+    "React & Node.js"
   ]
 }
