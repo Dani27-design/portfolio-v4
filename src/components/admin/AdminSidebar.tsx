@@ -5,17 +5,19 @@ import { usePathname } from 'next/navigation';
 import { LayoutDashboard, FolderKanban, FileText, Briefcase, Cpu, LogOut } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
-const navItems = [
-  { href: '/en/admin', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/en/admin/projects', label: 'Projects', icon: FolderKanban },
-  { href: '/en/admin/blogs', label: 'Blogs', icon: FileText },
-  { href: '/en/admin/experience', label: 'Experience', icon: Briefcase },
-  { href: '/en/admin/skills', label: 'Skills', icon: Cpu },
-];
-
 export function AdminSidebar() {
   const pathname = usePathname();
   const { logout } = useAuth();
+  const locale = pathname.split('/')[1] || 'en';
+
+  const basePath = `/${locale}/admin`;
+  const navItems = [
+    { href: basePath, label: 'Dashboard', icon: LayoutDashboard },
+    { href: `${basePath}/projects`, label: 'Projects', icon: FolderKanban },
+    { href: `${basePath}/blogs`, label: 'Blogs', icon: FileText },
+    { href: `${basePath}/experience`, label: 'Experience', icon: Briefcase },
+    { href: `${basePath}/skills`, label: 'Skills', icon: Cpu },
+  ];
 
   return (
     <aside className="w-64 bg-slate-900 border-r border-slate-700 flex flex-col min-h-screen">
@@ -26,7 +28,7 @@ export function AdminSidebar() {
 
       <nav className="flex-1 p-4 space-y-1">
         {navItems.map((item) => {
-          const isActive = pathname === item.href || (item.href !== '/en/admin' && pathname.startsWith(item.href));
+          const isActive = pathname === item.href || (item.href !== basePath && pathname.startsWith(item.href));
           return (
             <Link
               key={item.href}

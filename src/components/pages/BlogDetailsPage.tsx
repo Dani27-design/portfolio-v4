@@ -2,12 +2,14 @@
 
 import dynamic from "next/dynamic";
 import { Reveal } from "@/components/ui/Reveal";
+import { LazyGimmick } from "@/components/ui/LazyGimmick";
 import { HireMeBanner } from "@/components/ui/HireMeBanner";
 import { ArrowLeft, Calendar, User, Clock, Terminal } from "lucide-react";
 
 const LogStreamGimmick = dynamic(() => import("@/components/gimmicks/LogStreamGimmick").then(m => ({ default: m.LogStreamGimmick })), { ssr: false });
 import Markdown from "react-markdown";
 import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import type { Blog, Locale } from "@/types";
 
 interface BlogDetailsPageProps {
@@ -16,11 +18,13 @@ interface BlogDetailsPageProps {
 }
 
 export const BlogDetailsPage = ({ blog, locale }: BlogDetailsPageProps) => {
+  const t = useTranslations('blog');
   const loc = locale as Locale;
+  const readMinutes = Math.ceil(blog.content.split(/\s+/).length / 200);
 
   return (
     <section className="section-padding bg-background relative min-h-screen overflow-hidden pt-32">
-      <LogStreamGimmick />
+      <LazyGimmick><LogStreamGimmick /></LazyGimmick>
 
       <div className="container-custom relative z-10">
         <Link
@@ -57,14 +61,14 @@ export const BlogDetailsPage = ({ blog, locale }: BlogDetailsPageProps) => {
               </div>
               <div className="flex items-center gap-3 text-text-muted">
                 <Clock className="w-4 h-4 text-cyan-500" />
-                <span className="font-mono text-[10px] uppercase tracking-widest">READ_TIME: 5 MIN</span>
+                <span className="font-mono text-[10px] uppercase tracking-widest">{t('readTime', { minutes: readMinutes })}</span>
               </div>
             </div>
           </div>
         </Reveal>
 
         <Reveal delay={0.2}>
-          <div className="relative p-8 md:p-16 bg-surface/50 border border-border/40 backdrop-blur-xl group overflow-hidden">
+          <div className="relative p-8 md:p-16 bg-surface/70 border border-border/40 group overflow-hidden">
              {/* Tactical Overlays */}
              <div className="absolute top-0 right-0 w-32 h-32 opacity-10 pointer-events-none">
                 <Terminal className="w-full h-full text-cyan-500" />

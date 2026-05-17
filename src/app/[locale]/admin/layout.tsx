@@ -13,11 +13,13 @@ function AdminGuard({ children }: { children: React.ReactNode }) {
 
   const isLoginPage = pathname.includes('/admin/login');
 
+  const locale = pathname.split('/')[1] || 'en';
+
   useEffect(() => {
     if (!loading && !user && !isLoginPage) {
-      router.replace('/en/admin/login');
+      router.replace(`/${locale}/admin/login`);
     }
-  }, [user, loading, isLoginPage, router]);
+  }, [user, loading, isLoginPage, router, locale]);
 
   if (loading) {
     return (

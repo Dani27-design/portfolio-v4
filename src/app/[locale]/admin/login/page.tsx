@@ -2,12 +2,14 @@
 
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { Lock, Mail, AlertCircle } from 'lucide-react';
 
 export default function LoginPage() {
   const { login, user, isAdmin } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1] || 'en';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -15,7 +17,7 @@ export default function LoginPage() {
 
   // Redirect if already logged in
   if (user && isAdmin) {
-    router.replace('/en/admin');
+    router.replace(`/${locale}/admin`);
     return null;
   }
 
@@ -26,7 +28,7 @@ export default function LoginPage() {
 
     const result = await login(email, password);
     if (result.success) {
-      router.replace('/en/admin');
+      router.replace(`/${locale}/admin`);
     } else {
       setError(result.error || 'Login failed');
     }

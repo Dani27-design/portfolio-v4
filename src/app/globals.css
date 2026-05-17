@@ -3,7 +3,6 @@
 @theme {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, monospace;
-  --font-serif: var(--font-playfair-display), serif;
 
   --color-primary: var(--primary-color);
   --color-background: var(--bg-color);
@@ -20,7 +19,7 @@
   --surface-color: #f8fafc;
   --surface-hover-color: #f1f5f9;
   --text-color: #0f172a;
-  --text-muted-color: #475569;
+  --text-muted-color: #334155;
   --border-color: #e2e8f0;
 }
 
@@ -79,6 +78,13 @@
     position: fixed;
     pointer-events: none;
     z-index: 9998;
+    transition: left 0.5s ease-out, top 0.5s ease-out;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #cursor-follower {
+      transition: none;
+    }
   }
 
   /* Redesigned Architectural Scrollbar */

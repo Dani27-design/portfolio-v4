@@ -1,8 +1,15 @@
 'use client';
 
+import { useRef } from "react";
 import { motion } from "motion/react";
 
 export const NeuralBridgeGimmick = () => {
+  const bubbles = useRef(
+    Array.from({ length: 12 }, () => ({
+      left: 5 + Math.random() * 90,
+      duration: 10 + Math.random() * 5,
+    }))
+  );
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
       {/* Deep Space Atmosphere */}
@@ -75,7 +82,7 @@ export const NeuralBridgeGimmick = () => {
       </svg>
 
       {/* Data Transmission Bubbles */}
-      {[...Array(12)].map((_, i) => (
+      {bubbles.current.map((bubble, i) => (
         <motion.div
            key={`data-bubble-${i}`}
            initial={{ y: "110%", opacity: 0 }}
@@ -85,13 +92,13 @@ export const NeuralBridgeGimmick = () => {
              scale: [0.5, 1, 0.5]
            }}
            transition={{
-             duration: 10 + Math.random() * 5,
+             duration: bubble.duration,
              repeat: Infinity,
              delay: i * 1,
              ease: "linear"
            }}
            className="absolute w-px h-12 bg-gradient-to-t from-transparent via-cyan-500/40 to-transparent"
-           style={{ left: `${5 + Math.random() * 90}%` }}
+           style={{ left: `${bubble.left}%` }}
         />
       ))}
 

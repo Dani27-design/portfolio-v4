@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { Reveal } from "@/components/ui/Reveal";
 import { CodeText } from "@/components/ui/CodeText";
+import { LazyGimmick } from "@/components/ui/LazyGimmick";
 import { useTranslations } from "next-intl";
 
 const ArchitectureSchematicGimmick = dynamic(() => import("@/components/gimmicks/ArchitectureSchematicGimmick").then(m => ({ default: m.ArchitectureSchematicGimmick })), { ssr: false });
@@ -17,9 +18,11 @@ export const Skills = ({ skills, locale }: SkillsProps) => {
   const t = useTranslations('skills');
   const loc = locale as Locale;
 
+  if (skills.length === 0) return null;
+
   return (
     <section id="skills" className="section-padding bg-surface relative overflow-hidden">
-      <ArchitectureSchematicGimmick />
+      <LazyGimmick><ArchitectureSchematicGimmick /></LazyGimmick>
 
       <div className="container-custom max-w-5xl relative z-10">
         <Reveal width="100%">
@@ -41,9 +44,9 @@ export const Skills = ({ skills, locale }: SkillsProps) => {
                 <div className="md:col-span-1 space-y-4">
                   <div className="flex items-center gap-3">
                     <span className="text-[10px] font-mono text-indigo-500 font-black">0{groupIdx + 1}</span>
-                    <h4 className="font-mono text-[11px] text-cyan-400 uppercase tracking-[0.2em] font-black group-hover/row:text-cyan-300 transition-colors">
+                    <h3 className="font-mono text-[11px] text-cyan-400 uppercase tracking-[0.2em] font-black group-hover/row:text-cyan-300 transition-colors">
                       {group.title[loc]}
-                    </h4>
+                    </h3>
                   </div>
                   <p className="text-[11px] leading-relaxed italic text-text-muted/70 pl-6 border-l border-border/50 group-hover/row:border-cyan-500 transition-all">
                     <CodeText type="css">{group.context[loc]}</CodeText>
@@ -55,7 +58,7 @@ export const Skills = ({ skills, locale }: SkillsProps) => {
                       key={skill.name}
                       className="group relative"
                     >
-                      <span className="px-6 py-3.5 bg-background/50 backdrop-blur-sm border border-border/60 text-[11px] font-bold text-text-main shadow-[0_4px_15px_rgba(0,0,0,0.08)] flex items-center gap-4 group-hover:border-cyan-500 group-hover:-translate-y-1.5 transition-all duration-300 rounded-sm">
+                      <span className="px-6 py-3.5 bg-background/70 border border-border/60 text-[11px] font-bold text-text-main shadow-[0_4px_15px_rgba(0,0,0,0.08)] flex items-center gap-4 group-hover:border-cyan-500 group-hover:-translate-y-1.5 transition-all duration-300 rounded-sm">
                         {skill.name}
                         <span className="text-[8px] font-mono text-indigo-400 opacity-40 group-hover:opacity-100 transition-opacity uppercase tracking-tighter">{skill.tag}</span>
                       </span>

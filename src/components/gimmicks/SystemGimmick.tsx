@@ -1,8 +1,12 @@
 'use client';
 
+import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 
 export const SystemGimmick = () => {
+  const tacticalHexes = useRef(
+    Array.from({ length: 5 }, () => '0x' + Math.random().toString(16).substring(2, 10).toUpperCase())
+  );
   const { scrollY } = useScroll();
   const rotate = useTransform(scrollY, [0, 1000], [0, 360]);
   const opacity = useTransform(scrollY, [0, 500], [0.1, 0]);
@@ -104,7 +108,7 @@ export const SystemGimmick = () => {
             className="flex items-center gap-2"
           >
             <span className={`w-1.2 h-1.2 ${i % 2 === 0 ? "bg-cyan-500/45" : "bg-indigo-500/45"}`}></span>
-            <span className={`font-bold ${i % 2 === 0 ? "text-cyan-400/45" : "text-indigo-400/45"}`}>0x{Math.random().toString(16).substring(2, 10).toUpperCase()}</span>
+            <span className={`font-bold ${i % 2 === 0 ? "text-cyan-400/45" : "text-indigo-400/45"}`}>{tacticalHexes.current[i]}</span>
             <span className="w-8 h-[1px] bg-white/04"></span>
             <span className="text-white/15 uppercase">SECURE_{i}</span>
           </motion.div>

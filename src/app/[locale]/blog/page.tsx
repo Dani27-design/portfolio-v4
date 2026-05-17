@@ -15,21 +15,21 @@ export async function generateMetadata({ params }: Props) {
 
   const languages: Record<string, string> = {};
   for (const loc of routing.locales) {
-    languages[loc] = `https://daniansyah.dev/${loc}/blog`;
+    languages[loc] = `https://dani-chusyaidin.vercel.app/${loc}/blog`;
   }
-  languages['x-default'] = 'https://daniansyah.dev/en/blog';
+  languages['x-default'] = 'https://dani-chusyaidin.vercel.app/en/blog';
 
   return {
     title: t('blogTitle'),
     description: t('blogDescription'),
     alternates: {
-      canonical: `https://daniansyah.dev/${locale}/blog`,
+      canonical: `https://dani-chusyaidin.vercel.app/${locale}/blog`,
       languages,
     },
     openGraph: {
       title: t('blogTitle'),
       description: t('blogDescription'),
-      url: `https://daniansyah.dev/${locale}/blog`,
+      url: `https://dani-chusyaidin.vercel.app/${locale}/blog`,
       locale: locale === 'id' ? 'id_ID' : 'en_US',
     },
   };
@@ -41,5 +41,32 @@ export default async function Page({ params }: Props) {
 
   const blogs = await getBlogs();
 
-  return <BlogListPage blogs={blogs} locale={locale} />;
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: `https://dani-chusyaidin.vercel.app/${locale}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Blog',
+        item: `https://dani-chusyaidin.vercel.app/${locale}/blog`,
+      },
+    ],
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <BlogListPage blogs={blogs} locale={locale} />
+    </>
+  );
 }

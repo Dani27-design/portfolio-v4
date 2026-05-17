@@ -1,8 +1,21 @@
 'use client';
 
+import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 
 export const QuantumSyncGimmick = ({ isScrolled }: { isScrolled: boolean }) => {
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setReducedMotion(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
+  if (reducedMotion) return null;
+
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
       <div className={`absolute inset-0 transition-opacity duration-700 ${isScrolled ? 'opacity-20' : 'opacity-10'}`}>

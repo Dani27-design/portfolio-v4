@@ -268,10 +268,10 @@ describe('SkyForceGame Translations', () => {
     expect(id.game.gameOver.finalHarvest).toBe('Final_Harvest');
     expect(id.game.highScore.newMark).toBe('New_Terminal_Mark');
     expect(id.game.highScore.pilotId).toBe('PILOT_ID');
-    expect(id.game.highScore.commitIdentity).toBe('COMMIT_IDENTITY');
+    expect(id.game.highScore.commitIdentity).toBe('SIMPAN_IDENTITAS');
     expect(id.game.highScore.identitySecured).toBe('Identity_Secured:');
-    expect(id.game.highScore.sharePerformance).toBe('SHARE_PERFORMANCE');
-    expect(id.game.highScore.redeploy).toBe('RE-DEPLOY');
+    expect(id.game.highScore.sharePerformance).toBe('BAGIKAN_SKOR');
+    expect(id.game.highScore.redeploy).toBe('MAIN_LAGI');
   });
 });
 

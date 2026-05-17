@@ -2,9 +2,11 @@
 
 import { adminDb } from '@/lib/firebase-admin';
 import { revalidatePath } from 'next/cache';
+import { verifyAdmin } from '@/lib/auth';
 import type { Project } from '@/types';
 
 export async function createProject(data: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>) {
+  if (!(await verifyAdmin())) throw new Error('Unauthorized');
   if (!adminDb) throw new Error('Firebase not initialized');
   const now = new Date().toISOString();
   const ref = await adminDb.collection('projects').add({
@@ -20,6 +22,7 @@ export async function createProject(data: Omit<Project, 'id' | 'createdAt' | 'up
 }
 
 export async function updateProject(id: string, data: Partial<Omit<Project, 'id'>>) {
+  if (!(await verifyAdmin())) throw new Error('Unauthorized');
   if (!adminDb) throw new Error('Firebase not initialized');
   await adminDb.collection('projects').doc(id).update({
     ...data,
@@ -32,6 +35,7 @@ export async function updateProject(id: string, data: Partial<Omit<Project, 'id'
 }
 
 export async function deleteProject(id: string) {
+  if (!(await verifyAdmin())) throw new Error('Unauthorized');
   if (!adminDb) throw new Error('Firebase not initialized');
   await adminDb.collection('projects').doc(id).delete();
   revalidatePath('/en/projects');

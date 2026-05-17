@@ -60,12 +60,12 @@ export const HireMeBanner = () => {
                   </span>
                 </div>
 
-                <h3 className="text-2xl sm:text-3xl md:text-5xl font-black text-text-main tracking-tighter mb-6 leading-tight">
+                <h2 className="text-2xl sm:text-3xl md:text-5xl font-black text-text-main tracking-tighter mb-6 leading-tight">
                   {t('headline')}
-                </h3>
+                </h2>
 
                 <p className="text-text-muted text-sm md:text-lg max-w-2xl mb-10 mx-auto lg:mx-0 leading-relaxed italic">
-                  Specializing in high-throughput distributed systems, offline-first mobile cores, and robust database orchestration. Let&#39;s build the next generation of resilient software.
+                  {t('desc')}
                 </p>
 
                 <div className="flex flex-wrap justify-center lg:justify-start gap-4 md:gap-6">

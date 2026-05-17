@@ -12,14 +12,12 @@ export const CustomCursor = () => {
         cursorRef.current.style.left = `${e.clientX}px`;
         cursorRef.current.style.top = `${e.clientY}px`;
 
-        followerRef.current.animate({
-          left: `${e.clientX - 11}px`,
-          top: `${e.clientY - 11}px`
-        }, { duration: 500, fill: "forwards" });
+        followerRef.current.style.left = `${e.clientX - 11}px`;
+        followerRef.current.style.top = `${e.clientY - 11}px`;
       }
     };
 
-    window.addEventListener("mousemove", moveCursor);
+    window.addEventListener("mousemove", moveCursor, { passive: true });
     return () => window.removeEventListener("mousemove", moveCursor);
   }, []);
 

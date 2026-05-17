@@ -8,13 +8,21 @@ import type { Project } from '@/types';
 export default function AdminProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState<string | null>(null);
   const [editing, setEditing] = useState<Project | null>(null);
   const [creating, setCreating] = useState(false);
 
   const fetchProjects = async () => {
-    const res = await fetch('/api/admin/projects');
-    if (res.ok) setProjects(await res.json());
-    setLoading(false);
+    setFetchError(null);
+    try {
+      const res = await fetch('/api/admin/projects');
+      if (!res.ok) throw new Error('Failed to load projects');
+      setProjects(await res.json());
+    } catch (err) {
+      setFetchError(err instanceof Error ? err.message : 'Failed to load projects');
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { fetchProjects(); }, []);
@@ -38,6 +46,13 @@ export default function AdminProjectsPage() {
           <Plus className="w-4 h-4" /> Add Project
         </button>
       </div>
+
+      {fetchError && (
+        <div className="flex items-center justify-between p-3 mb-6 bg-red-500/10 border border-red-500/20 rounded text-red-400 text-sm">
+          <span>{fetchError}</span>
+          <button onClick={fetchProjects} className="text-xs font-bold uppercase tracking-wider hover:text-red-300">Retry</button>
+        </div>
+      )}
 
       {(creating || editing) && (
         <ProjectForm
@@ -64,8 +79,8 @@ export default function AdminProjectsPage() {
                 <td className="px-4 py-3 text-white font-medium">{p.name.en}</td>
                 <td className="px-4 py-3 text-slate-400 font-mono text-xs">{p.status}</td>
                 <td className="px-4 py-3 text-right">
-                  <button onClick={() => setEditing(p)} className="p-1.5 text-slate-400 hover:text-cyan-400"><Pencil className="w-4 h-4" /></button>
-                  <button onClick={() => handleDelete(p.id)} className="p-1.5 text-slate-400 hover:text-red-400 ml-2"><Trash2 className="w-4 h-4" /></button>
+                  <button onClick={() => setEditing(p)} className="p-1.5 text-slate-400 hover:text-cyan-400" aria-label="Edit"><Pencil className="w-4 h-4" /></button>
+                  <button onClick={() => handleDelete(p.id)} className="p-1.5 text-slate-400 hover:text-red-400 ml-2" aria-label="Delete"><Trash2 className="w-4 h-4" /></button>
                 </td>
               </tr>
             ))}
@@ -91,31 +106,39 @@ function ProjectForm({ project, onClose, onSave }: { project: Project | null; on
     order: project?.order || 0,
   });
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
     setSaving(true);
-    const data = {
-      name: { en: form.nameEn, id: form.nameId },
-      desc: { en: form.descEn, id: form.descId },
-      tech: form.tech.split(',').map(t => t.trim()).filter(Boolean),
-      version: form.version,
-      status: form.status,
-      order: form.order,
-    };
-    if (project) {
-      await updateProject(project.id, data);
-    } else {
-      await createProject(data);
+    try {
+      const data = {
+        name: { en: form.nameEn, id: form.nameId },
+        desc: { en: form.descEn, id: form.descId },
+        tech: form.tech.split(',').map(t => t.trim()).filter(Boolean),
+        version: form.version,
+        status: form.status,
+        order: form.order,
+      };
+      if (project) {
+        await updateProject(project.id, data);
+      } else {
+        await createProject(data);
+      }
+      onSave();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to save');
+    } finally {
+      setSaving(false);
     }
-    setSaving(false);
-    onSave();
   };
 
   return (
     <div className="mb-8 bg-slate-800 border border-slate-700 rounded-lg p-6">
       <h2 className="text-lg font-bold text-white mb-4">{project ? 'Edit' : 'Create'} Project</h2>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {error && <div className="md:col-span-2 p-3 bg-red-500/10 border border-red-500/20 rounded text-red-400 text-sm">{error}</div>}
         <input value={form.nameEn} onChange={e => setForm({...form, nameEn: e.target.value})} placeholder="Name (EN)" required className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white outline-none focus:border-cyan-500" />
         <input value={form.nameId} onChange={e => setForm({...form, nameId: e.target.value})} placeholder="Name (ID)" required className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white outline-none focus:border-cyan-500" />
         <textarea value={form.descEn} onChange={e => setForm({...form, descEn: e.target.value})} placeholder="Description (EN)" rows={3} required className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white outline-none focus:border-cyan-500" />

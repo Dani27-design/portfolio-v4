@@ -12,7 +12,7 @@ import type { Project, Blog as BlogType, ExperienceItem, SkillGroup } from "@/ty
 
 const SkyForceGame = dynamic(() => import("@/components/game/SkyForceGame").then(mod => ({ default: mod.SkyForceGame })), {
   ssr: false,
-  loading: () => <div className="min-h-[600px] bg-background" />,
+  loading: () => <div className="min-h-[360px] md:min-h-[540px] bg-background" />,
 });
 
 interface HomePageProps {
@@ -29,6 +29,7 @@ export const HomePage = ({ projects, blogs, experience, skills, locale }: HomePa
       <Hero />
       <About />
       <Skills skills={skills} locale={locale} />
+      <a href="#work" className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-background focus:text-cyan-500 focus:font-mono focus:text-sm focus:font-bold">Skip game section</a>
       <SkyForceGame />
       <Experience experience={experience} locale={locale} />
       <Projects projects={projects} locale={locale} />

@@ -1,15 +1,24 @@
 'use client';
 
+import { useRef } from "react";
 import { motion } from "motion/react";
 
-export const LogStreamGimmick = () => {
-  const generateHex = () => {
-    return Array.from({ length: 20 }, () =>
+function buildHexData() {
+  const generateHex = () =>
+    Array.from({ length: 20 }, () =>
       Math.floor(Math.random() * 0xFF).toString(16).padStart(2, '0').toUpperCase()
     ).join(' ');
-  };
 
-  const rows = 12;
+  return Array.from({ length: 12 }, () =>
+    Array.from({ length: 8 }, () => ({
+      addr: '0x' + Math.floor(Math.random() * 0xFFFF).toString(16).toUpperCase(),
+      hex: generateHex() + ' ' + generateHex(),
+    }))
+  );
+}
+
+export const LogStreamGimmick = () => {
+  const hexData = useRef(buildHexData());
 
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
@@ -36,20 +45,20 @@ export const LogStreamGimmick = () => {
 
       {/* Scrolling Hex Terminal Blocks */}
       <div className="absolute inset-0 flex flex-col justify-center gap-12 rotate-[-5deg] scale-110 opacity-30">
-        {[...Array(rows)].map((_, i) => (
+        {hexData.current.map((row, i) => (
           <motion.div
             key={`hex-row-${i}`}
             animate={{ x: i % 2 === 0 ? [-200, 0] : [0, -200] }}
             transition={{ duration: 25 + i * 2, repeat: Infinity, ease: "linear" }}
             className="flex gap-8 whitespace-nowrap"
           >
-            {[...Array(8)].map((_, j) => (
+            {row.map((block, j) => (
               <div key={`hex-block-${i}-${j}`} className="flex gap-4">
                 <span className="font-mono text-[7px] text-indigo-500/40 font-bold tracking-tighter">
-                  0x{Math.floor(Math.random() * 0xFFFF).toString(16).toUpperCase()}
+                  {block.addr}
                 </span>
                 <span className="font-mono text-[7px] text-white/5 tracking-[0.2em]">
-                  {generateHex()} {generateHex()}
+                  {block.hex}
                 </span>
               </div>
             ))}

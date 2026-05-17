@@ -1,13 +1,15 @@
 'use client';
 
 import { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import { X, Sun, Moon, Languages, Terminal, Code2 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useTranslations, useLocale } from "next-intl";
 import { Link, useRouter, usePathname } from "@/i18n/navigation";
 import { useTheme } from "@/context/ThemeProvider";
-import { QuantumSyncGimmick } from "@/components/gimmicks/QuantumSyncGimmick";
-import { MobileMenuGimmick } from "@/components/gimmicks/MobileMenuGimmick";
+
+const QuantumSyncGimmick = dynamic(() => import("@/components/gimmicks/QuantumSyncGimmick").then(m => ({ default: m.QuantumSyncGimmick })), { ssr: false });
+const MobileMenuGimmick = dynamic(() => import("@/components/gimmicks/MobileMenuGimmick").then(m => ({ default: m.MobileMenuGimmick })), { ssr: false });
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -19,10 +21,28 @@ export const Navbar = () => {
   const pathname = usePathname();
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 50);
+          ticking = false;
+        });
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [isMenuOpen]);
 
   const toggleLang = () => {
     const newLocale = locale === "en" ? "id" : "en";
@@ -47,8 +67,8 @@ export const Navbar = () => {
       <nav
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 border-b overflow-hidden ${
           isScrolled
-            ? "h-16 border-border/80 bg-background/90 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
-            : "h-20 border-white/5 bg-background/20 backdrop-blur-sm"
+            ? "h-16 border-border/80 bg-background/95 backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
+            : "h-20 border-white/5 bg-background/30"
         }`}
       >
         <QuantumSyncGimmick isScrolled={isScrolled} />
@@ -150,27 +170,28 @@ export const Navbar = () => {
                   }`}
                 >
                   <Code2 className="w-4 h-4" />
-                  <span className="text-[8px] font-mono font-black uppercase">CODE</span>
+                  <span className="text-[8px] font-mono font-black uppercase hidden sm:inline">CODE</span>
                 </button>
                 <button
                   onClick={toggleLang}
                   className="p-2 text-text-muted hover:text-cyan-500 transition-colors flex items-center gap-1.5"
                 >
                   <Languages className="w-4 h-4" />
-                  <span className="text-[8px] font-mono font-black">{locale.toUpperCase()}</span>
+                  <span className="text-[8px] font-mono font-black hidden sm:inline">{locale.toUpperCase()}</span>
                 </button>
                 <button
                   onClick={toggleTheme}
                   className="p-2 text-text-muted hover:text-cyan-500 transition-colors flex items-center gap-1.5"
                 >
                   {theme === "light" ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
-                  <span className="text-[8px] font-mono font-black uppercase">{theme.toUpperCase()}</span>
+                  <span className="text-[8px] font-mono font-black uppercase hidden sm:inline">{theme.toUpperCase()}</span>
                 </button>
               </div>
 
               <button
                 className="p-2 text-text-main hover:bg-white/5 transition-colors border border-white/5 md:hidden flex flex-col gap-1 items-end overflow-hidden group"
                 onClick={() => setIsMenuOpen(true)}
+                aria-label="Open menu"
               >
                 <div className="w-6 h-0.5 bg-text-main group-hover:w-4 transition-all" />
                 <div className="w-4 h-0.5 bg-text-main group-hover:w-6 transition-all" />
@@ -203,18 +224,28 @@ export const Navbar = () => {
                 <button
                   onClick={toggleCodeMode}
                   className={`p-2 rounded-full transition-all duration-300 ${isCodeMode ? "text-cyan-500 bg-cyan-500/10" : "text-white/40"}`}
+                  aria-label="Toggle code mode"
                 >
                   <Code2 className="w-5 h-5" />
                 </button>
                 <button
                   onClick={toggleTheme}
                   className="p-2 text-white/40 hover:text-white rounded-full transition-all duration-300"
+                  aria-label="Toggle theme"
                 >
                   {theme === "light" ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
                 </button>
                 <button
+                  onClick={toggleLang}
+                  className="p-2 text-white/40 hover:text-white rounded-full transition-all duration-300"
+                  aria-label="Switch language"
+                >
+                  <Languages className="w-5 h-5" />
+                </button>
+                <button
                   className="p-3 text-white hover:bg-white/5 rounded-full transition-colors border border-white/5 ml-2"
                   onClick={() => setIsMenuOpen(false)}
+                  aria-label="Close menu"
                 >
                   <X className="w-6 h-6 text-cyan-500" />
                 </button>

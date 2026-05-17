@@ -10,6 +10,7 @@
   "hero": {
     "tagline": "System Architect Core",
     "headline": "I don't return undefined.",
+    "desc": "Architecting fault-tolerant distributed systems and robust mobile cores. I solve for complexity through rigorous structural design and end-to-end technical ownership.",
     "ctaGame": "Wanna play a game?",
     "ctaContact": "Protocol_Initialize"
   },
@@ -33,6 +34,8 @@
     "title": "System Architecture & Deployment",
     "cta": "ACCESS_SYSTEM_ARCHIVE",
     "viewDetail": "View_Detail",
+    "archiveTitle": "System Architecture Archives",
+    "archiveSubtitle": "Comprehensive Technical Case Studies & System Designs",
     "metadata": {
       "access": "Access: Granted",
       "checksum": "Checksum: Validated",
@@ -42,10 +45,14 @@
   "blog": {
     "title": "Technical Logs",
     "cta": "ACCESS_FULL_ARCHIVE",
-    "readEntry": "READ_LOG_ENTRY"
+    "readEntry": "READ_LOG_ENTRY",
+    "archiveTitle": "Full Technical Archives",
+    "archiveSubtitle": "Comprehensive Technical Documentation & Field Logs",
+    "readTime": "READ_TIME: {minutes} MIN"
   },
   "contact": {
     "headline": "Let's engineer solutions together.",
+    "desc": "Accepting high-priority inquiries for complex service architectures and scalable engineering collaborations. Establish verified transit below.",
     "labels": {
       "title": "01 / Request_Title",
       "payload": "02 / Query_Payload"
@@ -65,6 +72,7 @@
   "hireBanner": {
     "badge": "SYSTEM_AVAILABILITY :: OPEN_FOR_MISSIONS",
     "headline": "Need an Architect to Scale Your Vision?",
+    "desc": "Specializing in high-throughput distributed systems, offline-first mobile cores, and robust database orchestration. Let's build the next generation of resilient software.",
     "cta": "INITIALIZE_Recruitment_Protocol"
   },
   "game": {

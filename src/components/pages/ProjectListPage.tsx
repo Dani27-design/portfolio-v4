@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { Reveal } from "@/components/ui/Reveal";
+import { LazyGimmick } from "@/components/ui/LazyGimmick";
 import { HireMeBanner } from "@/components/ui/HireMeBanner";
 import { motion } from "motion/react";
 import { CodeText } from "@/components/ui/CodeText";
@@ -23,7 +24,7 @@ export const ProjectListPage = ({ projects, locale }: ProjectListPageProps) => {
 
   return (
     <section className="section-padding bg-surface relative min-h-screen overflow-hidden pt-32">
-      <ServiceClusterGimmick />
+      <LazyGimmick><ServiceClusterGimmick /></LazyGimmick>
 
       <div className="container-custom relative z-10">
         <Link
@@ -36,9 +37,9 @@ export const ProjectListPage = ({ projects, locale }: ProjectListPageProps) => {
 
         <Reveal>
           <div className="mb-24 relative flex flex-col items-center md:items-start text-center md:text-left">
-            <h2 className="text-3xl font-bold tracking-tighter text-text-main md:text-5xl lg:text-6xl">
-              <CodeText tag="h2" type="html">System Architecture Archives</CodeText>
-            </h2>
+            <h1 className="text-3xl font-bold tracking-tighter text-text-main md:text-5xl lg:text-6xl">
+              <CodeText tag="h1" type="html">{t('archiveTitle')}</CodeText>
+            </h1>
             <div className="h-1.5 w-24 bg-gradient-to-r from-cyan-500 to-indigo-500 mt-6 shadow-[0_0_20px_rgba(6,182,212,0.5)] md:mx-0"></div>
 
             <div className="md:absolute -top-12 left-0 mb-6 md:mb-0">
@@ -48,7 +49,7 @@ export const ProjectListPage = ({ projects, locale }: ProjectListPageProps) => {
             </div>
             <p className="text-cyan-500/80 mt-8 font-mono text-[11px] uppercase tracking-[0.4em] font-black flex items-center justify-center md:justify-start gap-4">
               <span className="h-px w-8 bg-cyan-500/30" />
-              Comprehensive Technical Case Studies & System Designs
+              {t('archiveSubtitle')}
             </p>
           </div>
         </Reveal>
@@ -56,9 +57,8 @@ export const ProjectListPage = ({ projects, locale }: ProjectListPageProps) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {projects.map((project, idx) => (
             <Reveal key={project.id} delay={idx * 0.05} width="100%">
-              <motion.div
-                whileHover={{ y: -10, rotateX: 2, rotateY: 5 }}
-                className="bg-background/90 backdrop-blur-xl border border-border/40 p-10 hover:border-cyan-500/60 transition-all duration-500 group h-full flex flex-col shadow-2xl relative overflow-hidden group/project cursor-pointer [perspective:1000px]"
+              <div
+                className="bg-background/95 border border-border/40 p-10 hover:border-cyan-500/60 transition-all duration-500 group h-full flex flex-col shadow-2xl relative overflow-hidden group/project"
               >
                 {/* Background Grid Pattern */}
                 <div className="absolute inset-0 opacity-[0.15] [background-image:linear-gradient(rgba(6,182,212,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(6,182,212,0.1)_1px,transparent_1px)] [background-size:25px_25px] pointer-events-none" />
@@ -89,21 +89,13 @@ export const ProjectListPage = ({ projects, locale }: ProjectListPageProps) => {
                   <CodeText type="js">{project.desc[loc]}</CodeText>
                 </p>
 
-                <div className="flex justify-between items-center pt-10 border-t border-border/20 mt-auto relative z-10">
+                <div className="flex items-center pt-10 border-t border-border/20 mt-auto relative z-10">
                   <div className="flex flex-col gap-2">
                     <span className="text-[11px] font-mono text-text-muted/80 uppercase tracking-[0.25em] font-black group-hover:text-indigo-400 transition-colors">
                       {t('metadata.access')}
                     </span>
-                    <motion.div
-                      initial={{ width: "20px" }}
-                      whileHover={{ width: "100%" }}
-                      className="h-1 bg-gradient-to-r from-indigo-500 to-cyan-500"
-                    />
+                    <div className="h-1 w-5 bg-gradient-to-r from-indigo-500 to-cyan-500" />
                   </div>
-                  <span className="flex items-center gap-4 text-[11px] font-black uppercase tracking-[0.2em] text-cyan-500 group-hover:text-cyan-300 group-hover:translate-x-3 transition-all duration-300">
-                    {t('viewDetail')}
-                    <div className="w-6 h-[2px] bg-cyan-500 group-hover:w-10 transition-all" />
-                  </span>
                 </div>
 
                 {/* Hover Scanline */}
@@ -117,7 +109,7 @@ export const ProjectListPage = ({ projects, locale }: ProjectListPageProps) => {
                      {t('metadata.target')}
                    </div>
                 </div>
-              </motion.div>
+              </div>
             </Reveal>
           ))}
         </div>

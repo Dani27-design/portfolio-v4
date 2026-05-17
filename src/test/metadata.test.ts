@@ -40,10 +40,10 @@ describe('generateMetadata - Homepage', () => {
 
     expect(metadata.title).toContain('Daniansyah');
     expect(metadata.description).toContain('Systems Architect');
-    expect(metadata.alternates?.canonical).toBe('https://daniansyah.dev/en');
-    expect(metadata.alternates?.languages?.['x-default']).toBe('https://daniansyah.dev/en');
-    expect(metadata.alternates?.languages?.en).toBe('https://daniansyah.dev/en');
-    expect(metadata.alternates?.languages?.id).toBe('https://daniansyah.dev/id');
+    expect(metadata.alternates?.canonical).toBe('https://dani-chusyaidin.vercel.app/en');
+    expect(metadata.alternates?.languages?.['x-default']).toBe('https://dani-chusyaidin.vercel.app/en');
+    expect(metadata.alternates?.languages?.en).toBe('https://dani-chusyaidin.vercel.app/en');
+    expect(metadata.alternates?.languages?.id).toBe('https://dani-chusyaidin.vercel.app/id');
     expect(metadata.openGraph?.locale).toBe('en_US');
   });
 
@@ -52,7 +52,7 @@ describe('generateMetadata - Homepage', () => {
     const metadata = await generateMetadata({ params: Promise.resolve({ locale: 'id' }) });
 
     expect(metadata.title).toContain('Arsitek Sistem');
-    expect(metadata.alternates?.canonical).toBe('https://daniansyah.dev/id');
+    expect(metadata.alternates?.canonical).toBe('https://dani-chusyaidin.vercel.app/id');
     expect(metadata.openGraph?.locale).toBe('id_ID');
   });
 });
@@ -63,8 +63,8 @@ describe('generateMetadata - Blog List', () => {
     const metadata = await generateMetadata({ params: Promise.resolve({ locale: 'en' }) });
 
     expect(metadata.title).toBe('Technical Logs');
-    expect(metadata.alternates?.canonical).toBe('https://daniansyah.dev/en/blog');
-    expect(metadata.alternates?.languages?.id).toBe('https://daniansyah.dev/id/blog');
+    expect(metadata.alternates?.canonical).toBe('https://dani-chusyaidin.vercel.app/en/blog');
+    expect(metadata.alternates?.languages?.id).toBe('https://dani-chusyaidin.vercel.app/id/blog');
   });
 });
 
@@ -74,7 +74,7 @@ describe('generateMetadata - Projects', () => {
     const metadata = await generateMetadata({ params: Promise.resolve({ locale: 'en' }) });
 
     expect(metadata.title).toBe('System Architecture Archives');
-    expect(metadata.alternates?.canonical).toBe('https://daniansyah.dev/en/projects');
-    expect(metadata.alternates?.languages?.id).toBe('https://daniansyah.dev/id/projects');
+    expect(metadata.alternates?.canonical).toBe('https://dani-chusyaidin.vercel.app/en/projects');
+    expect(metadata.alternates?.languages?.id).toBe('https://dani-chusyaidin.vercel.app/id/projects');
   });
 });

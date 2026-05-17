@@ -9,13 +9,21 @@ import type { Blog } from '@/types';
 export default function AdminBlogsPage() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState<string | null>(null);
   const [editing, setEditing] = useState<Blog | null>(null);
   const [creating, setCreating] = useState(false);
 
   const fetchBlogs = async () => {
-    const res = await fetch('/api/admin/blogs');
-    if (res.ok) setBlogs(await res.json());
-    setLoading(false);
+    setFetchError(null);
+    try {
+      const res = await fetch('/api/admin/blogs');
+      if (!res.ok) throw new Error('Failed to load blogs');
+      setBlogs(await res.json());
+    } catch (err) {
+      setFetchError(err instanceof Error ? err.message : 'Failed to load blogs');
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { fetchBlogs(); }, []);
@@ -39,6 +47,13 @@ export default function AdminBlogsPage() {
           <Plus className="w-4 h-4" /> Add Blog
         </button>
       </div>
+
+      {fetchError && (
+        <div className="flex items-center justify-between p-3 mb-6 bg-red-500/10 border border-red-500/20 rounded text-red-400 text-sm">
+          <span>{fetchError}</span>
+          <button onClick={fetchBlogs} className="text-xs font-bold uppercase tracking-wider hover:text-red-300">Retry</button>
+        </div>
+      )}
 
       {(creating || editing) && (
         <BlogForm
@@ -67,8 +82,8 @@ export default function AdminBlogsPage() {
                 <td className="px-4 py-3 text-slate-400 font-mono text-xs">{b.slug}</td>
                 <td className="px-4 py-3 text-slate-400 text-xs">{b.date}</td>
                 <td className="px-4 py-3 text-right">
-                  <button onClick={() => setEditing(b)} className="p-1.5 text-slate-400 hover:text-cyan-400"><Pencil className="w-4 h-4" /></button>
-                  <button onClick={() => handleDelete(b.id)} className="p-1.5 text-slate-400 hover:text-red-400 ml-2"><Trash2 className="w-4 h-4" /></button>
+                  <button onClick={() => setEditing(b)} className="p-1.5 text-slate-400 hover:text-cyan-400" aria-label="Edit"><Pencil className="w-4 h-4" /></button>
+                  <button onClick={() => handleDelete(b.id)} className="p-1.5 text-slate-400 hover:text-red-400 ml-2" aria-label="Delete"><Trash2 className="w-4 h-4" /></button>
                 </td>
               </tr>
             ))}
@@ -94,31 +109,39 @@ function BlogForm({ blog, onClose, onSave }: { blog: Blog | null; onClose: () =>
     order: blog?.order || 0,
   });
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
     setSaving(true);
-    const data = {
-      slug: form.slug,
-      title: { en: form.titleEn, id: form.titleId },
-      excerpt: { en: form.excerptEn, id: form.excerptId },
-      content: form.content,
-      date: form.date,
-      order: form.order,
-    };
-    if (blog) {
-      await updateBlog(blog.id, data);
-    } else {
-      await createBlog(data);
+    try {
+      const data = {
+        slug: form.slug,
+        title: { en: form.titleEn, id: form.titleId },
+        excerpt: { en: form.excerptEn, id: form.excerptId },
+        content: form.content,
+        date: form.date,
+        order: form.order,
+      };
+      if (blog) {
+        await updateBlog(blog.id, data);
+      } else {
+        await createBlog(data);
+      }
+      onSave();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to save');
+    } finally {
+      setSaving(false);
     }
-    setSaving(false);
-    onSave();
   };
 
   return (
     <div className="mb-8 bg-slate-800 border border-slate-700 rounded-lg p-6">
       <h2 className="text-lg font-bold text-white mb-4">{blog ? 'Edit' : 'Create'} Blog</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
+        {error && <div className="p-3 bg-red-500/10 border border-red-500/20 rounded text-red-400 text-sm">{error}</div>}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input value={form.slug} onChange={e => setForm({...form, slug: e.target.value})} placeholder="Slug (url-safe)" required className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white outline-none focus:border-cyan-500" />
           <input value={form.date} onChange={e => setForm({...form, date: e.target.value})} type="date" className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white outline-none focus:border-cyan-500" />

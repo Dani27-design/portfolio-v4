@@ -66,6 +66,7 @@ export const SkyForceGame = () => {
     isEntering: true,
     entranceFrame: 0,
   });
+  const canvasSize = useRef({ width: 0, height: 0 });
 
   const audioCtxRef = useRef<AudioContext | null>(null);
 
@@ -156,12 +157,12 @@ export const SkyForceGame = () => {
     gameState.current.entranceFrame = 0;
     
     // Position rocket at start position immediately (no fly-in)
-    const canvas = canvasRef.current;
-    if (canvas) {
-       gameState.current.player.x = canvas.width / 2;
-       gameState.current.player.y = canvas.height - 50;
-       gameState.current.player.targetX = canvas.width / 2;
-       gameState.current.player.targetY = canvas.height - 50;
+    const cs = canvasSize.current;
+    if (cs.width > 0) {
+       gameState.current.player.x = cs.width / 2;
+       gameState.current.player.y = cs.height - 50;
+       gameState.current.player.targetX = cs.width / 2;
+       gameState.current.player.targetY = cs.height - 50;
     }
 
     // Delay countdown to wait for the Top Button rocket to finish its fly-away animation
@@ -274,17 +275,26 @@ export const SkyForceGame = () => {
 
     const handleResize = () => {
       if (containerRef.current && canvas) {
-        canvas.width = containerRef.current.clientWidth;
-        // Adjust height proportionally to width for a better aspect ratio on wide screens
-        const newHeight = canvas.width < 768 ? 360 : Math.min(540, canvas.width * 0.54);
-        canvas.height = newHeight;
-        
+        const dpr = window.devicePixelRatio || 1;
+        const logicalWidth = containerRef.current.clientWidth;
+        const logicalHeight = logicalWidth < 768 ? 360 : Math.min(540, logicalWidth * 0.54);
+
+        canvas.width = logicalWidth * dpr;
+        canvas.height = logicalHeight * dpr;
+        canvas.style.width = `${logicalWidth}px`;
+        canvas.style.height = `${logicalHeight}px`;
+
+        const ctx = canvas.getContext("2d");
+        if (ctx) ctx.scale(dpr, dpr);
+
+        canvasSize.current = { width: logicalWidth, height: logicalHeight };
+
         // Initialize player position with entrance logic
         if (gameState.current.player.x === 0) {
-          gameState.current.player.x = canvas.width + 100;
-          gameState.current.player.y = canvas.height + 100;
-          gameState.current.player.targetX = canvas.width / 2;
-          gameState.current.player.targetY = canvas.height - 50;
+          gameState.current.player.x = logicalWidth + 100;
+          gameState.current.player.y = logicalHeight + 100;
+          gameState.current.player.targetX = logicalWidth / 2;
+          gameState.current.player.targetY = logicalHeight - 50;
         }
       }
     };
@@ -319,7 +329,7 @@ export const SkyForceGame = () => {
       
       const newEnemy: Enemy = {
         id: Date.now() + Math.random(),
-        x: Math.random() * (canvas.width - 40) + 20,
+        x: Math.random() * (canvasSize.current.width - 40) + 20,
         y: -50,
         speed: (Math.random() * 1.5 + 1) * g.difficulty * (isElite ? 1.4 : 1),
         health: (type === 'rocket' ? 5 : type === 'meteor' ? 2 : 1) * (isElite ? 2 : 1),
@@ -397,16 +407,18 @@ export const SkyForceGame = () => {
         g.lastSpawn = g.frame;
       }
 
-      // Update Bullets
-      g.bullets.forEach((b, i) => {
+      // Update Bullets — move all, then filter dead ones after collision
+      g.bullets.forEach((b) => {
         b.y -= b.speed;
-        if (b.y < -20) g.bullets.splice(i, 1);
       });
 
-      // Update Enemies
-      g.enemies.forEach((e, i) => {
+      // Track which bullets hit enemies
+      const hitBullets = new Set<Bullet>();
+
+      // Update Enemies — move, check collisions, mark dead
+      g.enemies.forEach((e) => {
         e.y += e.speed;
-        
+
         // Collision with player
         const distToPlayer = Math.hypot(e.x - g.player.x, e.y - g.player.y);
         if (distToPlayer < g.player.radius + 15) {
@@ -419,22 +431,23 @@ export const SkyForceGame = () => {
         }
 
         // REACHED BOTTOM (GROUND IMPACT)
-        if (e.y > canvas.height - 10) {
+        if (e.y > canvasSize.current.height - 10) {
           setGameOver(true);
           setIsNewRecord(scoreRef.current > displayHighScore);
           setHasSubmittedName(false);
           g.shake = 30;
           createExplosion(e.x, e.y, "#ef4444");
-          createExplosion(canvas.width / 2, canvas.height, "#ef4444");
+          createExplosion(canvasSize.current.width / 2, canvasSize.current.height, "#ef4444");
           playExplosionSound(true);
         }
 
         // Collision with bullets
-        g.bullets.forEach((b, bi) => {
+        g.bullets.forEach((b) => {
+          if (hitBullets.has(b)) return;
           const dist = Math.hypot(e.x - b.x, e.y - b.y);
           if (dist < 20) {
             e.health--;
-            g.bullets.splice(bi, 1);
+            hitBullets.add(b);
             if (e.health <= 0) {
               const points = (e.type === 'rocket' ? 300 : e.type === 'meteor' ? 150 : 50);
               scoreRef.current += points;
@@ -442,21 +455,24 @@ export const SkyForceGame = () => {
               g.shake = e.type === 'rocket' ? 10 : 5;
               createExplosion(e.x, e.y, e.type === 'rocket' ? "#f59e0b" : "#94a3b8");
               playExplosionSound(false);
-              g.enemies.splice(i, 1);
             }
           }
         });
-
-        if (e.y > canvas.height + 50) g.enemies.splice(i, 1);
       });
 
+      // Filter out dead bullets (off-screen or hit an enemy)
+      g.bullets = g.bullets.filter((b) => b.y >= -20 && !hitBullets.has(b));
+
+      // Filter out dead enemies (killed or past bottom)
+      g.enemies = g.enemies.filter((e) => e.health > 0 && e.y <= canvasSize.current.height + 50);
+
       // Update Particles
-      g.particles.forEach((p, i) => {
+      g.particles.forEach((p) => {
         p.x += p.vx;
         p.y += p.vy;
         p.life -= 0.02;
-        if (p.life <= 0) g.particles.splice(i, 1);
       });
+      g.particles = g.particles.filter((p) => p.life > 0);
 
       // Decay shake
       if (g.shake > 0) g.shake *= 0.9;
@@ -464,7 +480,13 @@ export const SkyForceGame = () => {
 
     const draw = () => {
       const g = gameState.current;
-      ctx.clearRect(0, 0, canvas.height ? canvas.width : 0, canvas.height);
+      const dpr = window.devicePixelRatio || 1;
+      const cw = canvasSize.current.width;
+      const ch = canvasSize.current.height;
+
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.scale(dpr, dpr);
 
       ctx.save();
       if (g.shake > 0.1) {
@@ -481,31 +503,31 @@ export const SkyForceGame = () => {
       const spacing = 40;
       const gridOffset = (g.frame * (isHighIntensity ? 4 : 2)) % spacing;
       
-      for (let x = (g.frame % spacing); x < canvas.width; x += spacing) {
+      for (let x = (g.frame % spacing); x < cw; x += spacing) {
         ctx.beginPath();
         ctx.moveTo(x, 0);
-        ctx.lineTo(x, canvas.height);
+        ctx.lineTo(x, ch);
         ctx.stroke();
       }
-      for (let y = gridOffset; y < canvas.height; y += spacing) {
+      for (let y = gridOffset; y < ch; y += spacing) {
         ctx.beginPath();
         ctx.moveTo(0, y);
-        ctx.lineTo(canvas.width, y);
+        ctx.lineTo(cw, y);
         ctx.stroke();
       }
 
       // Glitch Effect for Record Breaking runs
       if (score > highScore && highScore > 0 && Math.random() > 0.97) {
         ctx.fillStyle = "rgba(236, 72, 153, 0.1)";
-        ctx.fillRect(0, Math.random() * canvas.height, canvas.width, Math.random() * 10);
+        ctx.fillRect(0, Math.random() * ch, cw, Math.random() * 10);
       }
 
       // Ground Line (Defense Line)
       ctx.strokeStyle = "rgba(239, 68, 68, 0.3)";
       ctx.setLineDash([5, 5]);
       ctx.beginPath();
-      ctx.moveTo(0, canvas.height - 5);
-      ctx.lineTo(canvas.width, canvas.height - 5);
+      ctx.moveTo(0, ch - 5);
+      ctx.lineTo(cw, ch - 5);
       ctx.stroke();
       ctx.setLineDash([]);
 
@@ -757,11 +779,11 @@ export const SkyForceGame = () => {
       if (isCodeMode && isPlaying && !gameOver) {
         ctx.font = "8px monospace";
         ctx.fillStyle = "#ec4899";
-        ctx.fillText(`<player x="${Math.floor(g.player.x)}" y="${Math.floor(g.player.y)}" />`, 10, canvas.height - 10);
+        ctx.fillText(`<player x="${Math.floor(g.player.x)}" y="${Math.floor(g.player.y)}" />`, 10, ch - 10);
         ctx.fillStyle = "#eab308";
-        ctx.fillText(`// active_enemies: ${g.enemies.length}`, 10, canvas.height - 25);
+        ctx.fillText(`// active_enemies: ${g.enemies.length}`, 10, ch - 25);
         ctx.fillStyle = "#3b82f6";
-        ctx.fillText(`gameState.difficulty = ${g.difficulty.toFixed(2)};`, 10, canvas.height - 40);
+        ctx.fillText(`gameState.difficulty = ${g.difficulty.toFixed(2)};`, 10, ch - 40);
         
         // Scanlines/Visualizer in Code Mode
         ctx.strokeStyle = "rgba(236, 72, 153, 0.1)";

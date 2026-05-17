@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { Inter, JetBrains_Mono, Playfair_Display } from 'next/font/google';
+import { Inter, JetBrains_Mono } from 'next/font/google';
 import { routing } from '@/i18n/routing';
 import { ThemeProvider } from '@/context/ThemeProvider';
 import { Navbar } from '@/components/layout/Navbar';
@@ -27,16 +27,8 @@ const jetbrainsMono = JetBrains_Mono({
   display: 'swap',
 });
 
-const playfairDisplay = Playfair_Display({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800', '900'],
-  style: ['normal', 'italic'],
-  variable: '--font-playfair-display',
-  display: 'swap',
-});
-
 export const metadata: Metadata = {
-  metadataBase: new URL('https://daniansyah.dev'),
+  metadataBase: new URL('https://dani-chusyaidin.vercel.app'),
   title: {
     default: 'Daniansyah Chusyaidin | Fullstack & Mobile Engineer',
     template: '%s | Daniansyah Chusyaidin',
@@ -75,7 +67,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       lang={locale}
       suppressHydrationWarning
       data-scroll-behavior="smooth"
-      className={`${inter.variable} ${jetbrainsMono.variable} ${playfairDisplay.variable}`}
+      className={`${inter.variable} ${jetbrainsMono.variable}`}
     >
       <head>
         <script

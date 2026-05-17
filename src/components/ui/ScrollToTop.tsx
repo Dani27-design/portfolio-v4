@@ -13,6 +13,12 @@ export const ScrollToTop = () => {
   const [isGameActive, setIsGameActive] = useState(false);
   const isVisibleRef = useRef(isVisible);
   const isGameActiveRef = useRef(isGameActive);
+  const smokeOffsets = useRef(
+    Array.from({ length: 8 }, (_, i) => ({
+      x1: (i % 2 === 0 ? 10 : -10) * Math.random(),
+      x2: (i % 2 === 0 ? 20 : -20) * Math.random(),
+    }))
+  );
 
   useEffect(() => {
     isVisibleRef.current = isVisible;
@@ -39,12 +45,15 @@ export const ScrollToTop = () => {
 
     window.addEventListener("game-active", handleGameStatus as EventListener);
 
+    let ticking = false;
     const toggleVisibility = () => {
-      const scrollY = window.pageYOffset || document.documentElement.scrollTop;
-      if (scrollY > 300) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(() => {
+          const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+          setIsVisible(scrollY > 300);
+          ticking = false;
+        });
       }
     };
 
@@ -102,6 +111,7 @@ export const ScrollToTop = () => {
             onClick={scrollToTop}
             className="relative w-12 h-12 md:w-16 md:h-16 group flex items-center justify-center p-0 outline-none"
             style={{ pointerEvents: (isDeploying || isLaunching) ? 'none' : 'auto' }}
+            aria-label="Scroll to top"
           >
             {/* Launch Pad Brackets */}
             <div className={`absolute inset-0 transition-opacity duration-300 ${(isDeploying || isLaunching) ? 'opacity-0' : 'opacity-100'}`}>
@@ -132,7 +142,7 @@ export const ScrollToTop = () => {
                         scale: [1, 2.5],
                         opacity: 0,
                         y: [0, 80],
-                        x: [(i % 2 === 0 ? 10 : -10) * Math.random(), (i % 2 === 0 ? 20 : -20) * Math.random()]
+                        x: [smokeOffsets.current[i].x1, smokeOffsets.current[i].x2]
                       }}
                       transition={{ duration: 0.4, delay: i * 0.04, repeat: Infinity }}
                       className="absolute top-0 w-3 h-3 bg-white/20 blur-md rounded-full"

@@ -5,15 +5,12 @@ import dynamic from "next/dynamic";
 import { Reveal } from "@/components/ui/Reveal";
 import { ArrowDown, Layers } from "lucide-react";
 import { CodeText } from "@/components/ui/CodeText";
+import { LazyGimmick } from "@/components/ui/LazyGimmick";
 import { useTranslations, useMessages } from "next-intl";
 
 const SystemGimmick = dynamic(() => import("@/components/gimmicks/SystemGimmick").then(m => ({ default: m.SystemGimmick })), { ssr: false });
 
-export const Hero = () => {
-  const t = useTranslations('hero');
-  const messages = useMessages();
-  const phrases = (messages as Record<string, unknown>).phrases as string[];
-
+const TypewriterText = ({ phrases }: { phrases: string[] }) => {
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [text, setText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
@@ -47,8 +44,22 @@ export const Hero = () => {
   }, [text, isDeleting, phraseIndex, typingSpeed, phrases]);
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center overflow-hidden grid-bg px-6 pt-16">
-      <SystemGimmick />
+    <span className="text-xl md:text-3xl font-mono text-primary typewriter">
+      <CodeText type="js">
+        {text}
+      </CodeText>
+    </span>
+  );
+};
+
+export const Hero = () => {
+  const t = useTranslations('hero');
+  const messages = useMessages();
+  const phrases = (messages as Record<string, unknown>).phrases as string[];
+
+  return (
+    <section className="relative min-h-dvh flex flex-col items-center overflow-hidden grid-bg px-6 pt-16">
+      <LazyGimmick><SystemGimmick /></LazyGimmick>
 
       <div className="flex-1 flex flex-col items-center justify-center container-custom relative z-10 text-center pb-24 pt-10">
         <Reveal>
@@ -74,18 +85,14 @@ export const Hero = () => {
 
         <Reveal delay={0.3}>
           <div className="h-12 flex items-center justify-center mt-6">
-            <span className="text-xl md:text-3xl font-mono text-primary typewriter">
-              <CodeText type="js">
-                {text}
-              </CodeText>
-            </span>
+            <TypewriterText phrases={phrases} />
           </div>
         </Reveal>
 
         <Reveal delay={0.4}>
           <p className="mt-8 text-lg md:text-xl max-w-2xl mx-auto">
             <CodeText tag="p" type="css">
-              Architecting fault-tolerant distributed systems and robust mobile cores. I solve for complexity through rigorous structural design and end-to-end technical ownership.
+              {t('desc')}
             </CodeText>
           </p>
         </Reveal>
@@ -119,7 +126,7 @@ export const Hero = () => {
       </div>
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 animate-bounce opacity-30 text-text-main group cursor-pointer hidden md:block">
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 animate-bounce opacity-30 text-text-main hidden md:block" aria-hidden="true">
         <ArrowDown className="w-5 h-5" />
       </div>
     </section>

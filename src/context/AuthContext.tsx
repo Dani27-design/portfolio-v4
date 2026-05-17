@@ -3,8 +3,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged, signInWithEmailAndPassword, signOut, User } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
-
-const ADMIN_EMAIL = 'daniansyahchusyaidin@gmail.com';
+import { ADMIN_EMAIL } from '@/lib/constants';
 
 interface AuthContextType {
   user: User | null;
@@ -40,7 +39,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (email !== ADMIN_EMAIL) {
         return { success: false, error: 'Unauthorized: Access restricted.' };
       }
-      await signInWithEmailAndPassword(auth, email, password);
+      const credential = await signInWithEmailAndPassword(auth, email, password);
+
+      // Set server-side auth cookie via middleware
+      const idToken = await credential.user.getIdToken();
+      await fetch('/api/login', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${idToken}` },
+      });
+
       return { success: true };
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Login failed';
@@ -49,6 +56,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const logout = async () => {
+    // Clear server-side auth cookie via middleware
+    await fetch('/api/logout', { method: 'POST' });
     await signOut(auth);
   };
 

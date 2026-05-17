@@ -3,6 +3,7 @@
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import { Reveal } from "@/components/ui/Reveal";
+import { LazyGimmick } from "@/components/ui/LazyGimmick";
 import { Github, Linkedin, Instagram, MessageCircle, Send, Copy, Radio, Zap } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useTranslations } from "next-intl";
@@ -23,15 +24,15 @@ export const Contact = () => {
   };
 
   const socials = [
-    { name: "GitHub", icon: <Github className="w-4 h-4" />, href: "#" },
-    { name: "LinkedIn", icon: <Linkedin className="w-4 h-4" />, href: "#" },
-    { name: "Instagram", icon: <Instagram className="w-4 h-4" />, href: "#" },
-    { name: "WhatsApp", icon: <MessageCircle className="w-4 h-4" />, href: "#" },
+    { name: "GitHub", icon: <Github className="w-4 h-4" />, href: "https://github.com/Dani27-design" },
+    { name: "LinkedIn", icon: <Linkedin className="w-4 h-4" />, href: "https://www.linkedin.com/in/daniansyahchusyaidin/" },
+    { name: "Instagram", icon: <Instagram className="w-4 h-4" />, href: "https://www.instagram.com/danichusyaidin" },
+    { name: "WhatsApp", icon: <MessageCircle className="w-4 h-4" />, href: "https://wa.me/6285790428078" },
   ];
 
   return (
     <section id="contact" className="section-padding bg-background relative overflow-hidden">
-      <NeuralBridgeGimmick />
+      <LazyGimmick><NeuralBridgeGimmick /></LazyGimmick>
 
         <div className="container-custom max-w-4xl mx-auto relative z-10 px-0 md:px-6">
         <Reveal width="100%">
@@ -40,7 +41,7 @@ export const Contact = () => {
               {t('headline')}
             </h2>
             <p className="text-sm md:text-lg text-text-muted max-w-2xl mx-auto leading-relaxed border-l-2 border-white/5 pl-6 md:pl-8 italic text-left md:text-center">
-              Accepting high-priority inquiries for complex service architectures and scalable engineering collaborations. Establish verified transit below.
+              {t('desc')}
             </p>
           </div>
         </Reveal>
@@ -49,7 +50,7 @@ export const Contact = () => {
           <div
             onFocus={() => setActiveMode(true)}
             onBlur={() => setActiveMode(false)}
-            className="bg-surface/60 backdrop-blur-2xl border-y md:border border-border/60 shadow-[0_40px_100px_rgba(0,0,0,0.4)] relative overflow-hidden group/form transition-all duration-700 mx-0 md:mx-0"
+            className="bg-surface/90 border-y md:border border-border/60 shadow-[0_40px_100px_rgba(0,0,0,0.4)] relative overflow-hidden group/form transition-all duration-700 mx-0 md:mx-0"
           >
             {/* Header Rail */}
             <div className="px-4 md:px-10 py-6 border-b border-border/40 bg-background/40 flex flex-col md:flex-row items-center justify-between gap-6">
@@ -76,11 +77,12 @@ export const Contact = () => {
                <div className="p-4 md:p-12 space-y-6 md:space-y-12 flex-1">
                 <div className="space-y-5 md:space-y-10">
                   <div className="space-y-3 group/input">
-                    <label className="text-[11px] font-mono text-text-muted/60 uppercase tracking-[0.3em] font-black block group-focus-within/input:text-cyan-400 transition-colors flex items-center gap-2">
-                       <Zap className="w-3 h-3 group-focus-within/input:text-cyan-500" />
+                    <label htmlFor="contact-title" className="text-[11px] font-mono text-text-muted/60 uppercase tracking-[0.3em] font-black block group-focus-within/input:text-cyan-400 transition-colors flex items-center gap-2">
+                       <Zap className="w-3 h-3 group-focus-within/input:text-cyan-500" aria-hidden="true" />
                        {t('labels.title')}
                     </label>
                     <input
+                      id="contact-title"
                       type="text"
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
@@ -89,15 +91,17 @@ export const Contact = () => {
                     />
                   </div>
                   <div className="space-y-3 group/input">
-                    <label className="text-[11px] font-mono text-text-muted/60 uppercase tracking-[0.3em] font-black block group-focus-within/input:text-cyan-400 transition-colors flex items-center gap-2">
-                       <Radio className="w-3 h-3 group-focus-within/input:text-cyan-500" />
+                    <label htmlFor="contact-message" className="text-[11px] font-mono text-text-muted/60 uppercase tracking-[0.3em] font-black block group-focus-within/input:text-cyan-400 transition-colors flex items-center gap-2">
+                       <Radio className="w-3 h-3 group-focus-within/input:text-cyan-500" aria-hidden="true" />
                        {t('labels.payload')}
                     </label>
                     <textarea
+                      id="contact-message"
                       rows={6}
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                       placeholder={t('placeholders.payload')}
+                      enterKeyHint="send"
                       className="w-full bg-background/50 border border-border/40 px-3 md:px-6 py-3 md:py-5 outline-none focus:border-cyan-500/60 focus:bg-cyan-950/10 transition-all text-sm font-mono resize-none placeholder:opacity-20 group-hover/form:border-border/60"
                     />
                   </div>
@@ -116,10 +120,10 @@ export const Contact = () => {
               {/* Side Monitor Panel */}
               <div className="w-[300px] bg-background/20 p-8 hidden xl:flex flex-col gap-8 border-l border-border/20">
                  <div className="space-y-4">
-                    <h4 className="font-mono text-[9px] text-cyan-500 font-black uppercase tracking-[0.3em] flex items-center gap-2">
-                       <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
+                    <span className="font-mono text-[9px] text-cyan-500 font-black uppercase tracking-[0.3em] flex items-center gap-2">
+                       <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse inline-block" />
                        Sys_Diagnostics
-                    </h4>
+                    </span>
                     <div className="space-y-2">
                        {[...Array(5)].map((_, i) => (
                          <div key={`diag-proc-${i}`} className="flex justify-between items-center bg-white/5 px-3 py-2 border border-white/5">
@@ -174,6 +178,8 @@ export const Contact = () => {
               <a
                 key={social.name}
                 href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex flex-col items-center justify-center p-6 bg-surface/30 border border-border/20 gap-3 text-[10px] font-black text-text-muted uppercase tracking-[0.3em] hover:text-cyan-400 hover:border-cyan-500/40 hover:bg-cyan-950/10 transition-all group/social"
               >
                 <motion.div

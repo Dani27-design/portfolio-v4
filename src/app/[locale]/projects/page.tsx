@@ -15,21 +15,21 @@ export async function generateMetadata({ params }: Props) {
 
   const languages: Record<string, string> = {};
   for (const loc of routing.locales) {
-    languages[loc] = `https://daniansyah.dev/${loc}/projects`;
+    languages[loc] = `https://dani-chusyaidin.vercel.app/${loc}/projects`;
   }
-  languages['x-default'] = 'https://daniansyah.dev/en/projects';
+  languages['x-default'] = 'https://dani-chusyaidin.vercel.app/en/projects';
 
   return {
     title: t('projectsTitle'),
     description: t('projectsDescription'),
     alternates: {
-      canonical: `https://daniansyah.dev/${locale}/projects`,
+      canonical: `https://dani-chusyaidin.vercel.app/${locale}/projects`,
       languages,
     },
     openGraph: {
       title: t('projectsTitle'),
       description: t('projectsDescription'),
-      url: `https://daniansyah.dev/${locale}/projects`,
+      url: `https://dani-chusyaidin.vercel.app/${locale}/projects`,
       locale: locale === 'id' ? 'id_ID' : 'en_US',
     },
   };
@@ -41,5 +41,32 @@ export default async function Page({ params }: Props) {
 
   const projects = await getProjects();
 
-  return <ProjectListPage projects={projects} locale={locale} />;
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: `https://dani-chusyaidin.vercel.app/${locale}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Projects',
+        item: `https://dani-chusyaidin.vercel.app/${locale}/projects`,
+      },
+    ],
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <ProjectListPage projects={projects} locale={locale} />
+    </>
+  );
 }

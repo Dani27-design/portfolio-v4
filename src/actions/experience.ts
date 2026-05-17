@@ -2,9 +2,11 @@
 
 import { adminDb } from '@/lib/firebase-admin';
 import { revalidatePath } from 'next/cache';
+import { verifyAdmin } from '@/lib/auth';
 import type { ExperienceItem } from '@/types';
 
 export async function createExperience(data: Omit<ExperienceItem, 'id' | 'createdAt' | 'updatedAt'>) {
+  if (!(await verifyAdmin())) throw new Error('Unauthorized');
   if (!adminDb) throw new Error('Firebase not initialized');
   const now = new Date().toISOString();
   const ref = await adminDb.collection('experience').add({
@@ -18,6 +20,7 @@ export async function createExperience(data: Omit<ExperienceItem, 'id' | 'create
 }
 
 export async function updateExperience(id: string, data: Partial<Omit<ExperienceItem, 'id'>>) {
+  if (!(await verifyAdmin())) throw new Error('Unauthorized');
   if (!adminDb) throw new Error('Firebase not initialized');
   await adminDb.collection('experience').doc(id).update({
     ...data,
@@ -28,6 +31,7 @@ export async function updateExperience(id: string, data: Partial<Omit<Experience
 }
 
 export async function deleteExperience(id: string) {
+  if (!(await verifyAdmin())) throw new Error('Unauthorized');
   if (!adminDb) throw new Error('Firebase not initialized');
   await adminDb.collection('experience').doc(id).delete();
   revalidatePath('/en');

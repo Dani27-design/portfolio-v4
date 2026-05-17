@@ -10,6 +10,7 @@
   "hero": {
     "tagline": "System Architect Core",
     "headline": "Saya tidak mengembalikan undefined.",
+    "desc": "Membangun distributed systems dan aplikasi mobile yang reliable. Saya handle dari desain arsitektur sampai production.",
     "ctaGame": "Mau main game?",
     "ctaContact": "Protocol_Initialize"
   },
@@ -33,6 +34,8 @@
     "title": "Arsitektur Sistem & Deployment",
     "cta": "ACCESS_SYSTEM_ARCHIVE",
     "viewDetail": "View_Detail",
+    "archiveTitle": "Arsip Proyek",
+    "archiveSubtitle": "Studi kasus teknis dan desain sistem",
     "metadata": {
       "access": "Access: Granted",
       "checksum": "Checksum: Validated",
@@ -42,10 +45,14 @@
   "blog": {
     "title": "Catatan Teknis",
     "cta": "ACCESS_FULL_ARCHIVE",
-    "readEntry": "READ_LOG_ENTRY"
+    "readEntry": "READ_LOG_ENTRY",
+    "archiveTitle": "Semua Catatan Teknis",
+    "archiveSubtitle": "Dokumentasi teknis dan catatan pengembangan",
+    "readTime": "WAKTU_BACA: {minutes} MIN"
   },
   "contact": {
     "headline": "Mari bangun solusi bersama.",
+    "desc": "Terbuka untuk kolaborasi proyek teknis. Sampaikan kebutuhan Anda lewat form di bawah.",
     "labels": {
       "title": "01 / Judul Pesan",
       "payload": "02 / Isi Pesan"
@@ -65,6 +72,7 @@
   "hireBanner": {
     "badge": "SYSTEM_AVAILABILITY :: OPEN_FOR_MISSIONS",
     "headline": "Butuh Developer untuk Mewujudkan Visi Anda?",
+    "desc": "Berpengalaman di distributed systems, mobile offline-first, dan database management. Hubungi saya kalau butuh engineer untuk proyek Anda.",
     "cta": "INITIALIZE_Recruitment_Protocol"
   },
   "game": {
@@ -91,10 +99,10 @@
     "highScore": {
       "newMark": "New_Terminal_Mark",
       "pilotId": "PILOT_ID",
-      "commitIdentity": "COMMIT_IDENTITY",
+      "commitIdentity": "SIMPAN_IDENTITAS",
       "identitySecured": "Identity_Secured:",
-      "sharePerformance": "SHARE_PERFORMANCE",
-      "redeploy": "RE-DEPLOY"
+      "sharePerformance": "BAGIKAN_SKOR",
+      "redeploy": "MAIN_LAGI"
     }
   },
   "seo": {

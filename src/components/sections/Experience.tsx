@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { Reveal } from "@/components/ui/Reveal";
 import { CodeText } from "@/components/ui/CodeText";
+import { LazyGimmick } from "@/components/ui/LazyGimmick";
 import { useTranslations } from "next-intl";
 
 const TacticalTrajectoryGimmick = dynamic(() => import("@/components/gimmicks/TacticalTrajectoryGimmick").then(m => ({ default: m.TacticalTrajectoryGimmick })), { ssr: false });
@@ -17,9 +18,11 @@ export const Experience = ({ experience, locale }: ExperienceProps) => {
   const t = useTranslations('experience');
   const loc = locale as Locale;
 
+  if (experience.length === 0) return null;
+
   return (
     <section id="work" className="section-padding bg-background relative overflow-hidden">
-      <TacticalTrajectoryGimmick />
+      <LazyGimmick><TacticalTrajectoryGimmick /></LazyGimmick>
 
       <div className="container-custom relative z-10">
         <Reveal>
@@ -32,15 +35,15 @@ export const Experience = ({ experience, locale }: ExperienceProps) => {
         </Reveal>
 
         <div className="max-w-4xl relative">
-          <div className="relative border-l border-border/20 ml-2 md:ml-40 pr-4 md:pr-0">
+          <div className="relative border-l border-border/20 ml-2 lg:ml-40 pr-4 lg:pr-0">
             {/* Timeline Tracer Line */}
             <div className="absolute top-0 bottom-0 -left-px w-[2px] bg-gradient-to-b from-cyan-600/30 via-indigo-600/20 to-transparent" />
 
             {experience.map((job, idx) => (
               <Reveal key={job.id} delay={idx * 0.1}>
-                <div className="relative pl-8 md:pl-16 pb-24 last:pb-12 group/experience">
+                <div className="relative pl-8 lg:pl-16 pb-24 last:pb-12 group/experience">
                   {/* Date Range - Desktop */}
-                  <div className="hidden md:block absolute -left-48 top-0 w-32 text-right">
+                  <div className="hidden lg:block absolute -left-48 top-0 w-32 text-right">
                     <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-widest font-black group-hover/experience:text-cyan-300 transition-colors drop-shadow-[0_0_5px_rgba(6,182,212,0.3)]">
                       <CodeText type="logic">{job.period[loc]}</CodeText>
                     </span>
@@ -57,7 +60,7 @@ export const Experience = ({ experience, locale }: ExperienceProps) => {
                   </div>
 
                   {/* Mobile Date */}
-                  <div className="md:hidden mb-4">
+                  <div className="lg:hidden mb-4">
                     <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-widest font-black px-2 py-1 bg-cyan-950/20 border border-cyan-500/30">
                       {job.period[loc]}
                     </span>

@@ -1,8 +1,12 @@
 'use client';
 
-import { KernelSubstrateGimmick } from "@/components/gimmicks/KernelSubstrateGimmick";
+import dynamic from "next/dynamic";
+import { useTranslations } from "next-intl";
+
+const KernelSubstrateGimmick = dynamic(() => import("@/components/gimmicks/KernelSubstrateGimmick").then(m => ({ default: m.KernelSubstrateGimmick })), { ssr: false });
 
 export const Footer = () => {
+  const t = useTranslations('footer');
   const currentYear = new Date().getFullYear();
 
   return (
@@ -17,8 +21,8 @@ export const Footer = () => {
                    <div className="w-full h-full border border-white/20" />
                 </div>
                 <div className="flex flex-col">
-                   <h3 className="text-[11px] font-black text-text-main tracking-[0.2em] uppercase">DANIANSYAH CHUSYAIDIN</h3>
-                   <span className="text-[8px] font-mono text-cyan-500/80 font-bold uppercase tracking-widest leading-none">Senior Systems Engineer</span>
+                   <span className="text-[11px] font-black text-text-main tracking-[0.2em] uppercase">DANIANSYAH CHUSYAIDIN</span>
+                   <span className="text-[8px] font-mono text-cyan-500/80 font-bold uppercase tracking-widest leading-none">{t('role')}</span>
                 </div>
              </div>
              <p className="text-[7px] font-mono text-text-muted/60 uppercase tracking-widest text-center md:text-left">

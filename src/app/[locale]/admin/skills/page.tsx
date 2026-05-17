@@ -8,13 +8,21 @@ import type { SkillGroup } from '@/types';
 export default function AdminSkillsPage() {
   const [groups, setGroups] = useState<SkillGroup[]>([]);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState<string | null>(null);
   const [editing, setEditing] = useState<SkillGroup | null>(null);
   const [creating, setCreating] = useState(false);
 
   const fetchGroups = async () => {
-    const res = await fetch('/api/admin/skills');
-    if (res.ok) setGroups(await res.json());
-    setLoading(false);
+    setFetchError(null);
+    try {
+      const res = await fetch('/api/admin/skills');
+      if (!res.ok) throw new Error('Failed to load skills');
+      setGroups(await res.json());
+    } catch (err) {
+      setFetchError(err instanceof Error ? err.message : 'Failed to load skills');
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { fetchGroups(); }, []);
@@ -38,6 +46,13 @@ export default function AdminSkillsPage() {
           <Plus className="w-4 h-4" /> Add Group
         </button>
       </div>
+
+      {fetchError && (
+        <div className="flex items-center justify-between p-3 mb-6 bg-red-500/10 border border-red-500/20 rounded text-red-400 text-sm">
+          <span>{fetchError}</span>
+          <button onClick={fetchGroups} className="text-xs font-bold uppercase tracking-wider hover:text-red-300">Retry</button>
+        </div>
+      )}
 
       {(creating || editing) && (
         <SkillForm
@@ -64,8 +79,8 @@ export default function AdminSkillsPage() {
                 <td className="px-4 py-3 text-white font-medium">{g.title.en}</td>
                 <td className="px-4 py-3 text-slate-400 text-xs">{g.skills.map(s => s.name).join(', ')}</td>
                 <td className="px-4 py-3 text-right">
-                  <button onClick={() => setEditing(g)} className="p-1.5 text-slate-400 hover:text-cyan-400"><Pencil className="w-4 h-4" /></button>
-                  <button onClick={() => handleDelete(g.id)} className="p-1.5 text-slate-400 hover:text-red-400 ml-2"><Trash2 className="w-4 h-4" /></button>
+                  <button onClick={() => setEditing(g)} className="p-1.5 text-slate-400 hover:text-cyan-400" aria-label="Edit"><Pencil className="w-4 h-4" /></button>
+                  <button onClick={() => handleDelete(g.id)} className="p-1.5 text-slate-400 hover:text-red-400 ml-2" aria-label="Delete"><Trash2 className="w-4 h-4" /></button>
                 </td>
               </tr>
             ))}
@@ -89,33 +104,41 @@ function SkillForm({ group, onClose, onSave }: { group: SkillGroup | null; onClo
     order: group?.order || 0,
   });
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
     setSaving(true);
-    const skills = form.skills.split('\n').filter(Boolean).map(line => {
-      const [name, tag] = line.split(':').map(s => s.trim());
-      return { name: name || '', tag: tag || '' };
-    });
-    const data = {
-      title: { en: form.titleEn, id: form.titleId },
-      context: { en: form.contextEn, id: form.contextId },
-      skills,
-      order: form.order,
-    };
-    if (group) {
-      await updateSkillGroup(group.id, data);
-    } else {
-      await createSkillGroup(data);
+    try {
+      const skills = form.skills.split('\n').filter(Boolean).map(line => {
+        const [name, tag] = line.split(':').map(s => s.trim());
+        return { name: name || '', tag: tag || '' };
+      });
+      const data = {
+        title: { en: form.titleEn, id: form.titleId },
+        context: { en: form.contextEn, id: form.contextId },
+        skills,
+        order: form.order,
+      };
+      if (group) {
+        await updateSkillGroup(group.id, data);
+      } else {
+        await createSkillGroup(data);
+      }
+      onSave();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to save');
+    } finally {
+      setSaving(false);
     }
-    setSaving(false);
-    onSave();
   };
 
   return (
     <div className="mb-8 bg-slate-800 border border-slate-700 rounded-lg p-6">
       <h2 className="text-lg font-bold text-white mb-4">{group ? 'Edit' : 'Create'} Skill Group</h2>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {error && <div className="md:col-span-2 p-3 bg-red-500/10 border border-red-500/20 rounded text-red-400 text-sm">{error}</div>}
         <input value={form.titleEn} onChange={e => setForm({...form, titleEn: e.target.value})} placeholder="Title (EN)" required className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white outline-none focus:border-cyan-500" />
         <input value={form.titleId} onChange={e => setForm({...form, titleId: e.target.value})} placeholder="Title (ID)" required className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white outline-none focus:border-cyan-500" />
         <textarea value={form.contextEn} onChange={e => setForm({...form, contextEn: e.target.value})} placeholder="Context (EN)" rows={2} className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white outline-none focus:border-cyan-500" />

@@ -463,13 +463,27 @@ const skills = [
 // ─────────────────────────────────────────────
 // SEED FUNCTION
 // ─────────────────────────────────────────────
+const BATCH_LIMIT = 400;
+
 async function seed() {
-  const batch = db.batch();
+  let batch = db.batch();
+  let opCount = 0;
+
+  async function addOp(ref: FirebaseFirestore.DocumentReference, data: Record<string, unknown>) {
+    batch.set(ref, data);
+    opCount++;
+    if (opCount >= BATCH_LIMIT) {
+      await batch.commit();
+      console.log(`  Committed batch (${opCount} ops)`);
+      batch = db.batch();
+      opCount = 0;
+    }
+  }
 
   console.log('Seeding projects...');
   for (const p of projects) {
     const { id: docId, ...data } = p;
-    batch.set(db.collection('projects').doc(docId), {
+    await addOp(db.collection('projects').doc(docId), {
       ...data,
       createdAt: now,
       updatedAt: now,
@@ -479,7 +493,7 @@ async function seed() {
   console.log('Seeding blogs...');
   for (const b of blogs) {
     const { id: docId, ...data } = b;
-    batch.set(db.collection('blogs').doc(docId), {
+    await addOp(db.collection('blogs').doc(docId), {
       ...data,
       createdAt: now,
       updatedAt: now,
@@ -489,7 +503,7 @@ async function seed() {
   console.log('Seeding experience...');
   for (const e of experience) {
     const { id: docId, ...data } = e;
-    batch.set(db.collection('experience').doc(docId), {
+    await addOp(db.collection('experience').doc(docId), {
       ...data,
       createdAt: now,
       updatedAt: now,
@@ -499,14 +513,19 @@ async function seed() {
   console.log('Seeding skills...');
   for (const s of skills) {
     const { id: docId, ...data } = s;
-    batch.set(db.collection('skills').doc(docId), {
+    await addOp(db.collection('skills').doc(docId), {
       ...data,
       createdAt: now,
       updatedAt: now,
     });
   }
 
-  await batch.commit();
+  // Commit remaining operations
+  if (opCount > 0) {
+    await batch.commit();
+    console.log(`  Committed final batch (${opCount} ops)`);
+  }
+
   console.log(`Seeded ${projects.length} projects, ${blogs.length} blogs, ${experience.length} experience items, ${skills.length} skill groups.`);
   console.log('Done.');
 }

@@ -1,7 +1,13 @@
 import { NextResponse } from 'next/server';
 import { adminDb } from '@/lib/firebase-admin';
+import { verifyAdmin } from '@/lib/auth';
 
 export async function GET() {
+  const isAdmin = await verifyAdmin();
+  if (!isAdmin) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   if (!adminDb) {
     return NextResponse.json({ projects: 0, blogs: 0, experience: 0, skills: 0 });
   }

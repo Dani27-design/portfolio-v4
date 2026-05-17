@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { Reveal } from "@/components/ui/Reveal";
 import { CodeText } from "@/components/ui/CodeText";
+import { LazyGimmick } from "@/components/ui/LazyGimmick";
 import { useTranslations } from "next-intl";
 
 const NetworkTopologyGimmick = dynamic(() => import("@/components/gimmicks/NetworkTopologyGimmick").then(m => ({ default: m.NetworkTopologyGimmick })), { ssr: false });
@@ -12,7 +13,7 @@ export const About = () => {
 
   return (
     <section id="about" className="section-padding bg-background border-y border-border relative overflow-hidden">
-      <NetworkTopologyGimmick />
+      <LazyGimmick><NetworkTopologyGimmick /></LazyGimmick>
 
       <div className="container-custom flex flex-col md:flex-row gap-16 lg:gap-24 items-center relative z-10">
         <div className="w-full md:w-5/12">
@@ -32,9 +33,9 @@ export const About = () => {
         <div className="w-full md:w-7/12 space-y-12">
           <Reveal delay={0.2}>
             <div className="space-y-4">
-              <h3 className="text-primary uppercase tracking-[0.2em] text-[10px] font-bold">
-                <CodeText tag="h3">{t('title')}</CodeText>
-              </h3>
+              <span className="text-primary uppercase tracking-[0.2em] text-[10px] font-bold block">
+                <CodeText tag="span">{t('title')}</CodeText>
+              </span>
               <h2>
                 <CodeText tag="h2" type="html">
                   {t('headline')}
