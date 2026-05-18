@@ -36,6 +36,11 @@ export default async function proxy(request: NextRequest) {
   // If env vars are missing, skip all auth (dev without credentials)
   const hasCredentials = process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process.env.FIREBASE_PROJECT_ID;
 
+  // API routes (except auth endpoints): skip middleware entirely
+  if (pathname.startsWith('/api/') && pathname !== '/api/login' && pathname !== '/api/logout') {
+    return NextResponse.next();
+  }
+
   // Auth cookie endpoints: let authMiddleware handle login/logout cookie setting
   if (pathname === '/api/login' || pathname === '/api/logout') {
     if (!hasCredentials) {
@@ -54,11 +59,13 @@ export default async function proxy(request: NextRequest) {
       return intlMiddleware(request);
     }
 
+    const locale = pathname.split('/')[1] || routing.defaultLocale;
+
     return authMiddleware(request, {
       ...getAuthConfig(),
       handleInvalidToken: async () => {
         return NextResponse.redirect(
-          new URL(`/${routing.defaultLocale}/admin/login`, request.url)
+          new URL(`/${locale}/admin/login`, request.url)
         );
       },
       handleValidToken: async () => {
