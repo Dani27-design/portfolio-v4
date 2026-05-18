@@ -6,11 +6,7 @@ import { notFound } from 'next/navigation';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import { routing } from '@/i18n/routing';
 import { ThemeProvider } from '@/context/ThemeProvider';
-import { Navbar } from '@/components/layout/Navbar';
-import { Footer } from '@/components/layout/Footer';
-import { CustomCursor } from '@/components/ui/CustomCursor';
-import { ScrollToTop } from '@/components/ui/ScrollToTop';
-import { ScrollProgress } from '@/components/ui/ScrollProgress';
+import { PublicShell } from '@/components/layout/PublicShell';
 import '../globals.css';
 
 const inter = Inter({
@@ -89,14 +85,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       <body className="bg-background text-text-main font-sans antialiased transition-colors duration-300">
         <ThemeProvider>
           <NextIntlClientProvider>
-            <div id="top" className="min-h-screen selection:bg-blue-100 selection:text-primary transition-colors duration-300">
-              <CustomCursor />
-              <ScrollToTop />
-              <ScrollProgress />
-              <Navbar />
-              <main>{children}</main>
-              <Footer />
-            </div>
+            <PublicShell>{children}</PublicShell>
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>
