@@ -7,8 +7,16 @@ import { CustomCursor } from '@/components/ui/CustomCursor';
 import { ScrollToTop } from '@/components/ui/ScrollToTop';
 import { ScrollProgress } from '@/components/ui/ScrollProgress';
 import type { ReactNode } from 'react';
+import type { NavbarContent, FooterContent } from '@/types';
 
-export function PublicShell({ children }: { children: ReactNode }) {
+interface PublicShellProps {
+  children: ReactNode;
+  navbarContent?: NavbarContent | null;
+  footerContent?: FooterContent | null;
+  locale?: string;
+}
+
+export function PublicShell({ children, navbarContent, footerContent, locale }: PublicShellProps) {
   const pathname = usePathname();
   const isAdmin = pathname.includes('/admin');
 
@@ -21,9 +29,9 @@ export function PublicShell({ children }: { children: ReactNode }) {
       <CustomCursor />
       <ScrollToTop />
       <ScrollProgress />
-      <Navbar />
+      <Navbar navbarContent={navbarContent} locale={locale} />
       <main>{children}</main>
-      <Footer />
+      <Footer footerContent={footerContent} locale={locale} />
     </div>
   );
 }

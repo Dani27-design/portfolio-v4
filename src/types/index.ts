@@ -52,3 +52,95 @@ export interface SkillGroup {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface StatItem {
+  value: string;
+  label: Bilingual;
+}
+
+export interface HeroContent {
+  id: string;
+  tagline: Bilingual;
+  headline: Bilingual;
+  desc: Bilingual;
+  ctaGame: Bilingual;
+  ctaContact: Bilingual;
+  phrases: BilingualArray;
+  updatedAt: string;
+}
+
+export interface AboutContent {
+  id: string;
+  title: Bilingual;
+  headline: Bilingual;
+  desc: Bilingual;
+  stats: {
+    stat1: StatItem;
+    stat2: StatItem;
+    stat3: StatItem;
+  };
+  avatarInitials: string;
+  updatedAt: string;
+}
+
+export interface ContactContent {
+  id: string;
+  headline: Bilingual;
+  desc: Bilingual;
+  email: string;
+  labels: {
+    title: Bilingual;
+    payload: Bilingual;
+  };
+  placeholders: {
+    title: Bilingual;
+    payload: Bilingual;
+  };
+  buttons: {
+    transmit: Bilingual;
+    copyUid: Bilingual;
+  };
+  socials: {
+    github: string;
+    linkedin: string;
+    instagram: string;
+    whatsapp: string;
+  };
+  updatedAt: string;
+}
+
+export interface FooterContent {
+  id: string;
+  ownerName: string;
+  role: Bilingual;
+  updatedAt: string;
+}
+
+export interface HireBannerContent {
+  id: string;
+  badge: Bilingual;
+  headline: Bilingual;
+  desc: Bilingual;
+  cta: Bilingual;
+  updatedAt: string;
+}
+
+export interface NavbarContent {
+  id: string;
+  labels: {
+    about: Bilingual;
+    stack: Bilingual;
+    experience: Bilingual;
+    projects: Bilingual;
+    blog: Bilingual;
+    contact: Bilingual;
+  };
+  updatedAt: string;
+}
+
+export interface LeaderboardEntry {
+  id: string;
+  name: string;
+  score: number;
+  createdAt: string;
+}

@@ -26,7 +26,7 @@ export const Experience = ({ experience, locale }: ExperienceProps) => {
 
       <div className="container-custom relative z-10">
         <Reveal>
-          <div className="mb-24 relative">
+          <div className="mb-12 md:mb-24 relative">
             <h2 className="text-3xl font-bold tracking-tighter text-text-main md:text-5xl lg:text-6xl">
               <CodeText tag="h2" type="html">{t('title')}</CodeText>
             </h2>
@@ -41,13 +41,12 @@ export const Experience = ({ experience, locale }: ExperienceProps) => {
 
             {experience.map((job, idx) => (
               <Reveal key={job.id} delay={idx * 0.1}>
-                <div className="relative pl-8 lg:pl-16 pb-24 last:pb-12 group/experience">
+                <div className="relative pl-8 lg:pl-16 pb-16 md:pb-24 last:pb-8 last:md:pb-12 group/experience">
                   {/* Date Range - Desktop */}
                   <div className="hidden lg:block absolute -left-48 top-0 w-32 text-right">
                     <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-widest font-black group-hover/experience:text-cyan-300 transition-colors drop-shadow-[0_0_5px_rgba(6,182,212,0.3)]">
                       <CodeText type="logic">{job.period[loc]}</CodeText>
                     </span>
-                    <div className="text-[7px] font-mono text-white/20 mt-1 uppercase">Rel_Ref: 00{idx + 1}</div>
                   </div>
 
                   {/* Marker Hub */}
@@ -72,10 +71,6 @@ export const Experience = ({ experience, locale }: ExperienceProps) => {
                         <h3 className="text-2xl md:text-3xl font-bold text-text-main tracking-tight group-hover/experience:text-cyan-50 transition-colors">
                           <CodeText tag="h3">{job.title[loc]}</CodeText>
                         </h3>
-                        <div className="h-[1px] flex-1 bg-gradient-to-r from-border/50 to-transparent min-w-[50px] hidden md:block" />
-                        <span className="font-mono text-[9px] text-white/40 bg-white/5 px-2 py-1 border border-white/10 uppercase tracking-widest">
-                          DEPLOYMENT_PHASE_{experience.length - idx}
-                        </span>
                       </div>
                       <div className="text-sm md:text-base text-cyan-400 font-black tracking-[0.25em] uppercase flex items-center gap-3">
                         <span className="w-6 h-[2px] bg-cyan-500 shadow-[0_0_8px_#06b6d4]" />
@@ -85,7 +80,7 @@ export const Experience = ({ experience, locale }: ExperienceProps) => {
 
                     <ul className="space-y-6 max-w-2xl relative">
                       {job.points[loc].slice(0, 3).map((point, pIdx) => (
-                        <li key={`job-point-${pIdx}`} className="flex gap-6 group/point relative">
+                        <li key={`job-point-${pIdx}`} className="flex gap-3 md:gap-6 group/point relative">
                           <div className="flex flex-col items-center">
                              <span className="text-cyan-500 font-mono text-[10px] mt-1.5 font-bold group-hover/point:text-cyan-300 transition-colors">
                                0{pIdx + 1}

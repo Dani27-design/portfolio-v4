@@ -5,11 +5,29 @@ import { Reveal } from "@/components/ui/Reveal";
 import { CodeText } from "@/components/ui/CodeText";
 import { LazyGimmick } from "@/components/ui/LazyGimmick";
 import { useTranslations } from "next-intl";
+import type { AboutContent, Locale } from "@/types";
 
 const NetworkTopologyGimmick = dynamic(() => import("@/components/gimmicks/NetworkTopologyGimmick").then(m => ({ default: m.NetworkTopologyGimmick })), { ssr: false });
 
-export const About = () => {
+interface AboutProps {
+  aboutContent?: AboutContent | null;
+  locale?: string;
+}
+
+export const About = ({ aboutContent, locale }: AboutProps = {}) => {
   const t = useTranslations('about');
+  const loc = (locale || 'en') as Locale;
+
+  const title = aboutContent?.title[loc] ?? t('title');
+  const headline = aboutContent?.headline[loc] ?? t('headline');
+  const desc = aboutContent?.desc[loc] ?? t('desc');
+  const avatarInitials = aboutContent?.avatarInitials ?? 'DC';
+  const stat1Value = aboutContent?.stats.stat1.value ?? 'E2E';
+  const stat1Label = aboutContent?.stats.stat1.label[loc] ?? t('stats.e2e');
+  const stat2Value = aboutContent?.stats.stat2.value ?? '0%';
+  const stat2Label = aboutContent?.stats.stat2.label[loc] ?? t('stats.zero');
+  const stat3Value = aboutContent?.stats.stat3.value ?? 'TDD';
+  const stat3Label = aboutContent?.stats.stat3.label[loc] ?? t('stats.tdd');
 
   return (
     <section id="about" className="section-padding bg-background border-y border-border relative overflow-hidden">
@@ -21,7 +39,7 @@ export const About = () => {
             <div className="relative group mx-auto md:mx-0 max-w-fit">
               <div className="w-64 h-64 md:w-80 md:h-80 bg-surface border border-border flex items-center justify-center text-6xl font-bold text-text-muted/10 tracking-tighter relative z-10 select-none overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/5 to-indigo-500/5" />
-                <CodeText type="logic">DC</CodeText>
+                <CodeText type="logic">{avatarInitials}</CodeText>
                 <div className="absolute top-0 left-0 w-full h-[1px] bg-primary/10 -translate-y-4 group-hover:translate-y-4 transition-transform duration-700" />
                 <div className="absolute bottom-0 right-0 w-full h-[1px] bg-primary/10 translate-y-4 group-hover:-translate-y-4 transition-transform duration-700" />
               </div>
@@ -34,16 +52,16 @@ export const About = () => {
           <Reveal delay={0.2}>
             <div className="space-y-4">
               <span className="text-primary uppercase tracking-[0.2em] text-[10px] font-bold block">
-                <CodeText tag="span">{t('title')}</CodeText>
+                <CodeText tag="span">{title}</CodeText>
               </span>
               <h2>
                 <CodeText tag="h2" type="html">
-                  {t('headline')}
+                  {headline}
                 </CodeText>
               </h2>
               <p className="text-lg md:text-xl">
                 <CodeText tag="p" type="css">
-                  {t('desc')}
+                  {desc}
                 </CodeText>
               </p>
             </div>
@@ -52,16 +70,16 @@ export const About = () => {
           <Reveal delay={0.4}>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-12 border-t border-border">
               <div className="space-y-1">
-                <div className="text-3xl font-bold text-text-main">E2E</div>
-                <div className="text-[10px] uppercase tracking-widest text-text-muted font-bold">{t('stats.e2e')}</div>
+                <div className="text-3xl font-bold text-text-main">{stat1Value}</div>
+                <div className="text-[10px] uppercase tracking-widest text-text-muted font-bold">{stat1Label}</div>
               </div>
               <div className="space-y-1">
-                <div className="text-3xl font-bold text-text-main">0%</div>
-                <div className="text-[10px] uppercase tracking-widest text-text-muted font-bold">{t('stats.zero')}</div>
+                <div className="text-3xl font-bold text-text-main">{stat2Value}</div>
+                <div className="text-[10px] uppercase tracking-widest text-text-muted font-bold">{stat2Label}</div>
               </div>
               <div className="space-y-1">
-                <div className="text-3xl font-bold text-text-main">TDD</div>
-                <div className="text-[10px] uppercase tracking-widest text-text-muted font-bold">{t('stats.tdd')}</div>
+                <div className="text-3xl font-bold text-text-main">{stat3Value}</div>
+                <div className="text-[10px] uppercase tracking-widest text-text-muted font-bold">{stat3Label}</div>
               </div>
             </div>
           </Reveal>

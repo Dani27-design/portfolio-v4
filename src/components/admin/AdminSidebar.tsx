@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, FolderKanban, FileText, Briefcase, Cpu, LogOut } from 'lucide-react';
+import { LayoutDashboard, PanelTop, FolderKanban, FileText, Briefcase, Cpu, LogOut } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
 export function AdminSidebar() {
@@ -13,6 +13,7 @@ export function AdminSidebar() {
   const basePath = `/${locale}/admin`;
   const navItems = [
     { href: basePath, label: 'Dashboard', icon: LayoutDashboard },
+    { href: `${basePath}/site-content`, label: 'Site Content', icon: PanelTop },
     { href: `${basePath}/projects`, label: 'Projects', icon: FolderKanban },
     { href: `${basePath}/blogs`, label: 'Blogs', icon: FileText },
     { href: `${basePath}/experience`, label: 'Experience', icon: Briefcase },

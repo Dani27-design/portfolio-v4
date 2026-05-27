@@ -1,5 +1,5 @@
 import { setRequestLocale } from 'next-intl/server';
-import { getBlogBySlug, getAllBlogSlugs } from '@/lib/firestore';
+import { getBlogBySlug, getAllBlogSlugs, getHireBannerContent } from '@/lib/firestore';
 import { BlogDetailsPage } from '@/components/pages/BlogDetailsPage';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
@@ -48,7 +48,10 @@ export default async function Page({ params }: Props) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
 
-  const blog = await getBlogBySlug(slug);
+  const [blog, hireBannerContent] = await Promise.all([
+    getBlogBySlug(slug),
+    getHireBannerContent(),
+  ]);
   if (!blog) notFound();
 
   const loc = locale as Locale;
@@ -103,7 +106,7 @@ export default async function Page({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <BlogDetailsPage blog={blog} locale={locale} />
+      <BlogDetailsPage blog={blog} locale={locale} hireBannerContent={hireBannerContent} />
     </>
   );
 }

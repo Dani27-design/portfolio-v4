@@ -461,6 +461,102 @@ const skills = [
 ];
 
 // ─────────────────────────────────────────────
+// SITE CONTENT (Singletons)
+// ─────────────────────────────────────────────
+
+const heroContent = {
+  tagline: { en: 'System Architect Core', id: 'System Architect Core' },
+  headline: { en: "I don't return undefined.", id: 'Saya tidak mengembalikan undefined.' },
+  desc: {
+    en: 'Architecting fault-tolerant distributed systems and robust mobile cores. I solve for complexity through rigorous structural design and end-to-end technical ownership.',
+    id: 'Membangun distributed systems dan aplikasi mobile yang reliable. Saya handle dari desain arsitektur sampai production.',
+  },
+  ctaGame: { en: 'Wanna play a game?', id: 'Mau main game?' },
+  ctaContact: { en: 'Protocol_Initialize', id: 'Protocol_Initialize' },
+  phrases: {
+    en: ['Software Developer', 'Fullstack Engineer', 'Mobile Developer', 'React & Node.js'],
+    id: ['Software Developer', 'Fullstack Engineer', 'Mobile Developer', 'React & Node.js'],
+  },
+};
+
+const aboutContent = {
+  title: { en: 'Structural Engineer', id: 'Software Developer' },
+  headline: {
+    en: 'I architect systems where reliability is the baseline.',
+    id: 'Saya membangun sistem yang mengutamakan keandalan.',
+  },
+  desc: {
+    en: 'From technical flowcharts and PRDs to backend infrastructure and mobile cores, I own the entire lifecycle. I thrive in the complexity that others avoid, delivering robust, maintainable solutions with a commitment to lifetime maintenance.',
+    id: 'Mulai dari flowchart teknis dan PRD hingga infrastruktur backend dan aplikasi mobile, saya menangani keseluruhan proses pengembangan. Saya terbiasa menghadapi kompleksitas yang sering dihindari, dan menghasilkan solusi yang solid serta mudah di-maintain.',
+  },
+  avatarInitials: 'DC',
+  stats: {
+    stat1: { value: 'E2E', label: { en: 'Lifecycle Ownership', id: 'End-to-End Ownership' } },
+    stat2: { value: '0%', label: { en: 'Tolerance for Fluff', id: 'Zero Tolerance for Fluff' } },
+    stat3: { value: 'TDD', label: { en: 'Quality Standard', id: 'Standar Kualitas' } },
+  },
+};
+
+const contactContent = {
+  headline: {
+    en: "Let's engineer solutions together.",
+    id: 'Mari bangun solusi bersama.',
+  },
+  desc: {
+    en: 'Accepting high-priority inquiries for complex service architectures and scalable engineering collaborations. Establish verified transit below.',
+    id: 'Terbuka untuk kolaborasi proyek teknis. Sampaikan kebutuhan Anda lewat form di bawah.',
+  },
+  email: 'daniansyah@chusyaidin.engineer',
+  labels: {
+    title: { en: '01 / Request_Title', id: '01 / Judul Pesan' },
+    payload: { en: '02 / Query_Payload', id: '02 / Isi Pesan' },
+  },
+  placeholders: {
+    title: { en: 'Enter project subject...', id: 'Tulis subjek proyek...' },
+    payload: { en: 'Describe project architecture constraints...', id: 'Jelaskan kebutuhan proyek Anda...' },
+  },
+  buttons: {
+    transmit: { en: 'Transmit_Protocol', id: 'Transmit_Protocol' },
+    copyUid: { en: 'COPY_UID', id: 'COPY_UID' },
+  },
+  socials: {
+    github: 'https://github.com/Dani27-design',
+    linkedin: 'https://www.linkedin.com/in/daniansyahchusyaidin/',
+    instagram: 'https://www.instagram.com/danichusyaidin',
+    whatsapp: 'https://wa.me/6285790428078',
+  },
+};
+
+const footerContent = {
+  ownerName: 'DANIANSYAH CHUSYAIDIN',
+  role: { en: 'Software Developer', id: 'Software Developer' },
+};
+
+const hireBannerContent = {
+  badge: { en: 'SYSTEM_AVAILABILITY :: OPEN_FOR_MISSIONS', id: 'SYSTEM_AVAILABILITY :: OPEN_FOR_MISSIONS' },
+  headline: {
+    en: 'Need an Architect to Scale Your Vision?',
+    id: 'Butuh Developer untuk Mewujudkan Visi Anda?',
+  },
+  desc: {
+    en: "Specializing in high-throughput distributed systems, offline-first mobile cores, and robust database orchestration. Let's build the next generation of resilient software.",
+    id: 'Berpengalaman di distributed systems, mobile offline-first, dan database management. Hubungi saya kalau butuh engineer untuk proyek Anda.',
+  },
+  cta: { en: 'INITIALIZE_Recruitment_Protocol', id: 'INITIALIZE_Recruitment_Protocol' },
+};
+
+const navbarContent = {
+  labels: {
+    about: { en: 'About', id: 'Tentang' },
+    stack: { en: 'Stack', id: 'Keahlian' },
+    experience: { en: 'Experience', id: 'Pengalaman' },
+    projects: { en: 'Projects', id: 'Proyek' },
+    blog: { en: 'Blog', id: 'Blog' },
+    contact: { en: 'Contact', id: 'Kontak' },
+  },
+};
+
+// ─────────────────────────────────────────────
 // SEED FUNCTION
 // ─────────────────────────────────────────────
 const BATCH_LIMIT = 400;
@@ -520,13 +616,39 @@ async function seed() {
     });
   }
 
+  console.log('Seeding site content...');
+  await addOp(db.collection('siteContent').doc('hero'), {
+    ...heroContent,
+    updatedAt: now,
+  });
+  await addOp(db.collection('siteContent').doc('about'), {
+    ...aboutContent,
+    updatedAt: now,
+  });
+  await addOp(db.collection('siteContent').doc('contact'), {
+    ...contactContent,
+    updatedAt: now,
+  });
+  await addOp(db.collection('siteContent').doc('footer'), {
+    ...footerContent,
+    updatedAt: now,
+  });
+  await addOp(db.collection('siteContent').doc('hireBanner'), {
+    ...hireBannerContent,
+    updatedAt: now,
+  });
+  await addOp(db.collection('siteContent').doc('navbar'), {
+    ...navbarContent,
+    updatedAt: now,
+  });
+
   // Commit remaining operations
   if (opCount > 0) {
     await batch.commit();
     console.log(`  Committed final batch (${opCount} ops)`);
   }
 
-  console.log(`Seeded ${projects.length} projects, ${blogs.length} blogs, ${experience.length} experience items, ${skills.length} skill groups.`);
+  console.log(`Seeded ${projects.length} projects, ${blogs.length} blogs, ${experience.length} experience items, ${skills.length} skill groups, 6 site content documents (hero, about, contact, footer, hireBanner, navbar).`);
   console.log('Done.');
 }
 

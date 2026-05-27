@@ -26,7 +26,7 @@ export const Skills = ({ skills, locale }: SkillsProps) => {
 
       <div className="container-custom max-w-5xl relative z-10">
         <Reveal width="100%">
-          <div className="mb-24 relative">
+          <div className="mb-12 md:mb-24 relative">
             <h2 className="text-3xl font-bold tracking-tighter text-text-main md:text-5xl lg:text-6xl">
               <CodeText tag="h2" type="html">{t('title')}</CodeText>
             </h2>
@@ -58,7 +58,7 @@ export const Skills = ({ skills, locale }: SkillsProps) => {
                       key={skill.name}
                       className="group relative"
                     >
-                      <span className="px-6 py-3.5 bg-background/70 border border-border/60 text-[11px] font-bold text-text-main shadow-[0_4px_15px_rgba(0,0,0,0.08)] flex items-center gap-4 group-hover:border-cyan-500 group-hover:-translate-y-1.5 transition-all duration-300 rounded-sm">
+                      <span className="px-4 md:px-6 py-2.5 md:py-3.5 bg-background/70 border border-border/60 text-[11px] font-bold text-text-main shadow-[0_4px_15px_rgba(0,0,0,0.08)] flex items-center gap-2 md:gap-4 group-hover:border-cyan-500 group-hover:-translate-y-1.5 transition-all duration-300 rounded-sm">
                         {skill.name}
                         <span className="text-[8px] font-mono text-indigo-400 opacity-40 group-hover:opacity-100 transition-opacity uppercase tracking-tighter">{skill.tag}</span>
                       </span>

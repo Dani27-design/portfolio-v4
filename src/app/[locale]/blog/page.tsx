@@ -1,5 +1,5 @@
 import { setRequestLocale, getTranslations } from 'next-intl/server';
-import { getBlogs } from '@/lib/firestore';
+import { getBlogs, getHireBannerContent } from '@/lib/firestore';
 import { BlogListPage } from '@/components/pages/BlogListPage';
 import { routing } from '@/i18n/routing';
 
@@ -39,7 +39,10 @@ export default async function Page({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const blogs = await getBlogs();
+  const [blogs, hireBannerContent] = await Promise.all([
+    getBlogs(),
+    getHireBannerContent(),
+  ]);
 
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
@@ -66,7 +69,7 @@ export default async function Page({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <BlogListPage blogs={blogs} locale={locale} />
+      <BlogListPage blogs={blogs} locale={locale} hireBannerContent={hireBannerContent} />
     </>
   );
 }

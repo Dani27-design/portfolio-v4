@@ -1,5 +1,5 @@
 import { adminDb } from './firebase-admin';
-import type { Project, Blog, ExperienceItem, SkillGroup } from '@/types';
+import type { Project, Blog, ExperienceItem, SkillGroup, HeroContent, AboutContent, ContactContent, FooterContent, HireBannerContent, NavbarContent, LeaderboardEntry } from '@/types';
 
 export async function getProjects(): Promise<Project[]> {
   if (!adminDb) return [];
@@ -99,6 +99,93 @@ export async function getSkills(): Promise<SkillGroup[]> {
     );
   } catch (err) {
     console.error('Failed to fetch skills:', err);
+    return [];
+  }
+}
+
+export async function getHeroContent(): Promise<HeroContent | null> {
+  if (!adminDb) return null;
+  try {
+    const doc = await adminDb.collection('siteContent').doc('hero').get();
+    if (!doc.exists) return null;
+    return { id: doc.id, ...doc.data() } as HeroContent;
+  } catch (err) {
+    console.error('Failed to fetch hero content:', err);
+    return null;
+  }
+}
+
+export async function getAboutContent(): Promise<AboutContent | null> {
+  if (!adminDb) return null;
+  try {
+    const doc = await adminDb.collection('siteContent').doc('about').get();
+    if (!doc.exists) return null;
+    return { id: doc.id, ...doc.data() } as AboutContent;
+  } catch (err) {
+    console.error('Failed to fetch about content:', err);
+    return null;
+  }
+}
+
+export async function getContactContent(): Promise<ContactContent | null> {
+  if (!adminDb) return null;
+  try {
+    const doc = await adminDb.collection('siteContent').doc('contact').get();
+    if (!doc.exists) return null;
+    return { id: doc.id, ...doc.data() } as ContactContent;
+  } catch (err) {
+    console.error('Failed to fetch contact content:', err);
+    return null;
+  }
+}
+
+export async function getFooterContent(): Promise<FooterContent | null> {
+  if (!adminDb) return null;
+  try {
+    const doc = await adminDb.collection('siteContent').doc('footer').get();
+    if (!doc.exists) return null;
+    return { id: doc.id, ...doc.data() } as FooterContent;
+  } catch (err) {
+    console.error('Failed to fetch footer content:', err);
+    return null;
+  }
+}
+
+export async function getHireBannerContent(): Promise<HireBannerContent | null> {
+  if (!adminDb) return null;
+  try {
+    const doc = await adminDb.collection('siteContent').doc('hireBanner').get();
+    if (!doc.exists) return null;
+    return { id: doc.id, ...doc.data() } as HireBannerContent;
+  } catch (err) {
+    console.error('Failed to fetch hire banner content:', err);
+    return null;
+  }
+}
+
+export async function getNavbarContent(): Promise<NavbarContent | null> {
+  if (!adminDb) return null;
+  try {
+    const doc = await adminDb.collection('siteContent').doc('navbar').get();
+    if (!doc.exists) return null;
+    return { id: doc.id, ...doc.data() } as NavbarContent;
+  } catch (err) {
+    console.error('Failed to fetch navbar content:', err);
+    return null;
+  }
+}
+
+export async function getLeaderboard(limit: number = 10): Promise<LeaderboardEntry[]> {
+  if (!adminDb) return [];
+  try {
+    const snapshot = await adminDb
+      .collection('leaderboard')
+      .orderBy('score', 'desc')
+      .limit(limit)
+      .get();
+    return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as LeaderboardEntry);
+  } catch (err) {
+    console.error('Failed to fetch leaderboard:', err);
     return [];
   }
 }

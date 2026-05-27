@@ -6,6 +6,7 @@ import { Play, RotateCcw, Crosshair, Zap, Shield, Cpu, Share2, Award, User, Chec
 import { useTheme } from "@/context/ThemeProvider";
 import { Reveal } from "@/components/ui/Reveal";
 import { useTranslations } from "next-intl";
+import type { LeaderboardEntry } from "@/types";
 
 interface Particle {
   x: number;
@@ -52,6 +53,7 @@ export const SkyForceGame = () => {
   const [hasSubmittedName, setHasSubmittedName] = useState(false);
   const [hasStartedAuto, setHasStartedAuto] = useState(false);
   const [countdown, setCountdown] = useState<number | null>(null);
+  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
 
   // Game state refs (to avoid re-renders)
   const gameState = useRef({
@@ -228,6 +230,13 @@ export const SkyForceGame = () => {
     };
   }, [isPlaying, gameOver, hasStartedAuto]);
 
+  const fetchLeaderboard = async () => {
+    try {
+      const res = await fetch('/api/leaderboard');
+      if (res.ok) setLeaderboard(await res.json());
+    } catch { /* silent — leaderboard is non-critical */ }
+  };
+
   useEffect(() => {
     const savedScore = localStorage.getItem("skyforce_highscore");
     const savedName = localStorage.getItem("skyforce_highscore_name");
@@ -237,6 +246,7 @@ export const SkyForceGame = () => {
     setHighScoreName(nameVal);
     setDisplayHighScore(scoreVal);
     setDisplayHighScoreName(nameVal);
+    fetchLeaderboard();
   }, []);
 
   const saveHighScore = (newScore: number, name: string) => {
@@ -245,6 +255,12 @@ export const SkyForceGame = () => {
     // Don't update displayHighScore here yet, let user enjoy seeing their name on next run
     localStorage.setItem("skyforce_highscore", newScore.toString());
     localStorage.setItem("skyforce_highscore_name", name);
+    // Submit to global leaderboard (fire-and-forget)
+    fetch('/api/leaderboard', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, score: newScore }),
+    }).then(() => fetchLeaderboard()).catch(() => {});
   };
 
   const handleShare = async () => {
@@ -428,6 +444,7 @@ export const SkyForceGame = () => {
           g.shake = 20;
           createExplosion(g.player.x, g.player.y, "#ef4444");
           playExplosionSound(true);
+          fetchLeaderboard();
         }
 
         // REACHED BOTTOM (GROUND IMPACT)
@@ -439,6 +456,7 @@ export const SkyForceGame = () => {
           createExplosion(e.x, e.y, "#ef4444");
           createExplosion(canvasSize.current.width / 2, canvasSize.current.height, "#ef4444");
           playExplosionSound(true);
+          fetchLeaderboard();
         }
 
         // Collision with bullets
@@ -797,10 +815,12 @@ export const SkyForceGame = () => {
 
       ctx.restore();
 
-      animationFrameId = requestAnimationFrame(() => {
-        update();
-        draw();
-      });
+      if (isPlaying && !gameOver) {
+        animationFrameId = requestAnimationFrame(() => {
+          update();
+          draw();
+        });
+      }
     };
 
     draw();
@@ -913,6 +933,17 @@ export const SkyForceGame = () => {
                        {t('preGame.waiting')}
                     </p>
                   </div>
+                  {leaderboard.length > 0 && (
+                    <div className="w-full pt-4 border-t border-cyan-500/20 space-y-1.5">
+                      <span className="font-mono text-[7px] text-cyan-400/60 font-black uppercase tracking-[0.3em]">TOP_PILOTS</span>
+                      {leaderboard.slice(0, 3).map((entry, i) => (
+                        <div key={entry.id} className={`flex items-center justify-between font-mono text-[9px] ${i === 0 ? 'text-yellow-400' : 'text-white/40'}`}>
+                          <span className="font-bold">{['🥇','🥈','🥉'][i]} {entry.name}</span>
+                          <span className="font-black tracking-wider">{entry.score.toLocaleString()}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </motion.div>
             )}
@@ -1002,7 +1033,7 @@ export const SkyForceGame = () => {
                          </div>
                        )}
 
-                       <button 
+                       <button
                          onClick={handleShare}
                          className="w-full py-2.5 bg-white/5 border border-white/10 hover:bg-white/10 text-white/70 font-mono font-black text-[8px] uppercase tracking-[0.2em] transition-all rounded flex items-center justify-center gap-2"
                        >
@@ -1010,9 +1041,42 @@ export const SkyForceGame = () => {
                          {t('highScore.sharePerformance')}
                        </button>
                      </div>
+
+                     {/* Global Leaderboard */}
+                     {leaderboard.length > 0 && (
+                       <div className="pt-4 border-t border-white/10">
+                         <div className="flex items-center justify-center gap-2 mb-3">
+                           <div className="h-px flex-1 bg-white/10" />
+                           <span className="font-mono text-[7px] text-cyan-400 font-black uppercase tracking-[0.3em]">GLOBAL_RANKINGS</span>
+                           <div className="h-px flex-1 bg-white/10" />
+                         </div>
+                         <div className="space-y-1">
+                           {leaderboard.map((entry, i) => {
+                             const isCurrentPlayer = hasSubmittedName && entry.name === highScoreName && entry.score === score;
+                             return (
+                               <div
+                                 key={entry.id}
+                                 className={`flex items-center justify-between px-2.5 py-1.5 rounded font-mono text-[8px] ${
+                                   isCurrentPlayer
+                                     ? 'bg-cyan-500/10 border border-cyan-500/20 text-cyan-400'
+                                     : i === 0 ? 'text-yellow-400' : 'text-white/50'
+                                 }`}
+                               >
+                                 <span className="flex items-center gap-2">
+                                   <span className="w-5 text-right font-black">{String(i + 1).padStart(2, '0')}.</span>
+                                   <span className="font-bold tracking-wider">{entry.name}</span>
+                                   {isCurrentPlayer && <span className="text-[6px] text-cyan-500 tracking-widest">&larr; YOU</span>}
+                                 </span>
+                                 <span className="font-black tracking-widest">{entry.score.toLocaleString()}</span>
+                               </div>
+                             );
+                           })}
+                         </div>
+                       </div>
+                     )}
                   </div>
 
-                  <button 
+                  <button
                     onClick={startLevel}
                     className="h-12 w-full max-w-[220px] flex items-center justify-center gap-3 bg-white text-black px-8 font-mono font-black text-[10px] uppercase tracking-[0.3em] hover:bg-cyan-400 transition-all rounded shadow-lg shadow-white/5"
                   >

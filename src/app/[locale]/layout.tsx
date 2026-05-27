@@ -7,6 +7,7 @@ import { Inter, JetBrains_Mono } from 'next/font/google';
 import { routing } from '@/i18n/routing';
 import { ThemeProvider } from '@/context/ThemeProvider';
 import { PublicShell } from '@/components/layout/PublicShell';
+import { getNavbarContent, getFooterContent } from '@/lib/firestore';
 import '../globals.css';
 
 const inter = Inter({
@@ -58,6 +59,11 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   setRequestLocale(locale);
 
+  const [navbarContent, footerContent] = await Promise.all([
+    getNavbarContent(),
+    getFooterContent(),
+  ]);
+
   return (
     <html
       lang={locale}
@@ -85,7 +91,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       <body className="bg-background text-text-main font-sans antialiased transition-colors duration-300">
         <ThemeProvider>
           <NextIntlClientProvider>
-            <PublicShell>{children}</PublicShell>
+            <PublicShell navbarContent={navbarContent} footerContent={footerContent} locale={locale}>{children}</PublicShell>
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>

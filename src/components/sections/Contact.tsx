@@ -4,18 +4,36 @@ import { useState } from "react";
 import dynamic from "next/dynamic";
 import { Reveal } from "@/components/ui/Reveal";
 import { LazyGimmick } from "@/components/ui/LazyGimmick";
-import { Github, Linkedin, Instagram, MessageCircle, Send, Copy, Radio, Zap } from "lucide-react";
+import { Github, Linkedin, Instagram, MessageCircle, Send, Copy, Check, Radio, Zap } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useTranslations } from "next-intl";
+import type { ContactContent, Locale } from "@/types";
 
 const NeuralBridgeGimmick = dynamic(() => import("@/components/gimmicks/NeuralBridgeGimmick").then(m => ({ default: m.NeuralBridgeGimmick })), { ssr: false });
 
-export const Contact = () => {
+interface ContactProps {
+  contactContent?: ContactContent | null;
+  locale?: string;
+}
+
+export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
   const t = useTranslations('contact');
-  const email = "daniansyah@chusyaidin.engineer";
+  const loc = (locale || 'en') as Locale;
+
+  const headline = contactContent?.headline[loc] ?? t('headline');
+  const desc = contactContent?.desc[loc] ?? t('desc');
+  const email = contactContent?.email ?? "daniansyah@chusyaidin.engineer";
+  const labelTitle = contactContent?.labels.title[loc] ?? t('labels.title');
+  const labelPayload = contactContent?.labels.payload[loc] ?? t('labels.payload');
+  const placeholderTitle = contactContent?.placeholders.title[loc] ?? t('placeholders.title');
+  const placeholderPayload = contactContent?.placeholders.payload[loc] ?? t('placeholders.payload');
+  const buttonTransmit = contactContent?.buttons.transmit[loc] ?? t('buttons.transmit');
+  const buttonCopyUid = contactContent?.buttons.copyUid[loc] ?? t('buttons.copyUid');
+
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
   const [activeMode, setActiveMode] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const handleSend = () => {
     const subject = encodeURIComponent(title || "Technical Inquiry");
@@ -24,10 +42,10 @@ export const Contact = () => {
   };
 
   const socials = [
-    { name: "GitHub", icon: <Github className="w-4 h-4" />, href: "https://github.com/Dani27-design" },
-    { name: "LinkedIn", icon: <Linkedin className="w-4 h-4" />, href: "https://www.linkedin.com/in/daniansyahchusyaidin/" },
-    { name: "Instagram", icon: <Instagram className="w-4 h-4" />, href: "https://www.instagram.com/danichusyaidin" },
-    { name: "WhatsApp", icon: <MessageCircle className="w-4 h-4" />, href: "https://wa.me/6285790428078" },
+    { name: "GitHub", icon: <Github className="w-4 h-4" />, href: contactContent?.socials.github ?? "https://github.com/Dani27-design" },
+    { name: "LinkedIn", icon: <Linkedin className="w-4 h-4" />, href: contactContent?.socials.linkedin ?? "https://www.linkedin.com/in/daniansyahchusyaidin/" },
+    { name: "Instagram", icon: <Instagram className="w-4 h-4" />, href: contactContent?.socials.instagram ?? "https://www.instagram.com/danichusyaidin" },
+    { name: "WhatsApp", icon: <MessageCircle className="w-4 h-4" />, href: contactContent?.socials.whatsapp ?? "https://wa.me/6285790428078" },
   ];
 
   return (
@@ -38,10 +56,10 @@ export const Contact = () => {
         <Reveal width="100%">
           <div className="text-center mb-10 md:mb-20 space-y-8 px-6">
             <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-text-main leading-[1.1]">
-              {t('headline')}
+              {headline}
             </h2>
             <p className="text-sm md:text-lg text-text-muted max-w-2xl mx-auto leading-relaxed border-l-2 border-white/5 pl-6 md:pl-8 italic text-left md:text-center">
-              {t('desc')}
+              {desc}
             </p>
           </div>
         </Reveal>
@@ -64,11 +82,15 @@ export const Contact = () => {
                 </div>
               </div>
               <button
-                onClick={() => navigator.clipboard.writeText(email)}
+                onClick={() => {
+                  navigator.clipboard.writeText(email);
+                  setCopied(true);
+                  setTimeout(() => setCopied(false), 2000);
+                }}
                 className="flex items-center justify-center gap-3 text-[10px] font-black text-cyan-500 uppercase tracking-widest hover:text-cyan-300 transition-all bg-cyan-950/30 px-6 py-3 md:px-4 md:py-2 border border-cyan-500/20 w-full md:w-auto"
               >
-                <Copy className="w-4 h-4" />
-                {t('buttons.copyUid')}
+                {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                {copied ? 'COPIED' : buttonCopyUid}
               </button>
             </div>
 
@@ -79,28 +101,28 @@ export const Contact = () => {
                   <div className="space-y-3 group/input">
                     <label htmlFor="contact-title" className="text-[11px] font-mono text-text-muted/60 uppercase tracking-[0.3em] font-black block group-focus-within/input:text-cyan-400 transition-colors flex items-center gap-2">
                        <Zap className="w-3 h-3 group-focus-within/input:text-cyan-500" aria-hidden="true" />
-                       {t('labels.title')}
+                       {labelTitle}
                     </label>
                     <input
                       id="contact-title"
                       type="text"
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
-                      placeholder={t('placeholders.title')}
+                      placeholder={placeholderTitle}
                       className="w-full bg-background/50 border border-border/40 px-3 md:px-6 py-3 md:py-5 outline-none focus:border-cyan-500/60 focus:bg-cyan-950/10 transition-all text-sm font-mono placeholder:opacity-20 group-hover/form:border-border/60"
                     />
                   </div>
                   <div className="space-y-3 group/input">
                     <label htmlFor="contact-message" className="text-[11px] font-mono text-text-muted/60 uppercase tracking-[0.3em] font-black block group-focus-within/input:text-cyan-400 transition-colors flex items-center gap-2">
                        <Radio className="w-3 h-3 group-focus-within/input:text-cyan-500" aria-hidden="true" />
-                       {t('labels.payload')}
+                       {labelPayload}
                     </label>
                     <textarea
                       id="contact-message"
                       rows={6}
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
-                      placeholder={t('placeholders.payload')}
+                      placeholder={placeholderPayload}
                       enterKeyHint="send"
                       className="w-full bg-background/50 border border-border/40 px-3 md:px-6 py-3 md:py-5 outline-none focus:border-cyan-500/60 focus:bg-cyan-950/10 transition-all text-sm font-mono resize-none placeholder:opacity-20 group-hover/form:border-border/60"
                     />
@@ -112,7 +134,7 @@ export const Contact = () => {
                   className="w-full py-4 md:py-6 bg-text-main text-background flex items-center justify-center gap-4 md:gap-6 text-[10px] md:text-[11px] font-black uppercase tracking-[0.4em] hover:bg-cyan-500 transition-all group/btn active:scale-[0.98] relative overflow-hidden mt-4 lg:mt-0"
                 >
                   <Send className="w-5 h-5 md:w-6 md:h-6 group-hover/btn:translate-x-3 group-hover/btn:-translate-y-3 transition-transform duration-500 relative z-10" />
-                  <span className="relative z-10">{t('buttons.transmit')}</span>
+                  <span className="relative z-10">{buttonTransmit}</span>
                   <div className="absolute inset-x-0 h-full w-[200%] bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:animate-sweep pointer-events-none" />
                 </button>
               </div>
@@ -127,12 +149,10 @@ export const Contact = () => {
                     <div className="space-y-2">
                        {[...Array(5)].map((_, i) => (
                          <div key={`diag-proc-${i}`} className="flex justify-between items-center bg-white/5 px-3 py-2 border border-white/5">
-                            <span className="font-mono text-[7px] text-white/20">PROC_{i}_STABLE</span>
-                            <div className="w-8 h-1 bg-white/10 overflow-hidden">
-                               <motion.div
-                                 animate={{ x: ["-100%", "100%"] }}
-                                 transition={{ duration: 2 + i * 0.5, repeat: Infinity, ease: "linear" }}
-                                 className="h-full w-1/2 bg-cyan-500/40"
+                            <div className="w-full h-1 bg-white/10 overflow-hidden">
+                               <div
+                                 className="h-full w-1/2 bg-cyan-500/40 animate-slide-x"
+                                 style={{ animationDuration: `${2 + i * 0.5}s` }}
                                />
                             </div>
                          </div>
@@ -151,19 +171,14 @@ export const Contact = () => {
             {/* Footer Rail */}
             <div className="px-6 md:px-10 py-4 md:py-6 border-t border-border/40 bg-background/40 flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <motion.span
-                  animate={{ scale: [1, 1.2, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.4)]"
-                ></motion.span>
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.4)] animate-pulse"></span>
                 <div className="flex flex-col">
                   <span className="text-[9px] md:text-[10px] font-mono text-text-muted/60 uppercase tracking-widest font-black leading-none">Response_Time:</span>
                   <span className="text-[9px] md:text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-widest mt-1">&lt;24h / Verified</span>
                 </div>
               </div>
               <div className="hidden md:flex flex-col items-end">
-                <span className="text-[9px] font-mono text-text-muted/40 uppercase tracking-widest font-black">Auth: Secured_Access</span>
-                <div className="w-16 h-1.5 bg-white/5 mt-1 rounded-full overflow-hidden">
+                <div className="w-16 h-1.5 bg-white/5 rounded-full overflow-hidden">
                    <div className="h-full w-[85%] bg-indigo-500/40" />
                 </div>
               </div>

@@ -1,5 +1,5 @@
 import { setRequestLocale, getTranslations } from 'next-intl/server';
-import { getProjects, getBlogs, getExperience, getSkills } from '@/lib/firestore';
+import { getProjects, getBlogs, getExperience, getSkills, getHeroContent, getAboutContent, getContactContent } from '@/lib/firestore';
 import { HomePage } from '@/components/sections/HomePage';
 import { routing } from '@/i18n/routing';
 
@@ -39,11 +39,14 @@ export default async function Page({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const [projects, blogs, experience, skills] = await Promise.all([
+  const [projects, blogs, experience, skills, heroContent, aboutContent, contactContent] = await Promise.all([
     getProjects(),
     getBlogs(),
     getExperience(),
     getSkills(),
+    getHeroContent(),
+    getAboutContent(),
+    getContactContent(),
   ]);
 
   const personJsonLd = {
@@ -98,6 +101,9 @@ export default async function Page({ params }: Props) {
         blogs={blogs}
         experience={experience}
         skills={skills}
+        heroContent={heroContent}
+        aboutContent={aboutContent}
+        contactContent={contactContent}
         locale={locale}
       />
     </>

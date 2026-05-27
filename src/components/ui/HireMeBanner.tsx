@@ -5,10 +5,22 @@ import { Reveal } from "@/components/ui/Reveal";
 import { Terminal, Cpu, Zap, ShieldCheck, Mail } from "lucide-react";
 import { Link, usePathname } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
+import type { HireBannerContent, Locale } from "@/types";
 
-export const HireMeBanner = () => {
+interface HireMeBannerProps {
+  hireBannerContent?: HireBannerContent | null;
+  locale?: string;
+}
+
+export const HireMeBanner = ({ hireBannerContent, locale }: HireMeBannerProps = {}) => {
   const t = useTranslations('hireBanner');
   const pathname = usePathname();
+  const loc = (locale || 'en') as Locale;
+
+  const badge = hireBannerContent?.badge[loc] ?? t('badge');
+  const headlineText = hireBannerContent?.headline[loc] ?? t('headline');
+  const descText = hireBannerContent?.desc[loc] ?? t('desc');
+  const ctaText = hireBannerContent?.cta[loc] ?? t('cta');
 
   const contactLink = pathname === '/' ? (
     <a
@@ -17,7 +29,7 @@ export const HireMeBanner = () => {
     >
       <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
       <Mail className="w-4 h-4 md:w-5 md:h-5 relative z-10" />
-      <span className="relative z-10 text-[9px] md:text-[11px] whitespace-normal md:whitespace-nowrap text-center">{t('cta')}</span>
+      <span className="relative z-10 text-[9px] md:text-[11px] whitespace-normal md:whitespace-nowrap text-center">{ctaText}</span>
     </a>
   ) : (
     <Link
@@ -26,7 +38,7 @@ export const HireMeBanner = () => {
     >
       <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
       <Mail className="w-4 h-4 md:w-5 md:h-5 relative z-10" />
-      <span className="relative z-10 text-[9px] md:text-[11px] whitespace-normal md:whitespace-nowrap text-center">{t('cta')}</span>
+      <span className="relative z-10 text-[9px] md:text-[11px] whitespace-normal md:whitespace-nowrap text-center">{ctaText}</span>
     </Link>
   );
 
@@ -55,17 +67,17 @@ export const HireMeBanner = () => {
                     transition={{ duration: 2, repeat: Infinity }}
                     className="w-2 h-2 rounded-full bg-cyan-500"
                   />
-                  <span className="font-mono text-[9px] md:text-[10px] text-cyan-400 font-black uppercase tracking-[0.4em]">
-                    {t('badge')}
+                  <span className="font-mono text-[9px] md:text-[10px] text-cyan-400 font-black uppercase tracking-[0.2em] md:tracking-[0.4em]">
+                    {badge}
                   </span>
                 </div>
 
                 <h2 className="text-2xl sm:text-3xl md:text-5xl font-black text-text-main tracking-tighter mb-6 leading-tight">
-                  {t('headline')}
+                  {headlineText}
                 </h2>
 
                 <p className="text-text-muted text-sm md:text-lg max-w-2xl mb-10 mx-auto lg:mx-0 leading-relaxed italic">
-                  {t('desc')}
+                  {descText}
                 </p>
 
                 <div className="flex flex-wrap justify-center lg:justify-start gap-4 md:gap-6">
@@ -86,10 +98,6 @@ export const HireMeBanner = () => {
 
               <div className="flex flex-col gap-4 w-full lg:w-auto shrink-0 mt-8 lg:mt-0">
                 {contactLink}
-                <div className="flex justify-between items-center px-4 font-mono text-[7px] md:text-[8px] text-text-muted/40 uppercase tracking-widest">
-                  <span>Latency: 24ms</span>
-                  <span>Uptime: 99.98%</span>
-                </div>
               </div>
             </div>
 

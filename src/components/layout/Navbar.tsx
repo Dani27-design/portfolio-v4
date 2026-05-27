@@ -7,11 +7,17 @@ import { motion, AnimatePresence } from "motion/react";
 import { useTranslations, useLocale } from "next-intl";
 import { Link, useRouter, usePathname } from "@/i18n/navigation";
 import { useTheme } from "@/context/ThemeProvider";
+import type { NavbarContent, Locale } from "@/types";
 
 const QuantumSyncGimmick = dynamic(() => import("@/components/gimmicks/QuantumSyncGimmick").then(m => ({ default: m.QuantumSyncGimmick })), { ssr: false });
 const MobileMenuGimmick = dynamic(() => import("@/components/gimmicks/MobileMenuGimmick").then(m => ({ default: m.MobileMenuGimmick })), { ssr: false });
 
-export const Navbar = () => {
+interface NavbarProps {
+  navbarContent?: NavbarContent | null;
+  locale?: string;
+}
+
+export const Navbar = ({ navbarContent, locale: localeProp }: NavbarProps = {}) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { theme, setTheme, isCodeMode, toggleCodeMode } = useTheme();
@@ -44,6 +50,40 @@ export const Navbar = () => {
     return () => { document.body.style.overflow = ''; };
   }, [isMenuOpen]);
 
+  useEffect(() => {
+    if (!isMenuOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab') return;
+
+      const overlay = document.querySelector('[data-menu-overlay]');
+      if (!overlay) return;
+
+      const focusable = overlay.querySelectorAll<HTMLElement>(
+        'button, a, input, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isMenuOpen]);
+
   const toggleLang = () => {
     const newLocale = locale === "en" ? "id" : "en";
     router.replace(pathname, { locale: newLocale });
@@ -53,13 +93,15 @@ export const Navbar = () => {
     setTheme(theme === "light" ? "dark" : "light");
   };
 
+  const loc = (localeProp || locale) as Locale;
+
   const navLinks = [
-    { name: t('about'), href: '/#about', code: "01" },
-    { name: t('stack'), href: '/#skills', code: "02" },
-    { name: t('experience'), href: '/#work', code: "03" },
-    { name: t('projects'), href: '/#projects', code: "04" },
-    { name: t('blog'), href: '/#blog', code: "05" },
-    { name: t('contact'), href: '/#contact', code: "06" },
+    { name: navbarContent?.labels.about[loc] ?? t('about'), href: '/#about', code: "01" },
+    { name: navbarContent?.labels.stack[loc] ?? t('stack'), href: '/#skills', code: "02" },
+    { name: navbarContent?.labels.experience[loc] ?? t('experience'), href: '/#work', code: "03" },
+    { name: navbarContent?.labels.projects[loc] ?? t('projects'), href: '/#projects', code: "04" },
+    { name: navbarContent?.labels.blog[loc] ?? t('blog'), href: '/#blog', code: "05" },
+    { name: navbarContent?.labels.contact[loc] ?? t('contact'), href: '/#contact', code: "06" },
   ];
 
   return (
@@ -136,7 +178,7 @@ export const Navbar = () => {
                 className={`p-2 rounded-full transition-all duration-300 flex items-center gap-1.5 ${
                   isCodeMode ? "text-cyan-500 bg-cyan-500/10 shadow-[0_0_10px_rgba(6,182,212,0.3)]" : "text-text-muted hover:text-cyan-500 hover:bg-white/5"
                 }`}
-                title="Code Mode"
+                aria-label="Toggle code mode"
               >
                 <Code2 className="w-3.5 h-3.5" />
                 <span className="text-[8px] font-mono font-black uppercase">CODE</span>
@@ -211,6 +253,7 @@ export const Navbar = () => {
             exit={{ opacity: 0, clipPath: "circle(0% at 100% 0%)" }}
             transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
             className="fixed inset-0 bg-[#0f1115] text-white z-[60] flex flex-col p-8 overflow-hidden"
+            data-menu-overlay
           >
             <MobileMenuGimmick />
 
@@ -261,7 +304,7 @@ export const Navbar = () => {
                   <>
                     <span className="font-mono text-xs text-cyan-500/40 mb-2 font-bold select-none">{link.code}</span>
                     <div className="flex flex-col">
-                      <span className="text-5xl md:text-6xl font-black tracking-tighter text-white group-hover:text-cyan-400 transition-colors flex items-center gap-4 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
+                      <span className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter text-white group-hover:text-cyan-400 transition-colors flex items-center gap-4 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
                         {link.name}
                         <div className="w-0 h-[2px] bg-cyan-500 group-hover:w-12 transition-all duration-500 hidden sm:block" />
                       </span>
@@ -298,13 +341,6 @@ export const Navbar = () => {
               })}
             </div>
 
-            <div className="flex justify-between items-center relative z-20 pt-8 border-t border-white/5">
-              <div className="flex gap-4">
-                 <div className="text-[8px] font-mono text-white/40 uppercase tracking-widest">Lat: 0.04ms</div>
-                 <div className="text-[8px] font-mono text-cyan-500/60 uppercase tracking-widest font-black">Link: Up</div>
-              </div>
-              <span className="text-[10px] font-mono text-text-muted uppercase tracking-[0.5em] font-bold">ACK_OS_4</span>
-            </div>
           </motion.div>
         )}
       </AnimatePresence>
