@@ -71,7 +71,7 @@ export const Hero = ({ heroContent, locale }: HeroProps = {}) => {
   const phrases = heroContent?.phrases[loc] ?? (messages as Record<string, unknown>).phrases as string[];
 
   return (
-    <section className="relative min-h-dvh flex flex-col items-center overflow-hidden grid-bg px-6 pt-16">
+    <section id="hero" className="relative min-h-dvh flex flex-col items-center overflow-hidden grid-bg px-6 pt-16">
       <LazyGimmick><SystemGimmick /></LazyGimmick>
 
       <div className="flex-1 flex flex-col items-center justify-center container-custom relative z-10 text-center pb-24 pt-10">
@@ -89,7 +89,7 @@ export const Hero = ({ heroContent, locale }: HeroProps = {}) => {
         </Reveal>
 
         <Reveal delay={0.2} className="relative text-white">
-          <h1 className="max-w-4xl relative z-10">
+          <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight leading-tight max-w-4xl relative z-10">
             <CodeText tag="h1" type="html">
               {headline}
             </CodeText>

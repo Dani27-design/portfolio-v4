@@ -9,11 +9,8 @@ export const CustomCursor = () => {
   useEffect(() => {
     const moveCursor = (e: MouseEvent) => {
       if (cursorRef.current && followerRef.current) {
-        cursorRef.current.style.left = `${e.clientX}px`;
-        cursorRef.current.style.top = `${e.clientY}px`;
-
-        followerRef.current.style.left = `${e.clientX - 11}px`;
-        followerRef.current.style.top = `${e.clientY - 11}px`;
+        cursorRef.current.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+        followerRef.current.style.transform = `translate(${e.clientX - 11}px, ${e.clientY - 11}px)`;
       }
     };
 

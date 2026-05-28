@@ -2,7 +2,6 @@ import { setRequestLocale } from 'next-intl/server';
 import { getBlogBySlug, getAllBlogSlugs, getHireBannerContent } from '@/lib/firestore';
 import { BlogDetailsPage } from '@/components/pages/BlogDetailsPage';
 import { notFound } from 'next/navigation';
-import { routing } from '@/i18n/routing';
 import type { Locale } from '@/types';
 
 export const revalidate = 3600;
@@ -22,24 +21,20 @@ export async function generateMetadata({ params }: Props) {
   if (!blog) return {};
 
   const loc = locale as Locale;
-  const languages: Record<string, string> = {};
-  for (const l of routing.locales) {
-    languages[l] = `https://dani-chusyaidin.vercel.app/${l}/blog/${slug}`;
-  }
-  languages['x-default'] = `https://dani-chusyaidin.vercel.app/en/blog/${slug}`;
 
+  // Blog content is always Indonesian — canonical points to /id/ path,
+  // no hreflang alternates (content is not bilingual)
   return {
     title: blog.title[loc],
     description: blog.excerpt[loc],
     alternates: {
-      canonical: `https://dani-chusyaidin.vercel.app/${locale}/blog/${slug}`,
-      languages,
+      canonical: `https://dani-chusyaidin.vercel.app/id/blog/${slug}`,
     },
     openGraph: {
       title: blog.title[loc],
       description: blog.excerpt[loc],
-      url: `https://dani-chusyaidin.vercel.app/${locale}/blog/${slug}`,
-      locale: locale === 'id' ? 'id_ID' : 'en_US',
+      url: `https://dani-chusyaidin.vercel.app/id/blog/${slug}`,
+      locale: 'id_ID',
     },
   };
 }

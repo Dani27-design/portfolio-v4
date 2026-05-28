@@ -77,7 +77,7 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
                   <Radio className="w-5 h-5 text-indigo-400 animate-pulse" />
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-[9px] md:text-[10px] font-mono text-text-muted/60 uppercase tracking-widest font-black">Secure_Endpoint:</span>
+                  <span className="text-[9px] md:text-[10px] font-mono text-text-muted/80 uppercase tracking-widest font-black">Secure_Endpoint:</span>
                   <span className="text-sm md:text-base font-mono text-text-main tracking-tight group-hover/form:text-cyan-400 transition-colors break-all md:break-normal">{email}</span>
                 </div>
               </div>
@@ -99,7 +99,7 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
                <div className="p-4 md:p-12 space-y-6 md:space-y-12 flex-1">
                 <div className="space-y-5 md:space-y-10">
                   <div className="space-y-3 group/input">
-                    <label htmlFor="contact-title" className="text-[11px] font-mono text-text-muted/60 uppercase tracking-[0.3em] font-black block group-focus-within/input:text-cyan-400 transition-colors flex items-center gap-2">
+                    <label htmlFor="contact-title" className="text-[11px] font-mono text-text-muted/80 uppercase tracking-[0.3em] font-black block group-focus-within/input:text-cyan-400 transition-colors flex items-center gap-2">
                        <Zap className="w-3 h-3 group-focus-within/input:text-cyan-500" aria-hidden="true" />
                        {labelTitle}
                     </label>
@@ -160,11 +160,6 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
                     </div>
                  </div>
 
-                 <div className="mt-auto p-4 border border-indigo-500/20 bg-indigo-500/5">
-                    <p className="font-mono text-[7px] text-indigo-400 uppercase leading-relaxed">
-                       Ready for secure transit. All packets are encrypted via high-integrity protocols. Local latency: 0.05ms
-                    </p>
-                 </div>
               </div>
             </div>
 
@@ -173,7 +168,7 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
               <div className="flex items-center gap-4">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.4)] animate-pulse"></span>
                 <div className="flex flex-col">
-                  <span className="text-[9px] md:text-[10px] font-mono text-text-muted/60 uppercase tracking-widest font-black leading-none">Response_Time:</span>
+                  <span className="text-[9px] md:text-[10px] font-mono text-text-muted/80 uppercase tracking-widest font-black leading-none">Response_Time:</span>
                   <span className="text-[9px] md:text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-widest mt-1">&lt;24h / Verified</span>
                 </div>
               </div>
@@ -195,6 +190,7 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
                 href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`${social.name} (opens in new tab)`}
                 className="flex flex-col items-center justify-center p-6 bg-surface/30 border border-border/20 gap-3 text-[10px] font-black text-text-muted uppercase tracking-[0.3em] hover:text-cyan-400 hover:border-cyan-500/40 hover:bg-cyan-950/10 transition-all group/social"
               >
                 <motion.div

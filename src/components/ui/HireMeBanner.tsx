@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from "motion/react";
 import { Reveal } from "@/components/ui/Reveal";
 import { Terminal, Cpu, Zap, ShieldCheck, Mail } from "lucide-react";
 import { Link, usePathname } from "@/i18n/navigation";
@@ -47,12 +46,9 @@ export const HireMeBanner = ({ hireBannerContent, locale }: HireMeBannerProps = 
       <Reveal width="100%">
         <div className="relative p-[1px] bg-gradient-to-r from-cyan-500/50 via-indigo-500/50 to-cyan-500/50 overflow-hidden group">
           {/* Animated Gradient Background */}
-          <motion.div
-            animate={{
-              backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"]
-            }}
-            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+          <div
             className="absolute inset-0 bg-[length:200%_200%] bg-gradient-to-r from-cyan-500/20 via-indigo-500/20 to-cyan-500/20 opacity-30 pointer-events-none"
+            style={{ animation: 'hire-gradient 15s linear infinite' }}
           />
 
           <div className="relative bg-background p-5 sm:p-8 md:p-12 overflow-hidden">
@@ -62,10 +58,8 @@ export const HireMeBanner = ({ hireBannerContent, locale }: HireMeBannerProps = 
             <div className="relative z-10 flex flex-col lg:flex-row justify-between items-center gap-10 md:gap-12">
               <div className="flex-grow text-center lg:text-left w-full">
                 <div className="inline-flex items-center gap-3 mb-6 px-4 py-1.5 bg-cyan-500/10 border border-cyan-500/30">
-                  <motion.div
-                    animate={{ scale: [1, 1.3, 1], opacity: [1, 0.5, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="w-2 h-2 rounded-full bg-cyan-500"
+                  <div
+                    className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"
                   />
                   <span className="font-mono text-[9px] md:text-[10px] text-cyan-400 font-black uppercase tracking-[0.2em] md:tracking-[0.4em]">
                     {badge}

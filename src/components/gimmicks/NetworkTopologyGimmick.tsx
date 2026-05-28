@@ -100,21 +100,6 @@ export const NetworkTopologyGimmick = () => {
         ))}
       </svg>
 
-      {/* Floating Network Metadata */}
-      <div className="absolute top-10 left-10 font-mono text-[9px] text-cyan-400 font-bold uppercase tracking-widest hidden lg:block bg-cyan-950/20 px-2 py-0.5 border-l-2 border-cyan-500">
-        Topology_Map: Node_Cluster_Delta
-      </div>
-
-      <div className="absolute bottom-20 right-20 font-mono text-[8px] text-indigo-400 font-medium uppercase space-y-2 hidden xl:block">
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-[1px] bg-indigo-500"></span>
-          Lat: 0.12ms
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-[1px] bg-cyan-500"></span>
-          Cluster: Sync_Active
-        </div>
-      </div>
     </div>
   );
 };

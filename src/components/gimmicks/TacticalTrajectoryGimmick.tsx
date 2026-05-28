@@ -50,14 +50,10 @@ export const TacticalTrajectoryGimmick = () => {
           style={{ top: `${20 + i * 20}%` }}
         >
           <div className="flex items-center gap-2">
-            <span className="text-cyan-800 font-mono text-[7px]">SEQ_{i.toString().padStart(2, '0')}</span>
             <div className="w-8 h-px bg-cyan-500/10" />
           </div>
           <div className="flex gap-3">
             <div className="w-px h-6 bg-gradient-to-b from-cyan-900/30 to-transparent" />
-            <div className="space-y-0.5 opacity-40">
-              <div className="font-mono text-[5px] text-white/10 uppercase tracking-tighter italic">Tracing...</div>
-            </div>
           </div>
         </motion.div>
       ))}
@@ -107,35 +103,10 @@ export const TacticalTrajectoryGimmick = () => {
           transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
           className="absolute -left-10 top-0 flex items-center gap-2"
         >
-          <div className="font-mono text-[7px] text-cyan-800 font-bold bg-background/80 px-1 border border-cyan-500/20">SCANRAW</div>
           <div className="w-3 h-[1px] bg-cyan-900" />
         </motion.div>
       </div>
 
-      {/* Center Operational HUD */}
-      <div className="absolute bottom-20 right-20 space-y-6 hidden 2xl:block opacity-20">
-        <div className="flex flex-col items-end gap-2 border-r-2 border-cyan-900 pr-4">
-          <div className="font-mono text-[10px] text-cyan-900 font-black uppercase tracking-widest">REALTIME_ANALYSIS</div>
-          <motion.div
-            animate={{ width: ["10%", "85%", "45%", "100%", "20%"] }}
-            transition={{ duration: 15, repeat: Infinity }}
-            className="h-1 bg-cyan-900/40"
-          />
-        </div>
-        <div className="flex flex-col items-end gap-2 border-r-2 border-indigo-900 pr-4">
-          <div className="font-mono text-[10px] text-indigo-900 font-black uppercase tracking-widest">DEPLOYMENT_STABILITY</div>
-          <div className="flex gap-1">
-            {[...Array(12)].map((_, i) => (
-              <motion.div
-                key={`stability-bar-${i}`}
-                animate={{ height: [4, 12, 6, 16, 4] }}
-                transition={{ duration: 4, repeat: Infinity, delay: i * 0.2 }}
-                className="w-1 bg-indigo-900/40 rounded-full"
-              />
-            ))}
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

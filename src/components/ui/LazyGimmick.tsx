@@ -7,7 +7,7 @@ interface LazyGimmickProps {
   rootMargin?: string;
 }
 
-export const LazyGimmick = ({ children, rootMargin = '200px' }: LazyGimmickProps) => {
+export const LazyGimmick = ({ children, rootMargin = '50px' }: LazyGimmickProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);

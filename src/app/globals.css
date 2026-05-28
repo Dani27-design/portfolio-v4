@@ -38,10 +38,6 @@
     @apply scroll-smooth antialiased;
   }
 
-  /* Typography Hierarchy */
-  h1 { @apply text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight leading-tight; }
-  h2 { @apply text-3xl md:text-4xl font-bold tracking-tight leading-snug; }
-  h3 { @apply text-xl md:text-2xl font-bold tracking-tight leading-relaxed; }
   p { @apply text-base leading-relaxed text-text-muted; }
 }
 
@@ -65,8 +61,11 @@
     background: var(--primary-color);
     border-radius: 50%;
     position: fixed;
+    top: 0;
+    left: 0;
     pointer-events: none;
     z-index: 9999;
+    will-change: transform;
   }
 
   #cursor-follower {
@@ -76,9 +75,12 @@
     opacity: 0.3;
     border-radius: 50%;
     position: fixed;
+    top: 0;
+    left: 0;
     pointer-events: none;
     z-index: 9998;
-    transition: left 0.5s ease-out, top 0.5s ease-out;
+    transition: transform 0.5s ease-out;
+    will-change: transform;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -153,4 +155,109 @@
 
 .animate-slide-x {
   animation: slideX linear infinite;
+}
+
+/* Gimmick CSS animations — run on compositor thread instead of JS main thread */
+@keyframes gimmick-scan-v {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(200%); }
+}
+
+@keyframes gimmick-scan-h {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(200%); }
+}
+
+@keyframes gimmick-scan-h-skew-neg {
+  from { transform: translateX(-100%) skewX(-25deg); }
+  to { transform: translateX(200%) skewX(-25deg); }
+}
+
+@keyframes gimmick-scan-h-skew-pos {
+  from { transform: translateX(-100%) skewX(12deg); }
+  to { transform: translateX(200%) skewX(12deg); }
+}
+
+@keyframes gimmick-scan-vh {
+  from { transform: translateY(-100vh); }
+  to { transform: translateY(200vh); }
+}
+
+@keyframes gimmick-constellation {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(var(--gx, 20px), -30px) rotate(10deg); }
+  66% { transform: translate(0, -15px) rotate(-10deg); }
+}
+
+@keyframes gimmick-pulse-fade {
+  from { transform: scale(1); opacity: var(--pf-o, 0.3); }
+  to { transform: scale(var(--pf-s, 2)); opacity: 0; }
+}
+
+@keyframes gimmick-bubble {
+  0% { transform: translateY(110%) scale(0.5); opacity: 0; }
+  50% { transform: translateY(50%) scale(1); opacity: 0.4; }
+  100% { transform: translateY(-10%) scale(0.5); opacity: 0; }
+}
+
+@keyframes gimmick-dash {
+  from { stroke-dashoffset: -50; }
+  to { stroke-dashoffset: 50; }
+}
+
+@keyframes gimmick-float-y {
+  0%, 100% { transform: translateY(0); opacity: 0.1; }
+  50% { transform: translateY(var(--fy, -20px)); opacity: 0.4; }
+}
+
+@keyframes gimmick-hex-left {
+  from { transform: translateX(-200px); }
+  to { transform: translateX(0); }
+}
+
+@keyframes gimmick-hex-right {
+  from { transform: translateX(0); }
+  to { transform: translateX(-200px); }
+}
+
+@keyframes gimmick-parser-float {
+  0%, 100% { transform: translate(0, 0); opacity: 0.1; }
+  50% { transform: translate(100%, 100%); opacity: 0.4; }
+}
+
+@keyframes gimmick-matrix-fall {
+  from { transform: translateY(-100px); }
+  to { transform: translateY(100px); }
+}
+
+@keyframes hire-gradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes rocket-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes rocket-shake {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(1px, -2px); }
+  50% { transform: translate(-1px, 2px); }
+  75% { transform: translate(0, 0); }
+}
+
+@keyframes rocket-glow {
+  0%, 100% { transform: scale(1); opacity: 0.2; }
+  50% { transform: scale(1.2); opacity: 0.4; }
+}
+
+@keyframes gimmick-slab-left {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes gimmick-slab-right {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }

@@ -36,6 +36,11 @@ export default async function proxy(request: NextRequest) {
   // If env vars are missing, skip all auth (dev without credentials)
   const hasCredentials = process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process.env.FIREBASE_PROJECT_ID;
 
+  // Bare root path: permanent redirect to default locale
+  if (pathname === '/') {
+    return NextResponse.redirect(new URL('/en', request.url), 308);
+  }
+
   // API routes (except auth endpoints): skip middleware entirely
   if (pathname.startsWith('/api/') && pathname !== '/api/login' && pathname !== '/api/logout') {
     return NextResponse.next();

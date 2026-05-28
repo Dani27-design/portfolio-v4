@@ -90,7 +90,7 @@ export function MarkdownEditor({ value, onChange, placeholder }: MarkdownEditorP
             value={value}
             onChange={(e) => onChange(e.target.value)}
             placeholder={placeholder || 'Write markdown content...'}
-            className="w-full min-h-[400px] p-4 bg-transparent text-slate-200 text-sm font-mono resize-y outline-none placeholder:text-slate-600"
+            className="w-full min-h-[400px] p-4 bg-transparent text-slate-200 text-sm font-mono resize-y outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 placeholder:text-slate-600"
           />
         )}
         {(mode === 'preview' || mode === 'split') && (

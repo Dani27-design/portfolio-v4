@@ -3,7 +3,6 @@
 import dynamic from "next/dynamic";
 import { Reveal } from "@/components/ui/Reveal";
 import { LazyGimmick } from "@/components/ui/LazyGimmick";
-import { motion } from "motion/react";
 import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
 

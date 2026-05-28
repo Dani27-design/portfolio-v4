@@ -32,23 +32,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
-  // Blog detail pages
+  // Blog detail pages — content is always Indonesian,
+  // only emit canonical /id/ URL (no hreflang alternates)
   for (const blog of blogs) {
-    for (const locale of routing.locales) {
-      const languages: Record<string, string> = {};
-      for (const alt of routing.locales) {
-        languages[alt] = `${baseUrl}/${alt}/blog/${blog.slug}`;
-      }
-      languages['x-default'] = `${baseUrl}/en/blog/${blog.slug}`;
-
-      entries.push({
-        url: `${baseUrl}/${locale}/blog/${blog.slug}`,
-        lastModified: new Date(blog.updatedAt),
-        changeFrequency: 'monthly',
-        priority: 0.6,
-        alternates: { languages },
-      });
-    }
+    entries.push({
+      url: `${baseUrl}/id/blog/${blog.slug}`,
+      lastModified: new Date(blog.updatedAt),
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    });
   }
 
   return entries;

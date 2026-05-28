@@ -30,7 +30,6 @@ export const ArchitectureSchematicGimmick = () => {
         className="absolute top-1/4 -left-20 w-80 h-80 border border-cyan-500/25 rounded-lg hidden lg:block"
       >
         <div className="absolute inset-0 bg-cyan-500/15 [mask-image:linear-gradient(to_bottom,black,transparent)]" />
-        <div className="absolute top-4 left-4 font-mono text-[8px] text-cyan-400 font-bold uppercase">Module_Ref: Core_Engine</div>
         <div className="absolute inset-10 border border-dashed border-cyan-500/35 rounded-full animate-spin-slow" />
         <div className="absolute top-1/2 left-0 w-full h-[1px] bg-cyan-500/25" />
         <div className="absolute left-1/2 top-0 h-full w-[1px] bg-cyan-500/25" />
@@ -41,7 +40,6 @@ export const ArchitectureSchematicGimmick = () => {
         className="absolute bottom-1/4 -right-20 w-96 h-64 border border-indigo-500/25 rounded-lg hidden lg:block"
       >
         <div className="absolute inset-0 bg-indigo-500/15 [mask-image:linear-gradient(to_top,black,transparent)]" />
-        <div className="absolute bottom-4 right-4 font-mono text-[8px] text-indigo-400 font-bold uppercase">Cluster_Deployment: Node_LTS</div>
         <div className="absolute inset-8 flex items-center justify-around">
           {[...Array(4)].map((_, i) => (
             <div key={`logic-gate-${i}`} className="w-1.5 h-full bg-indigo-500/20 relative">
@@ -103,21 +101,6 @@ export const ArchitectureSchematicGimmick = () => {
         />
       </div>
 
-      {/* Tactical HUD Overlays */}
-      <div className="absolute bottom-10 left-10 space-y-3 hidden md:block">
-        <div className="flex items-center gap-4">
-          <div className="w-16 h-[2px] bg-cyan-500/60 shadow-[0_0_8px_#06b6d4]" />
-          <span className="font-mono text-[10px] text-cyan-400 font-black uppercase tracking-widest bg-cyan-950/40 px-3 py-1 border border-cyan-500/30">
-            Integrity_Check: Verified
-          </span>
-        </div>
-        <div className="flex items-center gap-4">
-          <div className="w-10 h-[1px] bg-indigo-500/50" />
-          <span className="font-mono text-[9px] text-indigo-400 font-bold uppercase tracking-widest">
-            System_Load: 0.04ms / Optimized
-          </span>
-        </div>
-      </div>
     </div>
   );
 };

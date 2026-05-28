@@ -1,19 +1,15 @@
 'use client';
 
-import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 
 export const SystemGimmick = () => {
-  const tacticalHexes = useRef(
-    Array.from({ length: 5 }, () => '0x' + Math.random().toString(16).substring(2, 10).toUpperCase())
-  );
   const { scrollY } = useScroll();
   const rotate = useTransform(scrollY, [0, 1000], [0, 360]);
   const opacity = useTransform(scrollY, [0, 500], [0.1, 0]);
 
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
-      {/* 3D Wireframe Cube Background */}
+      {/* 3D Wireframe Cube Background — scroll-driven, stays as motion */}
       <motion.div
         style={{ rotate, opacity: 0.60 }}
         className="absolute -right-20 -top-20 md:right-0 md:top-0 w-[450px] h-[450px] sm:w-[540px] sm:h-[540px] md:w-[800px] md:h-[800px]"
@@ -51,7 +47,7 @@ export const SystemGimmick = () => {
           <line x1="6.7" y1="25" x2="93.3" y2="75" stroke="url(#gimmickGradient)" strokeOpacity="0.31" />
           <line x1="6.7" y1="75" x2="93.3" y2="25" stroke="url(#gimmickGradient)" strokeOpacity="0.31" />
 
-          {/* Pulsing Nodes */}
+          {/* Pulsing Nodes — SVG r attribute requires JS */}
           {[
             {x: 50, y: 2, color: "#06b6d4"}, {x: 93.3, y: 25, color: "#6366f1"},
             {x: 93.3, y: 75, color: "#06b6d4"}, {x: 50, y: 98, color: "#6366f1"},
@@ -81,58 +77,27 @@ export const SystemGimmick = () => {
           <div className="absolute top-0 left-1/2 -translate-x-1/2 h-full w-[1px] bg-cyan-500/11" />
           <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-[1px] bg-indigo-500/11" />
 
-          <div className="absolute top-[10%] left-[10%] font-mono text-[10px] text-cyan-400/45 uppercase font-black tracking-widest bg-cyan-950/15 px-2 py-1 border border-cyan-500/07">
-            Sector_01: Integrity_Core
-          </div>
-          <div className="absolute bottom-[10%] right-[10%] font-mono text-[10px] text-indigo-400/45 uppercase font-black tracking-widest bg-indigo-950/15 px-2 py-1 border border-indigo-500/07">
-            Coord_Ref: X-772 / Y-991
-          </div>
         </div>
       </motion.div>
 
-      {/* Logic Sweep Scanline */}
-      <motion.div
-        animate={{ y: ["-100vh", "200vh"] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+      {/* Logic Sweep Scanline — CSS animation */}
+      <div
         className="absolute top-0 left-0 w-full h-[50vh] bg-gradient-to-b from-transparent via-cyan-500/05 to-transparent pointer-events-none z-0"
+        style={{ animation: 'gimmick-scan-vh 10s linear infinite' }}
       />
 
-      {/* Floating Tactical Data */}
-      <div className="absolute top-1/4 right-10 hidden xl:block font-mono text-[9px] space-y-4">
-        {[...Array(5)].map((_, i) => (
-          <motion.div
-            key={`tactical-data-${i}`}
-            initial={{ x: 20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 1 + i * 0.2 }}
-            className="flex items-center gap-2"
-          >
-            <span className={`w-1.2 h-1.2 ${i % 2 === 0 ? "bg-cyan-500/45" : "bg-indigo-500/45"}`}></span>
-            <span className={`font-bold ${i % 2 === 0 ? "text-cyan-400/45" : "text-indigo-400/45"}`}>{tacticalHexes.current[i]}</span>
-            <span className="w-8 h-[1px] bg-white/04"></span>
-            <span className="text-white/15 uppercase">SECURE_{i}</span>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* Bottom Right Matrix Rain Hint */}
+      {/* Bottom Right Matrix Rain Hint — CSS animation */}
       <div className="absolute bottom-20 right-12 hidden lg:flex gap-1 overflow-hidden h-32 opacity-16">
         {[...Array(8)].map((_, i) => (
-          <motion.div
+          <div
             key={`matrix-column-${i}`}
-            animate={{ y: [-100, 100] }}
-            transition={{
-              duration: 1.5 + Math.random() * 2,
-              repeat: Infinity,
-              ease: "linear",
-              delay: Math.random() * 2
-            }}
             className={`w-[1px] h-full ${i % 2 === 0 ? "bg-cyan-500" : "bg-indigo-500"} flex flex-col items-center gap-1 text-[8px] font-mono py-2`}
+            style={{ animation: `gimmick-matrix-fall ${1.5 + i * 0.25}s linear infinite`, animationDelay: `${i * 0.25}s` }}
           >
             {["1", "0", "A", "1", "X"].map((char, j) => (
               <span key={`char-${i}-${j}`} className="opacity-80">{char}</span>
             ))}
-          </motion.div>
+          </div>
         ))}
       </div>
     </div>

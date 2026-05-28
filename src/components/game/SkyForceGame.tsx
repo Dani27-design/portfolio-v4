@@ -871,7 +871,7 @@ export const SkyForceGame = () => {
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
         >
-          <canvas ref={canvasRef} className="w-full h-full" />
+          <canvas ref={canvasRef} className="w-full h-full" role="img" aria-label="SYSTEM_SHOT: DEFENDER — interactive space shooter game" />
 
           {/* HUD Layer */}
           <div className="absolute top-4 left-4 right-4 flex justify-between pointer-events-none z-20">
@@ -1090,19 +1090,6 @@ export const SkyForceGame = () => {
 
         </div>
 
-        {/* Footer Technical Metadata */}
-        <div className="max-w-5xl xl:max-w-6xl mx-auto mt-6 flex justify-between items-center opacity-30 px-2 lg:px-0">
-          <div className="flex gap-4">
-             <div className="flex items-center gap-1.5">
-                <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
-                <span className="font-mono text-[7px] text-white font-black uppercase">SIM_STABLE</span>
-             </div>
-             <div className="flex items-center gap-1.5">
-                <span className="font-mono text-[7px] text-white/50 font-black uppercase">DRIVER: CANVAS_2D</span>
-             </div>
-          </div>
-          <span className="font-mono text-[7px] text-white/50 font-black uppercase tracking-widest">BUILD_VERSION_8.0.4</span>
-        </div>
       </div>
     </section>
   );

@@ -36,7 +36,7 @@ export const Footer = ({ footerContent, locale }: FooterProps = {}) => {
                 </div>
              </div>
              <p className="text-[7px] font-mono text-text-muted/60 uppercase tracking-widest text-center md:text-left">
-                &copy; {currentYear} ALL_RIGHTS_RESERVED // SYS_INTEGRITY_ACK - [V4.4.2-LDP]
+                &copy; {currentYear} All rights reserved.
              </p>
           </div>
 

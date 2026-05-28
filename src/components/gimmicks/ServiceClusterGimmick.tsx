@@ -28,11 +28,6 @@ export const ServiceClusterGimmick = () => {
           backgroundSize: '80px 80px'
         }}
       >
-        <div className="absolute inset-0 flex flex-wrap gap-[80px] p-2 font-mono text-[6px] text-cyan-500/40">
-          {[...Array(64)].map((_, i) => (
-            <span key={`coord-${i}`} className="opacity-30">[{i.toString(16).toUpperCase().padStart(2, '0')}]</span>
-          ))}
-        </div>
       </div>
 
       {/* Neural Mesh Network Connections */}
@@ -61,7 +56,7 @@ export const ServiceClusterGimmick = () => {
           ))
         )}
 
-        {/* Moving Data Packets on Mesh */}
+        {/* Moving Data Packets on Mesh — SVG cx/cy requires JS */}
         {meshPoints.slice(0, 5).map((p, i) => {
           const nextP = meshPoints[i + 1] || meshPoints[0];
           return (
@@ -85,26 +80,19 @@ export const ServiceClusterGimmick = () => {
         })}
       </svg>
 
-      {/* Floating Isometric Clusters */}
+      {/* Floating Isometric Clusters — CSS animation */}
       <motion.div style={{ scale, rotate }} className="absolute inset-0">
         {[...Array(10)].map((_, i) => (
-          <motion.div
+          <div
             key={`iso-cluster-${i}`}
-            animate={{
-              y: [0, -20 * (i % 2 === 0 ? 1 : -1), 0],
-              opacity: [0.1, 0.4, 0.1]
-            }}
-            transition={{
-              duration: 10 + i * 2,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: i * 0.3
-            }}
             className="absolute hidden lg:block"
             style={{
               left: `${15 + (i * 9)}%`,
               top: `${20 + (i * 7)}%`,
-            }}
+              animation: `gimmick-float-y ${10 + i * 2}s ease-in-out infinite`,
+              animationDelay: `${i * 0.3}s`,
+              '--fy': `${-20 * (i % 2 === 0 ? 1 : -1)}px`,
+            } as React.CSSProperties}
           >
             <div className="w-32 h-32 relative">
                <svg viewBox="0 0 100 100" className="w-full h-full stroke-cyan-500 fill-none stroke-[0.3]">
@@ -114,71 +102,37 @@ export const ServiceClusterGimmick = () => {
                   <line x1="5" y1="27.5" x2="95" y2="72.5" strokeOpacity="0.2" />
                   <line x1="95" y1="27.5" x2="5" y2="72.5" strokeOpacity="0.2" />
                </svg>
-               <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-8 font-mono text-[8px] text-cyan-400 font-black uppercase tracking-[0.3em] whitespace-nowrap bg-cyan-950/40 px-2 py-0.5 border border-cyan-500/20">
-                 NODE::{i.toString().padStart(2, '0')}
-               </div>
             </div>
-          </motion.div>
+          </div>
         ))}
       </motion.div>
 
-      {/* Massive Scanning UI Overlays */}
+      {/* Massive Scanning UI Overlays — CSS rotation */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] pointer-events-none">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+        <div
           className="absolute inset-0 border border-dashed border-cyan-500/10 rounded-full"
+          style={{ animation: 'spin 40s linear infinite' }}
         />
-        <motion.div
-          animate={{ rotate: -360 }}
-          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+        <div
           className="absolute inset-10 border border-indigo-500/10 rounded-full"
+          style={{ animation: 'spin 30s linear infinite reverse' }}
         />
 
-        {/* Scanning Sweeps */}
-        <motion.div
-          animate={{ x: ["-100%", "100%"] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        {/* Scanning Sweeps — CSS translate */}
+        <div
           className="absolute inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent top-1/3"
+          style={{ animation: 'sweep 6s ease-in-out infinite' }}
         />
-        <motion.div
-          animate={{ y: ["-100%", "100%"] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        <div
           className="absolute inset-y-0 w-[1px] bg-gradient-to-b from-transparent via-indigo-500/40 to-transparent left-2/3"
+          style={{ animation: 'gimmick-scan-v 8s ease-in-out infinite' }}
         />
       </div>
 
-      {/* Precision Telemetry HUD */}
-      <div className="absolute bottom-10 right-10 space-y-6 hidden xl:block">
-        <div className="flex items-center gap-4">
-           <div className="flex flex-col items-end">
-              <span className="font-mono text-[10px] text-cyan-400 font-bold uppercase tracking-widest">Global_Sync</span>
-              <span className="font-mono text-[7px] text-white/30 uppercase">Operational / Optimal</span>
-           </div>
-           <div className="w-16 h-8 border border-white/10 flex items-center justify-around px-2">
-              {[...Array(5)].map((_, i) => (
-                <motion.div
-                  key={`telemetry-bar-${i}`}
-                  animate={{ height: [`${20 + i * 10}%`, `${80 - i * 5}%`, `${20 + i * 10}%`] }}
-                  transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.1 }}
-                  className="w-1 bg-cyan-500/60"
-                />
-              ))}
-           </div>
-        </div>
-
-        <div className="flex items-center gap-4 justify-end">
-           <div className="font-mono text-[9px] text-indigo-400 font-black tracking-[0.4em] uppercase py-1 border-b border-indigo-500/40">
-             Cluster_Load: Nominal
-           </div>
-        </div>
-      </div>
-
-      {/* Atmospheric Scanning Beam */}
-      <motion.div
-        animate={{ x: ["-100%", "200%"] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-        className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-cyan-500/05 to-transparent pointer-events-none z-0 skew-x-12"
+      {/* Atmospheric Scanning Beam — CSS translate with skew */}
+      <div
+        className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-cyan-500/05 to-transparent pointer-events-none z-0"
+        style={{ animation: 'gimmick-scan-h-skew-pos 10s linear infinite' }}
       />
     </div>
   );

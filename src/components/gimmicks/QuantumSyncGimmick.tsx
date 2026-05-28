@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import { motion } from "motion/react";
 
 export const QuantumSyncGimmick = ({ isScrolled }: { isScrolled: boolean }) => {
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -23,11 +22,9 @@ export const QuantumSyncGimmick = ({ isScrolled }: { isScrolled: boolean }) => {
       </div>
 
       <div className="absolute bottom-0 left-0 w-full h-[1px] bg-border/10 overflow-hidden">
-         <motion.div
-           initial={{ x: "-100%" }}
-           animate={{ x: "100%" }}
-           transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+         <div
            className="absolute h-full w-64 bg-gradient-to-r from-transparent via-cyan-900/20 to-transparent"
+           style={{ animation: 'sweep 15s linear infinite' }}
          />
       </div>
 

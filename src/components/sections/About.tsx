@@ -54,7 +54,7 @@ export const About = ({ aboutContent, locale }: AboutProps = {}) => {
               <span className="text-primary uppercase tracking-[0.2em] text-[10px] font-bold block">
                 <CodeText tag="span">{title}</CodeText>
               </span>
-              <h2>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight leading-snug">
                 <CodeText tag="h2" type="html">
                   {headline}
                 </CodeText>

@@ -109,16 +109,16 @@ export const ScrollToTop = () => {
           <motion.a
             href="#top"
             onClick={scrollToTop}
-            className="relative w-12 h-12 md:w-16 md:h-16 group flex items-center justify-center p-0 outline-none"
+            className="relative w-12 h-12 md:w-16 md:h-16 group flex items-center justify-center p-0 outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:rounded-lg"
             style={{ pointerEvents: (isDeploying || isLaunching) ? 'none' : 'auto' }}
             aria-label="Scroll to top"
           >
             {/* Launch Pad Brackets */}
             <div className={`absolute inset-0 transition-opacity duration-300 ${(isDeploying || isLaunching) ? 'opacity-0' : 'opacity-100'}`}>
-               <motion.div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-white/20" />
-               <motion.div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-white/20" />
-               <motion.div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-white/20" />
-               <motion.div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-white/20" />
+               <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-white/20" />
+               <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-white/20" />
+               <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-white/20" />
+               <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-white/20" />
             </div>
 
             {/* Jet Rocket Engine Glow & Smoke Trail */}
@@ -151,31 +151,21 @@ export const ScrollToTop = () => {
                 </div>
               )}
               {(!isLaunching && !isDeploying) && (
-                <motion.div
-                  animate={{
-                    scale: [1, 1.2, 1],
-                    opacity: [0.2, 0.4, 0.2]
-                  }}
-                  transition={{ duration: 2, repeat: Infinity }}
+                <div
                   className="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-8 bg-cyan-500/20 blur-lg -z-10 rounded-full group-hover:bg-orange-500/30 transition-colors"
+                  style={{ animation: 'rocket-glow 2s ease-in-out infinite' }}
                 />
               )}
             </AnimatePresence>
 
             {/* The Rocket */}
             <div className="relative flex flex-col items-center">
-              <motion.div
-                animate={(isLaunching || isDeploying) ? {
-                  y: [0, -2, 2, 0],
-                  x: [0, 1, -1, 0]
-                } : {
-                  y: [0, -4, 0]
-                }}
-                transition={(isLaunching || isDeploying) ? { duration: 0.05, repeat: Infinity } : { duration: 2, repeat: Infinity }}
+              <div
                 className="w-10 h-10 md:w-12 md:h-12"
+                style={{ animation: (isLaunching || isDeploying) ? 'rocket-shake 0.05s linear infinite' : 'rocket-bob 2s ease-in-out infinite' }}
               >
                 <GameRocket isLaunching={isLaunching || isDeploying} isCodeMode={isCodeMode} className="w-full h-full" />
-              </motion.div>
+              </div>
 
               {/* Technical Data HUD */}
               <div className="absolute -bottom-8 opacity-0 group-hover:opacity-100 transition-opacity">
