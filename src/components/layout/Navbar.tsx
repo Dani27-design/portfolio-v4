@@ -110,7 +110,7 @@ export const Navbar = ({ navbarContent, locale: localeProp }: NavbarProps = {}) 
         className={`fixed top-0 left-0 w-full z-50 transition-[height,border-color,background-color,box-shadow] duration-500 border-b overflow-hidden ${
           isScrolled
             ? "h-16 border-border/80 bg-background/98 shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
-            : "h-20 border-white/5 bg-background/30"
+            : "h-20 border-border/20 bg-background/30"
         }`}
       >
         <QuantumSyncGimmick isScrolled={isScrolled} />
@@ -176,11 +176,11 @@ export const Navbar = ({ navbarContent, locale: localeProp }: NavbarProps = {}) 
 
           {/* Section 3: Operations Module (Right) */}
           <div className="flex-[1] flex justify-end items-center gap-4">
-            <div className="hidden md:flex items-center gap-3 pr-4 border-r border-white/5">
+            <div className="hidden md:flex items-center gap-3 pr-4 border-r border-border/40">
               <button
                 onClick={toggleCodeMode}
                 className={`p-2 rounded-full transition-all duration-300 flex items-center gap-1.5 ${
-                  isCodeMode ? "text-cyan-500 bg-cyan-500/10 shadow-[0_0_10px_rgba(6,182,212,0.3)]" : "text-text-muted hover:text-cyan-500 hover:bg-white/5"
+                  isCodeMode ? "text-cyan-500 bg-cyan-500/10 shadow-[0_0_10px_rgba(6,182,212,0.3)]" : "text-text-muted hover:text-cyan-500 hover:bg-border/10"
                 }`}
                 aria-label="Toggle code mode"
               >
@@ -190,7 +190,7 @@ export const Navbar = ({ navbarContent, locale: localeProp }: NavbarProps = {}) 
 
               <button
                 onClick={toggleTheme}
-                className="p-2 text-text-muted hover:text-cyan-500 hover:bg-white/5 rounded-full transition-all duration-300 flex items-center gap-1.5"
+                className="p-2 text-text-muted hover:text-cyan-500 hover:bg-border/10 rounded-full transition-all duration-300 flex items-center gap-1.5"
                 aria-label="Toggle theme"
               >
                 {theme === "light" ? <Moon className="w-3.5 h-3.5" /> : <Sun className="w-3.5 h-3.5" />}
@@ -199,7 +199,7 @@ export const Navbar = ({ navbarContent, locale: localeProp }: NavbarProps = {}) 
 
               <button
                 onClick={toggleLang}
-                className="p-2 text-text-muted hover:text-cyan-500 hover:bg-white/5 rounded-full transition-all duration-300 flex items-center gap-1"
+                className="p-2 text-text-muted hover:text-cyan-500 hover:bg-border/10 rounded-full transition-all duration-300 flex items-center gap-1"
                 aria-label="Switch language"
               >
                 <Languages className="w-3.5 h-3.5" />
@@ -235,7 +235,7 @@ export const Navbar = ({ navbarContent, locale: localeProp }: NavbarProps = {}) 
               </div>
 
               <button
-                className="p-2 text-text-main hover:bg-white/5 transition-colors border border-white/5 md:hidden flex flex-col gap-1 items-end overflow-hidden group"
+                className="p-2 text-text-main hover:bg-border/10 transition-colors border border-border/40 md:hidden flex flex-col gap-1 items-end overflow-hidden group"
                 onClick={() => setIsMenuOpen(true)}
                 aria-label="Open menu"
               >
@@ -256,7 +256,7 @@ export const Navbar = ({ navbarContent, locale: localeProp }: NavbarProps = {}) 
             animate={{ opacity: 1, clipPath: "circle(150% at 100% 0%)" }}
             exit={{ opacity: 0, clipPath: "circle(0% at 100% 0%)" }}
             transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
-            className="fixed inset-0 bg-[#0f1115] text-white z-[60] flex flex-col p-8 overflow-hidden"
+            className="fixed inset-0 bg-background text-text-main z-[60] flex flex-col p-8 overflow-hidden"
             data-menu-overlay
           >
             <MobileMenuGimmick />
@@ -265,32 +265,32 @@ export const Navbar = ({ navbarContent, locale: localeProp }: NavbarProps = {}) 
             <div className="flex justify-between items-center relative z-20">
               <div className="flex items-center gap-3">
                 <Terminal className="w-5 h-5 text-cyan-500" />
-                <span className="font-mono text-[10px] text-white font-black tracking-widest uppercase">NAV_TERMINAL</span>
+                <span className="font-mono text-[10px] text-text-main font-black tracking-widest uppercase">NAV_TERMINAL</span>
               </div>
               <div className="flex items-center gap-2">
                 <button
                   onClick={toggleCodeMode}
-                  className={`p-2 rounded-full transition-all duration-300 ${isCodeMode ? "text-cyan-500 bg-cyan-500/10" : "text-white/60"}`}
+                  className={`p-2 rounded-full transition-all duration-300 ${isCodeMode ? "text-cyan-500 bg-cyan-500/10" : "text-text-muted"}`}
                   aria-label="Toggle code mode"
                 >
                   <Code2 className="w-5 h-5" />
                 </button>
                 <button
                   onClick={toggleTheme}
-                  className="p-2 text-white/60 hover:text-white rounded-full transition-all duration-300"
+                  className="p-2 text-text-muted hover:text-text-main rounded-full transition-all duration-300"
                   aria-label="Toggle theme"
                 >
                   {theme === "light" ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
                 </button>
                 <button
                   onClick={toggleLang}
-                  className="p-2 text-white/60 hover:text-white rounded-full transition-all duration-300"
+                  className="p-2 text-text-muted hover:text-text-main rounded-full transition-all duration-300"
                   aria-label="Switch language"
                 >
                   <Languages className="w-5 h-5" />
                 </button>
                 <button
-                  className="p-3 text-white hover:bg-white/5 rounded-full transition-colors border border-white/5 ml-2"
+                  className="p-3 text-text-main hover:bg-border/10 rounded-full transition-colors border border-border/40 ml-2"
                   onClick={() => setIsMenuOpen(false)}
                   aria-label="Close menu"
                 >
@@ -308,7 +308,7 @@ export const Navbar = ({ navbarContent, locale: localeProp }: NavbarProps = {}) 
                   <>
                     <span className="font-mono text-xs text-cyan-500/40 mb-2 font-bold select-none">{link.code}</span>
                     <div className="flex flex-col">
-                      <span className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter text-white group-hover:text-cyan-400 transition-colors flex items-center gap-4 drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
+                      <span className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter text-text-main group-hover:text-cyan-400 transition-colors flex items-center gap-4">
                         {link.name}
                         <div className="w-0 h-[2px] bg-cyan-500 group-hover:w-12 transition-all duration-500 hidden sm:block" />
                       </span>

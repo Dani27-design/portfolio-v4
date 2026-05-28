@@ -67,7 +67,7 @@ export const Projects = ({ projects, locale }: ProjectsProps) => {
 
                 <div className="flex justify-between items-start mb-8 md:mb-12 relative z-10">
                   <div className="flex flex-col gap-2">
-                    <span className="text-[10px] font-mono font-black text-cyan-400 uppercase tracking-widest bg-cyan-950/60 px-4 py-1.5 border border-cyan-500/40 shadow-[0_0_10px_rgba(6,182,212,0.2)]">
+                    <span className="text-[10px] font-mono font-black text-cyan-400 uppercase tracking-widest bg-cyan-500/15 px-4 py-1.5 border border-cyan-500/40 shadow-[0_0_10px_rgba(6,182,212,0.2)]">
                       [{String(idx + 1).padStart(2, '0')}] PRODUCTION
                     </span>
                   </div>

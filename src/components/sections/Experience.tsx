@@ -60,7 +60,7 @@ export const Experience = ({ experience, locale }: ExperienceProps) => {
 
                   {/* Mobile Date */}
                   <div className="lg:hidden mb-4">
-                    <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-widest font-black px-2 py-1 bg-cyan-950/20 border border-cyan-500/30">
+                    <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-widest font-black px-2 py-1 bg-cyan-500/10 border border-cyan-500/30">
                       {job.period[loc]}
                     </span>
                   </div>
@@ -87,7 +87,7 @@ export const Experience = ({ experience, locale }: ExperienceProps) => {
                              </span>
                              <div className="w-px h-full bg-border/20 mt-2" />
                           </div>
-                          <p className="text-sm md:text-lg leading-relaxed text-text-muted transition-all duration-300 border-l border-white/5 pl-4 hover:border-cyan-500/20">
+                          <p className="text-sm md:text-lg leading-relaxed text-text-muted transition-all duration-300 border-l border-border/30 pl-4 hover:border-cyan-500/20">
                             <CodeText tag="li" type="css">{point}</CodeText>
                           </p>
                         </li>

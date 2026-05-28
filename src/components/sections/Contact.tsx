@@ -58,7 +58,7 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
             <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-text-main leading-[1.1]">
               {headline}
             </h2>
-            <p className="text-sm md:text-lg text-text-muted max-w-2xl mx-auto leading-relaxed border-l-2 border-white/5 pl-6 md:pl-8 italic text-left md:text-center">
+            <p className="text-sm md:text-lg text-text-muted max-w-2xl mx-auto leading-relaxed border-l-2 border-border/30 pl-6 md:pl-8 italic text-left md:text-center">
               {desc}
             </p>
           </div>
@@ -87,7 +87,7 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
                   setCopied(true);
                   setTimeout(() => setCopied(false), 2000);
                 }}
-                className="flex items-center justify-center gap-3 text-[10px] font-black text-cyan-500 uppercase tracking-widest hover:text-cyan-300 transition-all bg-cyan-950/30 px-6 py-3 md:px-4 md:py-2 border border-cyan-500/20 w-full md:w-auto"
+                className="flex items-center justify-center gap-3 text-[10px] font-black text-cyan-500 uppercase tracking-widest hover:text-cyan-300 transition-all bg-cyan-500/10 px-6 py-3 md:px-4 md:py-2 border border-cyan-500/20 w-full md:w-auto"
               >
                 {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
                 {copied ? 'COPIED' : buttonCopyUid}
@@ -109,7 +109,7 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
                       placeholder={placeholderTitle}
-                      className="w-full bg-background/50 border border-border/40 px-3 md:px-6 py-3 md:py-5 outline-none focus:border-cyan-500/60 focus:bg-cyan-950/10 transition-all text-sm font-mono placeholder:opacity-20 group-hover/form:border-border/60"
+                      className="w-full bg-background/50 border border-border/40 px-3 md:px-6 py-3 md:py-5 outline-none focus:border-cyan-500/60 focus:bg-cyan-500/5 transition-all text-sm font-mono placeholder:opacity-20 group-hover/form:border-border/60"
                     />
                   </div>
                   <div className="space-y-3 group/input">
@@ -124,7 +124,7 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
                       onChange={(e) => setMessage(e.target.value)}
                       placeholder={placeholderPayload}
                       enterKeyHint="send"
-                      className="w-full bg-background/50 border border-border/40 px-3 md:px-6 py-3 md:py-5 outline-none focus:border-cyan-500/60 focus:bg-cyan-950/10 transition-all text-sm font-mono resize-none placeholder:opacity-20 group-hover/form:border-border/60"
+                      className="w-full bg-background/50 border border-border/40 px-3 md:px-6 py-3 md:py-5 outline-none focus:border-cyan-500/60 focus:bg-cyan-500/5 transition-all text-sm font-mono resize-none placeholder:opacity-20 group-hover/form:border-border/60"
                     />
                   </div>
                 </div>
@@ -148,8 +148,8 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
                     </span>
                     <div className="space-y-2">
                        {[...Array(5)].map((_, i) => (
-                         <div key={`diag-proc-${i}`} className="flex justify-between items-center bg-white/5 px-3 py-2 border border-white/5">
-                            <div className="w-full h-1 bg-white/10 overflow-hidden">
+                         <div key={`diag-proc-${i}`} className="flex justify-between items-center bg-border/10 px-3 py-2 border border-border/30">
+                            <div className="w-full h-1 bg-border/20 overflow-hidden">
                                <div
                                  className="h-full w-1/2 bg-cyan-500/40 animate-slide-x"
                                  style={{ animationDuration: `${2 + i * 0.5}s` }}
@@ -173,7 +173,7 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
                 </div>
               </div>
               <div className="hidden md:flex flex-col items-end">
-                <div className="w-16 h-1.5 bg-white/5 rounded-full overflow-hidden">
+                <div className="w-16 h-1.5 bg-border/10 rounded-full overflow-hidden">
                    <div className="h-full w-[85%] bg-indigo-500/40" />
                 </div>
               </div>
@@ -191,11 +191,11 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${social.name} (opens in new tab)`}
-                className="flex flex-col items-center justify-center p-6 bg-surface/30 border border-border/20 gap-3 text-[10px] font-black text-text-muted uppercase tracking-[0.3em] hover:text-cyan-400 hover:border-cyan-500/40 hover:bg-cyan-950/10 transition-all group/social"
+                className="flex flex-col items-center justify-center p-6 bg-surface/30 border border-border/20 gap-3 text-[10px] font-black text-text-muted uppercase tracking-[0.3em] hover:text-cyan-400 hover:border-cyan-500/40 hover:bg-cyan-500/5 transition-all group/social"
               >
                 <motion.div
                   whileHover={{ scale: 1.2, rotate: 10 }}
-                  className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-border/40 flex items-center justify-center group-hover/social:border-cyan-500/40 group-hover/social:bg-cyan-950/20 transition-all shrink-0"
+                  className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-border/40 flex items-center justify-center group-hover/social:border-cyan-500/40 group-hover/social:bg-cyan-500/10 transition-all shrink-0"
                 >
                   <span className="opacity-60 group-hover/social:opacity-100 group-hover/social:text-cyan-500 transition-all">{social.icon}</span>
                 </motion.div>

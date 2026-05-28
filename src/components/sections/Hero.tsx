@@ -88,7 +88,7 @@ export const Hero = ({ heroContent, locale }: HeroProps = {}) => {
           </div>
         </Reveal>
 
-        <Reveal delay={0.2} className="relative text-white">
+        <Reveal delay={0.2} className="relative text-text-main">
           <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight leading-tight max-w-4xl relative z-10">
             <CodeText tag="h1" type="html">
               {headline}

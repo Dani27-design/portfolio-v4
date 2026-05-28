@@ -29,7 +29,7 @@ export const ProjectListPage = ({ projects, locale, hireBannerContent }: Project
       <div className="container-custom relative z-10">
         <Link
           href="/"
-          className="inline-flex items-center gap-3 text-cyan-500 font-mono text-[10px] font-black uppercase tracking-[0.4em] mb-12 hover:text-white transition-colors group"
+          className="inline-flex items-center gap-3 text-cyan-500 font-mono text-[10px] font-black uppercase tracking-[0.4em] mb-12 hover:text-text-main transition-colors group"
         >
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-2 transition-transform" />
           BACK_TO_ROOT
@@ -64,7 +64,7 @@ export const ProjectListPage = ({ projects, locale, hireBannerContent }: Project
 
                 <div className="flex justify-between items-start mb-8 md:mb-12 relative z-10">
                   <div className="flex flex-col gap-2">
-                    <span className="text-[10px] font-mono font-black text-cyan-400 uppercase tracking-widest bg-cyan-950/60 px-4 py-1.5 border border-cyan-500/40 shadow-[0_0_10px_rgba(6,182,212,0.2)]">
+                    <span className="text-[10px] font-mono font-black text-cyan-400 uppercase tracking-widest bg-cyan-500/15 px-4 py-1.5 border border-cyan-500/40 shadow-[0_0_10px_rgba(6,182,212,0.2)]">
                       [{String(idx + 1).padStart(2, '0')}] PRODUCTION
                     </span>
                   </div>

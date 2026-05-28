@@ -115,10 +115,10 @@ export const ScrollToTop = () => {
           >
             {/* Launch Pad Brackets */}
             <div className={`absolute inset-0 transition-opacity duration-300 ${(isDeploying || isLaunching) ? 'opacity-0' : 'opacity-100'}`}>
-               <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-white/20" />
-               <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-white/20" />
-               <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-white/20" />
-               <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-white/20" />
+               <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-border/40" />
+               <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-border/40" />
+               <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-border/40" />
+               <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-border/40" />
             </div>
 
             {/* Jet Rocket Engine Glow & Smoke Trail */}
