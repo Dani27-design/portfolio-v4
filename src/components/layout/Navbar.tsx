@@ -118,9 +118,13 @@ export const Navbar = ({ navbarContent, locale: localeProp }: NavbarProps = {}) 
         <div className="container-custom h-full flex items-center relative z-10">
           {/* Section 1: Brand (Left) */}
           <Link href="/" className="flex-[1] flex items-center gap-4 group cursor-pointer">
-            <div className="w-10 h-10 bg-text-main text-background flex items-center justify-center font-black text-lg select-none group-hover:scale-105 transition-transform shrink-0">DC</div>
+            {navbarContent?.logoUrl ? (
+              <img src={navbarContent.logoUrl} alt={navbarContent?.brandName ?? 'Daniansyah'} className="w-10 h-10 object-cover rounded-sm group-hover:scale-105 transition-transform shrink-0" />
+            ) : (
+              <div className="w-10 h-10 bg-text-main text-background flex items-center justify-center font-black text-lg select-none group-hover:scale-105 transition-transform shrink-0">{navbarContent?.brandInitials ?? 'DC'}</div>
+            )}
             <div className="hidden sm:flex flex-col justify-center">
-              <span className="font-black tracking-tighter text-lg uppercase leading-none group-hover:text-cyan-400 transition-colors whitespace-nowrap">Daniansyah</span>
+              <span className="font-black tracking-tighter text-lg uppercase leading-none group-hover:text-cyan-400 transition-colors whitespace-nowrap">{navbarContent?.brandName ?? 'Daniansyah'}</span>
             </div>
           </Link>
 

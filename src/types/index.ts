@@ -80,6 +80,7 @@ export interface AboutContent {
     stat3: StatItem;
   };
   avatarInitials: string;
+  avatarUrl?: string;
   updatedAt: string;
 }
 
@@ -135,6 +136,9 @@ export interface NavbarContent {
     blog: Bilingual;
     contact: Bilingual;
   };
+  logoUrl?: string;
+  brandInitials?: string;
+  brandName?: string;
   updatedAt: string;
 }
 

@@ -34,7 +34,7 @@ export function PublicShell({ children, navbarContent, footerContent, locale }: 
       <ScrollProgress />
       <Navbar navbarContent={navbarContent} locale={locale} />
       <main id="main-content">{children}</main>
-      <Footer footerContent={footerContent} locale={locale} />
+      <Footer footerContent={footerContent} locale={locale} logoUrl={navbarContent?.logoUrl} />
     </div>
   );
 }

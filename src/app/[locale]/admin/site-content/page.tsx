@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
+import { ImageUpload } from '@/components/admin/ImageUpload';
 import { updateHeroContent, updateAboutContent, updateContactContent, updateFooterContent, updateHireBannerContent, updateNavbarContent } from '@/actions/siteContent';
 import type { HeroContent, AboutContent, ContactContent, FooterContent, HireBannerContent, NavbarContent } from '@/types';
 
@@ -170,6 +171,7 @@ function AboutForm({ about, onSave }: { about: AboutContent | null; onSave: () =
     headlineEn: about?.headline.en || '', headlineId: about?.headline.id || '',
     descEn: about?.desc.en || '', descId: about?.desc.id || '',
     avatarInitials: about?.avatarInitials || '',
+    avatarUrl: about?.avatarUrl || '',
     stat1Value: about?.stats.stat1.value || '', stat1LabelEn: about?.stats.stat1.label.en || '', stat1LabelId: about?.stats.stat1.label.id || '',
     stat2Value: about?.stats.stat2.value || '', stat2LabelEn: about?.stats.stat2.label.en || '', stat2LabelId: about?.stats.stat2.label.id || '',
     stat3Value: about?.stats.stat3.value || '', stat3LabelEn: about?.stats.stat3.label.en || '', stat3LabelId: about?.stats.stat3.label.id || '',
@@ -187,6 +189,7 @@ function AboutForm({ about, onSave }: { about: AboutContent | null; onSave: () =
         headline: { en: form.headlineEn, id: form.headlineId },
         desc: { en: form.descEn, id: form.descId },
         avatarInitials: form.avatarInitials,
+        avatarUrl: form.avatarUrl || undefined,
         stats: {
           stat1: { value: form.stat1Value, label: { en: form.stat1LabelEn, id: form.stat1LabelId } },
           stat2: { value: form.stat2Value, label: { en: form.stat2LabelEn, id: form.stat2LabelId } },
@@ -210,8 +213,15 @@ function AboutForm({ about, onSave }: { about: AboutContent | null; onSave: () =
         <div><MobileLabel>Description (EN)</MobileLabel><textarea value={form.descEn} onChange={e => setForm({...form, descEn: e.target.value})} placeholder="Description (EN)" rows={3} required className={inputClass} /></div>
         <div><MobileLabel>Description (ID)</MobileLabel><textarea value={form.descId} onChange={e => setForm({...form, descId: e.target.value})} placeholder="Description (ID)" rows={3} required className={inputClass} /></div>
       </div>
+      <ImageUpload
+        currentUrl={form.avatarUrl}
+        storagePath="brand/avatar"
+        onUpload={(url) => setForm({...form, avatarUrl: url})}
+        onRemove={() => setForm({...form, avatarUrl: ''})}
+        label="Avatar Image"
+      />
       <div>
-        <MobileLabel>Avatar Initials</MobileLabel>
+        <MobileLabel>Avatar Initials (fallback if no image)</MobileLabel>
         <input value={form.avatarInitials} onChange={e => setForm({...form, avatarInitials: e.target.value})} placeholder="Avatar Initials (e.g. DC)" required className={inputClass + " w-32"} />
       </div>
       <div>
@@ -392,6 +402,9 @@ function HireBannerForm({ hireBanner, onSave }: { hireBanner: HireBannerContent 
 
 function NavbarForm({ navbar, onSave }: { navbar: NavbarContent | null; onSave: () => void }) {
   const [form, setForm] = useState({
+    logoUrl: navbar?.logoUrl || '',
+    brandInitials: navbar?.brandInitials || '',
+    brandName: navbar?.brandName || '',
     aboutEn: navbar?.labels.about.en || '', aboutId: navbar?.labels.about.id || '',
     stackEn: navbar?.labels.stack.en || '', stackId: navbar?.labels.stack.id || '',
     experienceEn: navbar?.labels.experience.en || '', experienceId: navbar?.labels.experience.id || '',
@@ -408,6 +421,9 @@ function NavbarForm({ navbar, onSave }: { navbar: NavbarContent | null; onSave: 
     setError(''); setSuccess(false); setSaving(true);
     try {
       await updateNavbarContent({
+        logoUrl: form.logoUrl || undefined,
+        brandInitials: form.brandInitials || undefined,
+        brandName: form.brandName || undefined,
         labels: {
           about: { en: form.aboutEn, id: form.aboutId }, stack: { en: form.stackEn, id: form.stackId },
           experience: { en: form.experienceEn, id: form.experienceId }, projects: { en: form.projectsEn, id: form.projectsId },
@@ -432,6 +448,18 @@ function NavbarForm({ navbar, onSave }: { navbar: NavbarContent | null; onSave: 
     <form onSubmit={handleSubmit} className="space-y-4">
       {error && <div className="p-3 bg-red-500/10 border border-red-500/20 rounded text-red-400 text-sm">{error}</div>}
       {success && <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded text-emerald-400 text-sm">Navbar labels saved successfully</div>}
+      <ImageUpload
+        currentUrl={form.logoUrl}
+        storagePath="brand/logo"
+        onUpload={(url) => setForm({...form, logoUrl: url})}
+        onRemove={() => setForm({...form, logoUrl: ''})}
+        label="Brand Logo (used in Navbar & Footer)"
+      />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div><MobileLabel>Brand Initials (fallback if no logo)</MobileLabel><input value={form.brandInitials} onChange={e => setForm({...form, brandInitials: e.target.value})} placeholder="Brand Initials (e.g. DC)" className={inputClass} /></div>
+        <div><MobileLabel>Brand Name</MobileLabel><input value={form.brandName} onChange={e => setForm({...form, brandName: e.target.value})} placeholder="Brand Name (e.g. Daniansyah)" className={inputClass} /></div>
+      </div>
+      <label className="block text-xs font-mono text-slate-400 uppercase tracking-wider">Nav Labels</label>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {navFields.map(([enKey, enPh, idKey, idPh]) => (
           <div key={enKey} className="contents">

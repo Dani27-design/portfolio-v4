@@ -38,8 +38,14 @@ export const About = ({ aboutContent, locale }: AboutProps = {}) => {
           <Reveal>
             <div className="relative group mx-auto md:mx-0 max-w-fit">
               <div className="w-64 h-64 md:w-80 md:h-80 bg-surface border border-border flex items-center justify-center text-6xl font-bold text-text-muted/10 tracking-tighter relative z-10 select-none overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/5 to-indigo-500/5" />
-                <CodeText type="logic">{avatarInitials}</CodeText>
+                {aboutContent?.avatarUrl ? (
+                  <img src={aboutContent.avatarUrl} alt={avatarInitials} className="absolute inset-0 w-full h-full object-cover" />
+                ) : (
+                  <>
+                    <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/5 to-indigo-500/5" />
+                    <CodeText type="logic">{avatarInitials}</CodeText>
+                  </>
+                )}
                 <div className="absolute top-0 left-0 w-full h-[1px] bg-primary/10 -translate-y-4 group-hover:translate-y-4 transition-transform duration-700" />
                 <div className="absolute bottom-0 right-0 w-full h-[1px] bg-primary/10 translate-y-4 group-hover:-translate-y-4 transition-transform duration-700" />
               </div>

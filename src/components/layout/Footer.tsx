@@ -9,9 +9,10 @@ const KernelSubstrateGimmick = dynamic(() => import("@/components/gimmicks/Kerne
 interface FooterProps {
   footerContent?: FooterContent | null;
   locale?: string;
+  logoUrl?: string;
 }
 
-export const Footer = ({ footerContent, locale }: FooterProps = {}) => {
+export const Footer = ({ footerContent, locale, logoUrl }: FooterProps = {}) => {
   const t = useTranslations('footer');
   const loc = (locale || 'en') as Locale;
   const currentYear = new Date().getFullYear();
@@ -27,9 +28,11 @@ export const Footer = ({ footerContent, locale }: FooterProps = {}) => {
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex flex-col items-center md:items-start gap-2">
              <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded-sm bg-gradient-to-br from-cyan-700 to-indigo-800 flex items-center justify-center p-1 group cursor-pointer transition-all hover:scale-110">
-                   <div className="w-full h-full border border-white/20" />
-                </div>
+                {logoUrl ? (
+                  <img src={logoUrl} alt={ownerName} className="w-6 h-6 object-cover rounded-sm group cursor-pointer transition-all hover:scale-110" />
+                ) : (
+                  <div className="w-6 h-6 rounded-sm bg-text-main text-background flex items-center justify-center font-black text-[8px] select-none group cursor-pointer transition-all hover:scale-110">DC</div>
+                )}
                 <div className="flex flex-col">
                    <span className="text-[11px] font-black text-text-main tracking-[0.2em] uppercase">{ownerName}</span>
                    <span className="text-[8px] font-mono text-cyan-500/80 font-bold uppercase tracking-widest leading-none">{role}</span>
