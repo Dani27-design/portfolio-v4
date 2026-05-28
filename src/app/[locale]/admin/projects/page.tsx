@@ -37,11 +37,11 @@ export default function AdminProjectsPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-bold text-white">Projects</h1>
+      <div className="flex items-center justify-between mb-6 lg:mb-8">
+        <h1 className="text-xl lg:text-2xl font-bold text-white">Projects</h1>
         <button
           onClick={() => setCreating(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-bold rounded transition-colors"
+          className="flex items-center gap-2 px-3 py-2 text-xs lg:px-4 lg:py-2 lg:text-sm bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded transition-colors"
         >
           <Plus className="w-4 h-4" /> Add Project
         </button>
@@ -62,7 +62,8 @@ export default function AdminProjectsPage() {
         />
       )}
 
-      <div className="bg-slate-800 border border-slate-700 rounded-lg overflow-hidden">
+      {/* Desktop Table */}
+      <div className="hidden lg:block bg-slate-800 border border-slate-700 rounded-lg overflow-hidden">
         <table className="w-full text-sm">
           <thead className="bg-slate-850 border-b border-slate-700">
             <tr>
@@ -89,6 +90,27 @@ export default function AdminProjectsPage() {
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile Card List */}
+      <div className="lg:hidden space-y-3">
+        {projects.map((p) => (
+          <div key={p.id} className="bg-slate-800 border border-slate-700 rounded-lg p-4">
+            <div className="flex justify-between items-start">
+              <div className="flex-1 min-w-0 mr-3">
+                <div className="text-white font-medium text-sm truncate">{p.name.en}</div>
+                <div className="text-slate-400 text-xs mt-1 font-mono">{p.status}</div>
+              </div>
+              <div className="flex items-center gap-1 shrink-0">
+                <button onClick={() => setEditing(p)} className="p-2 text-slate-400 hover:text-cyan-400" aria-label="Edit"><Pencil className="w-4 h-4" /></button>
+                <button onClick={() => handleDelete(p.id)} className="p-2 text-slate-400 hover:text-red-400" aria-label="Delete"><Trash2 className="w-4 h-4" /></button>
+              </div>
+            </div>
+          </div>
+        ))}
+        {projects.length === 0 && (
+          <div className="text-center text-slate-500 py-8">No projects found</div>
+        )}
       </div>
     </div>
   );
@@ -134,22 +156,48 @@ function ProjectForm({ project, onClose, onSave }: { project: Project | null; on
     }
   };
 
+  const inputClass = "bg-slate-900 border border-slate-600 rounded px-3 py-2.5 lg:py-2 text-sm text-white outline-none focus:border-cyan-500";
+
   return (
-    <div className="mb-8 bg-slate-800 border border-slate-700 rounded-lg p-6">
+    <div className="mb-6 lg:mb-8 bg-slate-800 border border-slate-700 rounded-lg p-4 lg:p-6">
       <h2 className="text-lg font-bold text-white mb-4">{project ? 'Edit' : 'Create'} Project</h2>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {error && <div className="md:col-span-2 p-3 bg-red-500/10 border border-red-500/20 rounded text-red-400 text-sm">{error}</div>}
-        <input value={form.nameEn} onChange={e => setForm({...form, nameEn: e.target.value})} placeholder="Name (EN)" required className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white outline-none focus:border-cyan-500" />
-        <input value={form.nameId} onChange={e => setForm({...form, nameId: e.target.value})} placeholder="Name (ID)" required className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white outline-none focus:border-cyan-500" />
-        <textarea value={form.descEn} onChange={e => setForm({...form, descEn: e.target.value})} placeholder="Description (EN)" rows={3} required className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white outline-none focus:border-cyan-500" />
-        <textarea value={form.descId} onChange={e => setForm({...form, descId: e.target.value})} placeholder="Description (ID)" rows={3} required className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white outline-none focus:border-cyan-500" />
-        <input value={form.tech} onChange={e => setForm({...form, tech: e.target.value})} placeholder="Tech (comma-separated)" className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white outline-none focus:border-cyan-500" />
-        <input value={form.version} onChange={e => setForm({...form, version: e.target.value})} placeholder="Version" className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white outline-none focus:border-cyan-500" />
-        <input value={form.status} onChange={e => setForm({...form, status: e.target.value})} placeholder="Status" className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white outline-none focus:border-cyan-500" />
-        <input type="number" value={form.order} onChange={e => setForm({...form, order: parseInt(e.target.value) || 0})} placeholder="Order" className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white outline-none focus:border-cyan-500" />
-        <div className="md:col-span-2 flex gap-3">
-          <button type="submit" disabled={saving} className="px-6 py-2 bg-cyan-600 hover:bg-cyan-500 disabled:bg-slate-700 text-white text-sm font-bold rounded">{saving ? 'Saving...' : 'Save'}</button>
-          <button type="button" onClick={onClose} className="px-6 py-2 bg-slate-700 hover:bg-slate-600 text-slate-300 text-sm font-bold rounded">Cancel</button>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1 lg:hidden">Name (EN)</label>
+          <input value={form.nameEn} onChange={e => setForm({...form, nameEn: e.target.value})} placeholder="Name (EN)" required className={inputClass + " w-full"} />
+        </div>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1 lg:hidden">Name (ID)</label>
+          <input value={form.nameId} onChange={e => setForm({...form, nameId: e.target.value})} placeholder="Name (ID)" required className={inputClass + " w-full"} />
+        </div>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1 lg:hidden">Description (EN)</label>
+          <textarea value={form.descEn} onChange={e => setForm({...form, descEn: e.target.value})} placeholder="Description (EN)" rows={3} required className={inputClass + " w-full"} />
+        </div>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1 lg:hidden">Description (ID)</label>
+          <textarea value={form.descId} onChange={e => setForm({...form, descId: e.target.value})} placeholder="Description (ID)" rows={3} required className={inputClass + " w-full"} />
+        </div>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1 lg:hidden">Tech (comma-separated)</label>
+          <input value={form.tech} onChange={e => setForm({...form, tech: e.target.value})} placeholder="Tech (comma-separated)" className={inputClass + " w-full"} />
+        </div>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1 lg:hidden">Version</label>
+          <input value={form.version} onChange={e => setForm({...form, version: e.target.value})} placeholder="Version" className={inputClass + " w-full"} />
+        </div>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1 lg:hidden">Status</label>
+          <input value={form.status} onChange={e => setForm({...form, status: e.target.value})} placeholder="Status" className={inputClass + " w-full"} />
+        </div>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1 lg:hidden">Order</label>
+          <input type="number" value={form.order} onChange={e => setForm({...form, order: parseInt(e.target.value) || 0})} placeholder="Order" className={inputClass + " w-full"} />
+        </div>
+        <div className="md:col-span-2 flex flex-col sm:flex-row gap-3">
+          <button type="submit" disabled={saving} className="w-full sm:w-auto px-6 py-2.5 lg:py-2 bg-cyan-600 hover:bg-cyan-500 disabled:bg-slate-700 text-white text-sm font-bold rounded">{saving ? 'Saving...' : 'Save'}</button>
+          <button type="button" onClick={onClose} className="w-full sm:w-auto px-6 py-2.5 lg:py-2 bg-slate-700 hover:bg-slate-600 text-slate-300 text-sm font-bold rounded">Cancel</button>
         </div>
       </form>
     </div>

@@ -38,9 +38,9 @@ function AdminGuard({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-900 text-slate-200">
+    <div className="lg:flex min-h-screen bg-slate-900 text-slate-200">
       <AdminSidebar />
-      <main className="flex-1 p-8 overflow-auto">{children}</main>
+      <main className="flex-1 px-4 pb-6 pt-[72px] lg:p-8 overflow-auto">{children}</main>
     </div>
   );
 }

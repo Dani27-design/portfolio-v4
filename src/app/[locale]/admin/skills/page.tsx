@@ -37,11 +37,11 @@ export default function AdminSkillsPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-bold text-white">Skills</h1>
+      <div className="flex items-center justify-between mb-6 lg:mb-8">
+        <h1 className="text-xl lg:text-2xl font-bold text-white">Skills</h1>
         <button
           onClick={() => setCreating(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-bold rounded transition-colors"
+          className="flex items-center gap-2 px-3 py-2 text-xs lg:px-4 lg:py-2 lg:text-sm bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded transition-colors"
         >
           <Plus className="w-4 h-4" /> Add Group
         </button>
@@ -62,7 +62,8 @@ export default function AdminSkillsPage() {
         />
       )}
 
-      <div className="bg-slate-800 border border-slate-700 rounded-lg overflow-hidden">
+      {/* Desktop Table */}
+      <div className="hidden lg:block bg-slate-800 border border-slate-700 rounded-lg overflow-hidden">
         <table className="w-full text-sm">
           <thead className="bg-slate-850 border-b border-slate-700">
             <tr>
@@ -89,6 +90,27 @@ export default function AdminSkillsPage() {
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile Card List */}
+      <div className="lg:hidden space-y-3">
+        {groups.map((g) => (
+          <div key={g.id} className="bg-slate-800 border border-slate-700 rounded-lg p-4">
+            <div className="flex justify-between items-start">
+              <div className="flex-1 min-w-0 mr-3">
+                <div className="text-white font-medium text-sm truncate">{g.title.en}</div>
+                <div className="text-slate-400 text-xs mt-1 line-clamp-1">{g.skills.map(s => s.name).join(', ')}</div>
+              </div>
+              <div className="flex items-center gap-1 shrink-0">
+                <button onClick={() => setEditing(g)} className="p-2 text-slate-400 hover:text-cyan-400" aria-label="Edit"><Pencil className="w-4 h-4" /></button>
+                <button onClick={() => handleDelete(g.id)} className="p-2 text-slate-400 hover:text-red-400" aria-label="Delete"><Trash2 className="w-4 h-4" /></button>
+              </div>
+            </div>
+          </div>
+        ))}
+        {groups.length === 0 && (
+          <div className="text-center text-slate-500 py-8">No skill groups found</div>
+        )}
       </div>
     </div>
   );
@@ -134,23 +156,40 @@ function SkillForm({ group, onClose, onSave }: { group: SkillGroup | null; onClo
     }
   };
 
+  const inputClass = "bg-slate-900 border border-slate-600 rounded px-3 py-2.5 lg:py-2 text-sm text-white outline-none focus:border-cyan-500";
+
   return (
-    <div className="mb-8 bg-slate-800 border border-slate-700 rounded-lg p-6">
+    <div className="mb-6 lg:mb-8 bg-slate-800 border border-slate-700 rounded-lg p-4 lg:p-6">
       <h2 className="text-lg font-bold text-white mb-4">{group ? 'Edit' : 'Create'} Skill Group</h2>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {error && <div className="md:col-span-2 p-3 bg-red-500/10 border border-red-500/20 rounded text-red-400 text-sm">{error}</div>}
-        <input value={form.titleEn} onChange={e => setForm({...form, titleEn: e.target.value})} placeholder="Title (EN)" required className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white outline-none focus:border-cyan-500" />
-        <input value={form.titleId} onChange={e => setForm({...form, titleId: e.target.value})} placeholder="Title (ID)" required className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white outline-none focus:border-cyan-500" />
-        <textarea value={form.contextEn} onChange={e => setForm({...form, contextEn: e.target.value})} placeholder="Context (EN)" rows={2} className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white outline-none focus:border-cyan-500" />
-        <textarea value={form.contextId} onChange={e => setForm({...form, contextId: e.target.value})} placeholder="Context (ID)" rows={2} className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white outline-none focus:border-cyan-500" />
+        <div>
+          <label className="block text-xs text-slate-400 mb-1 lg:hidden">Title (EN)</label>
+          <input value={form.titleEn} onChange={e => setForm({...form, titleEn: e.target.value})} placeholder="Title (EN)" required className={inputClass + " w-full"} />
+        </div>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1 lg:hidden">Title (ID)</label>
+          <input value={form.titleId} onChange={e => setForm({...form, titleId: e.target.value})} placeholder="Title (ID)" required className={inputClass + " w-full"} />
+        </div>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1 lg:hidden">Context (EN)</label>
+          <textarea value={form.contextEn} onChange={e => setForm({...form, contextEn: e.target.value})} placeholder="Context (EN)" rows={2} className={inputClass + " w-full"} />
+        </div>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1 lg:hidden">Context (ID)</label>
+          <textarea value={form.contextId} onChange={e => setForm({...form, contextId: e.target.value})} placeholder="Context (ID)" rows={2} className={inputClass + " w-full"} />
+        </div>
         <div className="md:col-span-2">
           <label className="block text-xs font-mono text-slate-400 uppercase tracking-wider mb-1.5">Skills (one per line, format: Name:TAG)</label>
-          <textarea value={form.skills} onChange={e => setForm({...form, skills: e.target.value})} placeholder="TypeScript:STRICT&#10;Node.js:RUNTIME" rows={5} className="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white font-mono outline-none focus:border-cyan-500" />
+          <textarea value={form.skills} onChange={e => setForm({...form, skills: e.target.value})} placeholder={"TypeScript:STRICT\nNode.js:RUNTIME"} rows={5} className={inputClass + " w-full font-mono"} />
         </div>
-        <input type="number" value={form.order} onChange={e => setForm({...form, order: parseInt(e.target.value) || 0})} placeholder="Order" className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white outline-none focus:border-cyan-500" />
-        <div className="md:col-span-2 flex gap-3">
-          <button type="submit" disabled={saving} className="px-6 py-2 bg-cyan-600 hover:bg-cyan-500 disabled:bg-slate-700 text-white text-sm font-bold rounded">{saving ? 'Saving...' : 'Save'}</button>
-          <button type="button" onClick={onClose} className="px-6 py-2 bg-slate-700 hover:bg-slate-600 text-slate-300 text-sm font-bold rounded">Cancel</button>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1 lg:hidden">Order</label>
+          <input type="number" value={form.order} onChange={e => setForm({...form, order: parseInt(e.target.value) || 0})} placeholder="Order" className={inputClass + " w-full"} />
+        </div>
+        <div className="md:col-span-2 flex flex-col sm:flex-row gap-3">
+          <button type="submit" disabled={saving} className="w-full sm:w-auto px-6 py-2.5 lg:py-2 bg-cyan-600 hover:bg-cyan-500 disabled:bg-slate-700 text-white text-sm font-bold rounded">{saving ? 'Saving...' : 'Save'}</button>
+          <button type="button" onClick={onClose} className="w-full sm:w-auto px-6 py-2.5 lg:py-2 bg-slate-700 hover:bg-slate-600 text-slate-300 text-sm font-bold rounded">Cancel</button>
         </div>
       </form>
     </div>

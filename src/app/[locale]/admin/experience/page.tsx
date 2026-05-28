@@ -37,11 +37,11 @@ export default function AdminExperiencePage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-bold text-white">Experience</h1>
+      <div className="flex items-center justify-between mb-6 lg:mb-8">
+        <h1 className="text-xl lg:text-2xl font-bold text-white">Experience</h1>
         <button
           onClick={() => setCreating(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-bold rounded transition-colors"
+          className="flex items-center gap-2 px-3 py-2 text-xs lg:px-4 lg:py-2 lg:text-sm bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded transition-colors"
         >
           <Plus className="w-4 h-4" /> Add Entry
         </button>
@@ -62,7 +62,8 @@ export default function AdminExperiencePage() {
         />
       )}
 
-      <div className="bg-slate-800 border border-slate-700 rounded-lg overflow-hidden">
+      {/* Desktop Table */}
+      <div className="hidden lg:block bg-slate-800 border border-slate-700 rounded-lg overflow-hidden">
         <table className="w-full text-sm">
           <thead className="bg-slate-850 border-b border-slate-700">
             <tr>
@@ -91,6 +92,27 @@ export default function AdminExperiencePage() {
             )}
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile Card List */}
+      <div className="lg:hidden space-y-3">
+        {items.map((item) => (
+          <div key={item.id} className="bg-slate-800 border border-slate-700 rounded-lg p-4">
+            <div className="flex justify-between items-start">
+              <div className="flex-1 min-w-0 mr-3">
+                <div className="text-white font-medium text-sm truncate">{item.title.en}</div>
+                <div className="text-slate-400 text-xs mt-1">{item.company} &middot; {item.period.en}</div>
+              </div>
+              <div className="flex items-center gap-1 shrink-0">
+                <button onClick={() => setEditing(item)} className="p-2 text-slate-400 hover:text-cyan-400" aria-label="Edit"><Pencil className="w-4 h-4" /></button>
+                <button onClick={() => handleDelete(item.id)} className="p-2 text-slate-400 hover:text-red-400" aria-label="Delete"><Trash2 className="w-4 h-4" /></button>
+              </div>
+            </div>
+          </div>
+        ))}
+        {items.length === 0 && (
+          <div className="text-center text-slate-500 py-8">No experience entries found</div>
+        )}
       </div>
     </div>
   );
@@ -140,26 +162,52 @@ function ExperienceForm({ item, onClose, onSave }: { item: ExperienceItem | null
     }
   };
 
+  const inputClass = "bg-slate-900 border border-slate-600 rounded px-3 py-2.5 lg:py-2 text-sm text-white outline-none focus:border-cyan-500";
+
   return (
-    <div className="mb-8 bg-slate-800 border border-slate-700 rounded-lg p-6">
+    <div className="mb-6 lg:mb-8 bg-slate-800 border border-slate-700 rounded-lg p-4 lg:p-6">
       <h2 className="text-lg font-bold text-white mb-4">{item ? 'Edit' : 'Create'} Experience</h2>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {error && <div className="md:col-span-2 p-3 bg-red-500/10 border border-red-500/20 rounded text-red-400 text-sm">{error}</div>}
-        <input value={form.titleEn} onChange={e => setForm({...form, titleEn: e.target.value})} placeholder="Title (EN)" required className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white outline-none focus:border-cyan-500" />
-        <input value={form.titleId} onChange={e => setForm({...form, titleId: e.target.value})} placeholder="Title (ID)" required className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white outline-none focus:border-cyan-500" />
-        <input value={form.company} onChange={e => setForm({...form, company: e.target.value})} placeholder="Company" required className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white outline-none focus:border-cyan-500" />
-        <input type="number" value={form.order} onChange={e => setForm({...form, order: parseInt(e.target.value) || 0})} placeholder="Order" className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white outline-none focus:border-cyan-500" />
-        <input value={form.periodEn} onChange={e => setForm({...form, periodEn: e.target.value})} placeholder="Period (EN)" required className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white outline-none focus:border-cyan-500" />
-        <input value={form.periodId} onChange={e => setForm({...form, periodId: e.target.value})} placeholder="Period (ID)" required className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white outline-none focus:border-cyan-500" />
-        <textarea value={form.pointsEn} onChange={e => setForm({...form, pointsEn: e.target.value})} placeholder="Points EN (one per line)" rows={4} className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white outline-none focus:border-cyan-500" />
-        <textarea value={form.pointsId} onChange={e => setForm({...form, pointsId: e.target.value})} placeholder="Points ID (one per line)" rows={4} className="bg-slate-900 border border-slate-600 rounded px-3 py-2 text-sm text-white outline-none focus:border-cyan-500" />
+        <div>
+          <label className="block text-xs text-slate-400 mb-1 lg:hidden">Title (EN)</label>
+          <input value={form.titleEn} onChange={e => setForm({...form, titleEn: e.target.value})} placeholder="Title (EN)" required className={inputClass + " w-full"} />
+        </div>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1 lg:hidden">Title (ID)</label>
+          <input value={form.titleId} onChange={e => setForm({...form, titleId: e.target.value})} placeholder="Title (ID)" required className={inputClass + " w-full"} />
+        </div>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1 lg:hidden">Company</label>
+          <input value={form.company} onChange={e => setForm({...form, company: e.target.value})} placeholder="Company" required className={inputClass + " w-full"} />
+        </div>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1 lg:hidden">Order</label>
+          <input type="number" value={form.order} onChange={e => setForm({...form, order: parseInt(e.target.value) || 0})} placeholder="Order" className={inputClass + " w-full"} />
+        </div>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1 lg:hidden">Period (EN)</label>
+          <input value={form.periodEn} onChange={e => setForm({...form, periodEn: e.target.value})} placeholder="Period (EN)" required className={inputClass + " w-full"} />
+        </div>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1 lg:hidden">Period (ID)</label>
+          <input value={form.periodId} onChange={e => setForm({...form, periodId: e.target.value})} placeholder="Period (ID)" required className={inputClass + " w-full"} />
+        </div>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1 lg:hidden">Points EN (one per line)</label>
+          <textarea value={form.pointsEn} onChange={e => setForm({...form, pointsEn: e.target.value})} placeholder="Points EN (one per line)" rows={4} className={inputClass + " w-full"} />
+        </div>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1 lg:hidden">Points ID (one per line)</label>
+          <textarea value={form.pointsId} onChange={e => setForm({...form, pointsId: e.target.value})} placeholder="Points ID (one per line)" rows={4} className={inputClass + " w-full"} />
+        </div>
         <label className="flex items-center gap-2 text-sm text-slate-300">
           <input type="checkbox" checked={form.isCurrent} onChange={e => setForm({...form, isCurrent: e.target.checked})} className="rounded" />
           Current position
         </label>
-        <div className="md:col-span-2 flex gap-3">
-          <button type="submit" disabled={saving} className="px-6 py-2 bg-cyan-600 hover:bg-cyan-500 disabled:bg-slate-700 text-white text-sm font-bold rounded">{saving ? 'Saving...' : 'Save'}</button>
-          <button type="button" onClick={onClose} className="px-6 py-2 bg-slate-700 hover:bg-slate-600 text-slate-300 text-sm font-bold rounded">Cancel</button>
+        <div className="md:col-span-2 flex flex-col sm:flex-row gap-3">
+          <button type="submit" disabled={saving} className="w-full sm:w-auto px-6 py-2.5 lg:py-2 bg-cyan-600 hover:bg-cyan-500 disabled:bg-slate-700 text-white text-sm font-bold rounded">{saving ? 'Saving...' : 'Save'}</button>
+          <button type="button" onClick={onClose} className="w-full sm:w-auto px-6 py-2.5 lg:py-2 bg-slate-700 hover:bg-slate-600 text-slate-300 text-sm font-bold rounded">Cancel</button>
         </div>
       </form>
     </div>

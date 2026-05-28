@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Markdown from 'react-markdown';
 import { Bold, Italic, Heading1, Heading2, Code, List, Link2, Eye, Edit3 } from 'lucide-react';
 
@@ -11,7 +11,11 @@ interface MarkdownEditorProps {
 }
 
 export function MarkdownEditor({ value, onChange, placeholder }: MarkdownEditorProps) {
-  const [mode, setMode] = useState<'edit' | 'preview' | 'split'>('split');
+  const [mode, setMode] = useState<'edit' | 'preview' | 'split'>('edit');
+
+  useEffect(() => {
+    if (window.innerWidth >= 1024) setMode('split');
+  }, []);
 
   const insertMarkdown = (before: string, after: string = '') => {
     const textarea = document.querySelector<HTMLTextAreaElement>('[data-md-editor]');
@@ -43,7 +47,7 @@ export function MarkdownEditor({ value, onChange, placeholder }: MarkdownEditorP
   return (
     <div className="border border-slate-600 rounded bg-slate-800">
       {/* Toolbar */}
-      <div className="flex items-center justify-between px-3 py-2 border-b border-slate-600 bg-slate-850">
+      <div className="flex items-center justify-between px-3 py-2 border-b border-slate-600 bg-slate-850 flex-wrap gap-1">
         <div className="flex items-center gap-1">
           {toolbarButtons.map((btn) => (
             <button
@@ -51,7 +55,7 @@ export function MarkdownEditor({ value, onChange, placeholder }: MarkdownEditorP
               type="button"
               onClick={btn.action}
               title={btn.title}
-              className="p-1.5 rounded text-slate-400 hover:text-white hover:bg-slate-700 transition-colors"
+              className="p-2 lg:p-1.5 rounded text-slate-400 hover:text-white hover:bg-slate-700 transition-colors"
             >
               <btn.icon className="w-4 h-4" />
             </button>
@@ -61,21 +65,21 @@ export function MarkdownEditor({ value, onChange, placeholder }: MarkdownEditorP
           <button
             type="button"
             onClick={() => setMode('edit')}
-            className={`p-1.5 rounded text-xs font-mono ${mode === 'edit' ? 'text-cyan-400 bg-cyan-500/10' : 'text-slate-400 hover:text-white'}`}
+            className={`p-2 lg:p-1.5 rounded text-xs font-mono ${mode === 'edit' ? 'text-cyan-400 bg-cyan-500/10' : 'text-slate-400 hover:text-white'}`}
           >
             <Edit3 className="w-4 h-4" />
           </button>
           <button
             type="button"
             onClick={() => setMode('split')}
-            className={`p-1.5 rounded text-xs font-mono ${mode === 'split' ? 'text-cyan-400 bg-cyan-500/10' : 'text-slate-400 hover:text-white'}`}
+            className={`hidden lg:inline-flex p-1.5 rounded text-xs font-mono ${mode === 'split' ? 'text-cyan-400 bg-cyan-500/10' : 'text-slate-400 hover:text-white'}`}
           >
             Split
           </button>
           <button
             type="button"
             onClick={() => setMode('preview')}
-            className={`p-1.5 rounded text-xs font-mono ${mode === 'preview' ? 'text-cyan-400 bg-cyan-500/10' : 'text-slate-400 hover:text-white'}`}
+            className={`p-2 lg:p-1.5 rounded text-xs font-mono ${mode === 'preview' ? 'text-cyan-400 bg-cyan-500/10' : 'text-slate-400 hover:text-white'}`}
           >
             <Eye className="w-4 h-4" />
           </button>
