@@ -53,24 +53,24 @@ export const BlogListPage = ({ blogs, locale, hireBannerContent }: BlogListPageP
                   className="p-6 md:p-10 bg-surface/90 border border-border/40 hover:border-cyan-500/50 hover:-translate-y-2 transition-all duration-500 cursor-pointer group h-full flex flex-col shadow-xl relative group/blog overflow-hidden"
                 >
                   {/* Background Archive Texture */}
-                  <div className="absolute inset-0 opacity-5 [background-image:linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] [background-size:15px_15px] pointer-events-none" />
+                  <div className="absolute inset-0 opacity-5 [background-image:linear-gradient(var(--border-color)_1px,transparent_1px),linear-gradient(90deg,var(--border-color)_1px,transparent_1px)] [background-size:15px_15px] pointer-events-none" />
 
                   {/* Tactical Rail */}
                   <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-transparent via-border/20 to-transparent group-hover:via-cyan-500/40 transition-colors duration-700" />
 
                   <div className="flex justify-between items-start mb-6 md:mb-10 relative z-10">
                      <div className="flex flex-col gap-2">
-                        <div className="text-[10px] font-mono text-cyan-400 mb-2 uppercase tracking-widest font-black flex items-center gap-3">
-                          <span className="w-2 h-2 bg-cyan-500 rounded-sm group-hover:scale-125 transition-transform shadow-[0_0_8px_#06b6d4]"></span>
+                        <div className="text-[10px] font-mono text-cyan-600 dark:text-cyan-400 mb-2 uppercase tracking-widest font-black flex items-center gap-3">
+                          <span className="w-2 h-2 bg-cyan-500 rounded-sm group-hover:scale-125 transition-transform dark:shadow-[0_0_8px_#06b6d4]"></span>
                           LOG_DATE: {blog.date}
                         </div>
                      </div>
-                     <div className="font-mono text-[9px] text-indigo-400 bg-indigo-500/5 px-2 py-0.5 border border-indigo-500/10 uppercase tracking-tighter group-hover:bg-indigo-500/20 group-hover:border-indigo-500/40 transition-colors">
+                     <div className="font-mono text-[9px] text-indigo-600 dark:text-indigo-400 bg-indigo-500/5 px-2 py-0.5 border border-indigo-500/10 uppercase tracking-tighter group-hover:bg-indigo-500/20 group-hover:border-indigo-500/40 transition-colors">
                        #{idx.toString().padStart(2, '0')}
                      </div>
                   </div>
 
-                  <h3 className="text-2xl font-bold text-text-main group-hover:text-cyan-200 transition-colors mb-8 leading-tight tracking-tighter border-l-2 border-transparent group-hover:border-cyan-500/50 group-hover:pl-4 transition-all duration-500">
+                  <h3 className="text-2xl font-bold text-text-main group-hover:text-cyan-700 dark:group-hover:text-cyan-200 transition-colors mb-8 leading-tight tracking-tighter border-l-2 border-transparent group-hover:border-cyan-500/50 group-hover:pl-4 transition-all duration-500">
                     {blog.title[loc]}
                   </h3>
 

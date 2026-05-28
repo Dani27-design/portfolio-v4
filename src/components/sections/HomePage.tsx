@@ -12,7 +12,7 @@ import type { Project, Blog as BlogType, ExperienceItem, SkillGroup, HeroContent
 
 const SkyForceGame = dynamic(() => import("@/components/game/SkyForceGame").then(mod => ({ default: mod.SkyForceGame })), {
   ssr: false,
-  loading: () => <div className="min-h-[360px] md:min-h-[540px] bg-background" />,
+  loading: () => <div className="min-h-[85vh] md:min-h-[540px] bg-background" />,
 });
 
 interface HomePageProps {

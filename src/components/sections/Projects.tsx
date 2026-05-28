@@ -33,17 +33,17 @@ export const Projects = ({ projects, locale }: ProjectsProps) => {
               <h2 className="text-3xl font-bold tracking-tighter text-text-main md:text-5xl lg:text-6xl">
                 <CodeText tag="h2" type="html">{t('title')}</CodeText>
               </h2>
-              <div className="h-1.5 w-24 bg-gradient-to-r from-cyan-500 to-indigo-500 mt-6 shadow-[0_0_20px_rgba(6,182,212,0.5)] mx-auto md:mx-0"></div>
+              <div className="h-1.5 w-24 bg-gradient-to-r from-cyan-500 to-indigo-500 mt-6 dark:shadow-[0_0_20px_rgba(6,182,212,0.5)] mx-auto md:mx-0"></div>
             </div>
           </Reveal>
           <Reveal delay={0.2} width="100%">
             <div className="flex justify-center md:justify-end w-full">
               <Link
                 href="/projects"
-                className="group flex items-center gap-4 px-8 py-4 bg-surface/50 border border-indigo-500/30 hover:border-indigo-500 transition-all duration-500 relative overflow-hidden w-full md:w-auto justify-center shadow-[0_0_20px_rgba(99,102,241,0.15)]"
+                className="group flex items-center gap-4 px-8 py-4 bg-surface/50 border border-indigo-500/30 hover:border-indigo-500 transition-all duration-500 relative overflow-hidden w-full md:w-auto justify-center dark:shadow-[0_0_20px_rgba(99,102,241,0.15)]"
               >
                 <div className="absolute inset-0 bg-indigo-500/10 -translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
-                <span className="font-mono text-[10px] text-indigo-400 font-black uppercase tracking-[0.3em] relative z-10">
+                <span className="font-mono text-[10px] text-indigo-600 dark:text-indigo-400 font-black uppercase tracking-[0.3em] relative z-10">
                   {t('cta')}
                 </span>
                 <ArrowRight className="w-4 h-4 text-indigo-500 group-hover:translate-x-2 transition-transform relative z-10" />
@@ -67,11 +67,11 @@ export const Projects = ({ projects, locale }: ProjectsProps) => {
 
                 <div className="flex justify-between items-start mb-8 md:mb-12 relative z-10">
                   <div className="flex flex-col gap-2">
-                    <span className="text-[10px] font-mono font-black text-cyan-400 uppercase tracking-widest bg-cyan-500/15 px-4 py-1.5 border border-cyan-500/40 shadow-[0_0_10px_rgba(6,182,212,0.2)]">
+                    <span className="text-[10px] font-mono font-black text-cyan-600 dark:text-cyan-400 uppercase tracking-widest bg-cyan-500/15 px-4 py-1.5 border border-cyan-500/40 dark:shadow-[0_0_10px_rgba(6,182,212,0.2)]">
                       [{String(idx + 1).padStart(2, '0')}] PRODUCTION
                     </span>
                   </div>
-                  <div className="w-3 h-3 rounded-full bg-cyan-500 shadow-[0_0_15px_#06b6d4] animate-pulse" />
+                  <div className="w-3 h-3 rounded-full bg-cyan-500 dark:shadow-[0_0_15px_#06b6d4] animate-pulse" />
                 </div>
 
                 <h3 className="text-2xl md:text-3xl font-black mb-6 tracking-tighter text-text-main group-hover:text-cyan-400 transition-colors">

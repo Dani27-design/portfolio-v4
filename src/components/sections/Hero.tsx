@@ -78,7 +78,7 @@ export const Hero = ({ heroContent, locale }: HeroProps = {}) => {
         <Reveal>
           <div className="flex items-center gap-3 mb-8">
             <span className="w-8 h-px bg-cyan-500/37"></span>
-            <div className="px-3 py-1 border border-cyan-500/26 bg-cyan-500/18 flex items-center gap-2 shadow-[0_0_11px_rgba(6,182,212,0.15)]">
+            <div className="px-3 py-1 border border-cyan-500/26 bg-cyan-500/18 flex items-center gap-2 dark:shadow-[0_0_11px_rgba(6,182,212,0.15)]">
               <Layers className="w-3 h-3 text-cyan-500/75" />
               <CodeText tag="tag" type="html" className="text-cyan-500/75 font-bold text-[9px] uppercase tracking-[0.3em]">
                 {tagline}

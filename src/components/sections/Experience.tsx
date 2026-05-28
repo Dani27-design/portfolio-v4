@@ -44,23 +44,23 @@ export const Experience = ({ experience, locale }: ExperienceProps) => {
                 <div className="relative pl-8 lg:pl-16 pb-16 md:pb-24 last:pb-8 last:md:pb-12 group/experience">
                   {/* Date Range - Desktop */}
                   <div className="hidden lg:block absolute -left-48 top-0 w-32 text-right">
-                    <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-widest font-black group-hover/experience:text-cyan-300 transition-colors drop-shadow-[0_0_5px_rgba(6,182,212,0.3)]">
+                    <span className="text-[10px] font-mono text-cyan-600 dark:text-cyan-400 uppercase tracking-widest font-black group-hover/experience:text-cyan-500 dark:group-hover/experience:text-cyan-300 transition-colors dark:drop-shadow-[0_0_5px_rgba(6,182,212,0.3)]">
                       <CodeText type="logic">{job.period[loc]}</CodeText>
                     </span>
                   </div>
 
                   {/* Marker Hub */}
                   <div className="absolute -left-[14px] top-0 z-20">
-                    <div className="w-7 h-7 rounded-full border border-border/40 bg-background flex items-center justify-center transition-all duration-500 group-hover/experience:border-cyan-500/50 group-hover/experience:scale-110 shadow-[0_0_15px_rgba(0,0,0,0.4)]">
+                    <div className="w-7 h-7 rounded-full border border-border/40 bg-background flex items-center justify-center transition-all duration-500 group-hover/experience:border-cyan-500/50 group-hover/experience:scale-110 shadow-md dark:shadow-[0_0_15px_rgba(0,0,0,0.4)]">
                       <div className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                        job.isCurrent ? "bg-cyan-500 shadow-[0_0_12px_#06b6d4]" : "bg-border group-hover/experience:bg-indigo-500/60"
+                        job.isCurrent ? "bg-cyan-500 dark:shadow-[0_0_12px_#06b6d4]" : "bg-border group-hover/experience:bg-indigo-500/60"
                       }`} />
                     </div>
                   </div>
 
                   {/* Mobile Date */}
                   <div className="lg:hidden mb-4">
-                    <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-widest font-black px-2 py-1 bg-cyan-500/10 border border-cyan-500/30">
+                    <span className="text-[10px] font-mono text-cyan-600 dark:text-cyan-400 uppercase tracking-widest font-black px-2 py-1 bg-cyan-500/10 border border-cyan-500/30">
                       {job.period[loc]}
                     </span>
                   </div>
@@ -68,12 +68,12 @@ export const Experience = ({ experience, locale }: ExperienceProps) => {
                   <div className="space-y-8">
                     <div className="space-y-3 relative">
                       <div className="flex items-center gap-4 flex-wrap">
-                        <h3 className="text-2xl md:text-3xl font-bold text-text-main tracking-tight group-hover/experience:text-cyan-50 transition-colors">
+                        <h3 className="text-2xl md:text-3xl font-bold text-text-main tracking-tight group-hover/experience:text-cyan-700 dark:group-hover/experience:text-cyan-50 transition-colors">
                           <CodeText tag="h3">{job.title[loc]}</CodeText>
                         </h3>
                       </div>
-                      <div className="text-sm md:text-base text-cyan-400 font-black tracking-[0.25em] uppercase flex items-center gap-3">
-                        <span className="w-6 h-[2px] bg-cyan-500 shadow-[0_0_8px_#06b6d4]" />
+                      <div className="text-sm md:text-base text-cyan-600 dark:text-cyan-400 font-black tracking-[0.25em] uppercase flex items-center gap-3">
+                        <span className="w-6 h-[2px] bg-cyan-500 dark:shadow-[0_0_8px_#06b6d4]" />
                         <CodeText label="company" type="js">{job.company}</CodeText>
                       </div>
                     </div>

@@ -40,10 +40,10 @@ export const BlogDetailsPage = ({ blog, locale, hireBannerContent }: BlogDetails
           <Reveal width="100%">
             <div className="mb-10 md:mb-16">
               <div className="flex flex-wrap items-center gap-2 md:gap-4 mb-6 md:mb-8">
-                <span className="font-mono text-[8px] md:text-[9px] text-cyan-500 font-black uppercase tracking-[0.3em] md:tracking-[0.4em] bg-cyan-500/10 px-2 md:px-3 py-1 border border-cyan-500/20">
+                <span className="font-mono text-[8px] md:text-[9px] text-cyan-600 dark:text-cyan-500 font-black uppercase tracking-[0.3em] md:tracking-[0.4em] bg-cyan-500/10 px-2 md:px-3 py-1 border border-cyan-500/20">
                   LOG_TYPE :: TECHNICAL_LOG
                 </span>
-                <span className="font-mono text-[8px] md:text-[9px] text-indigo-400 font-black uppercase tracking-[0.3em] md:tracking-[0.4em] bg-indigo-500/10 px-2 md:px-3 py-1 border border-indigo-500/20">
+                <span className="font-mono text-[8px] md:text-[9px] text-indigo-600 dark:text-indigo-400 font-black uppercase tracking-[0.3em] md:tracking-[0.4em] bg-indigo-500/10 px-2 md:px-3 py-1 border border-indigo-500/20">
                   STATUS :: DEPLOYED
                 </span>
               </div>

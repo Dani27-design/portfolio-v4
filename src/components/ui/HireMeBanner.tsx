@@ -61,7 +61,7 @@ export const HireMeBanner = ({ hireBannerContent, locale }: HireMeBannerProps = 
                   <div
                     className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"
                   />
-                  <span className="font-mono text-[9px] md:text-[10px] text-cyan-400 font-black uppercase tracking-[0.2em] md:tracking-[0.4em]">
+                  <span className="font-mono text-[9px] md:text-[10px] text-cyan-600 dark:text-cyan-400 font-black uppercase tracking-[0.2em] md:tracking-[0.4em]">
                     {badge}
                   </span>
                 </div>
@@ -76,15 +76,15 @@ export const HireMeBanner = ({ hireBannerContent, locale }: HireMeBannerProps = 
 
                 <div className="flex flex-wrap justify-center lg:justify-start gap-4 md:gap-6">
                   <div className="flex items-center gap-2 md:gap-3">
-                    <Cpu className="w-4 h-4 md:w-5 md:h-5 text-indigo-400" />
+                    <Cpu className="w-4 h-4 md:w-5 md:h-5 text-indigo-600 dark:text-indigo-400" />
                     <span className="font-mono text-[8px] md:text-[9px] uppercase tracking-widest text-text-muted">Distributed_Eng</span>
                   </div>
                   <div className="flex items-center gap-2 md:gap-3">
-                    <ShieldCheck className="w-4 h-4 md:w-5 md:h-5 text-indigo-400" />
+                    <ShieldCheck className="w-4 h-4 md:w-5 md:h-5 text-indigo-600 dark:text-indigo-400" />
                     <span className="font-mono text-[8px] md:text-[9px] uppercase tracking-widest text-text-muted">Security_First</span>
                   </div>
                   <div className="flex items-center gap-2 md:gap-3">
-                    <Zap className="w-4 h-4 md:w-5 md:h-5 text-indigo-400" />
+                    <Zap className="w-4 h-4 md:w-5 md:h-5 text-indigo-600 dark:text-indigo-400" />
                     <span className="font-mono text-[8px] md:text-[9px] uppercase tracking-widest text-text-muted">High_Performance</span>
                   </div>
                 </div>

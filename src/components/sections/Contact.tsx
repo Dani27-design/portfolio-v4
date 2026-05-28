@@ -68,7 +68,7 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
           <div
             onFocus={() => setActiveMode(true)}
             onBlur={() => setActiveMode(false)}
-            className="bg-surface/90 border-y md:border border-border/60 shadow-[0_40px_100px_rgba(0,0,0,0.4)] relative overflow-hidden group/form transition-all duration-700 mx-0 md:mx-0"
+            className="bg-surface/90 border-y md:border border-border/60 shadow-[0_40px_100px_rgba(0,0,0,0.06)] dark:shadow-[0_40px_100px_rgba(0,0,0,0.4)] relative overflow-hidden group/form transition-all duration-700 mx-0 md:mx-0"
           >
             {/* Header Rail */}
             <div className="px-4 md:px-10 py-6 border-b border-border/40 bg-background/40 flex flex-col md:flex-row items-center justify-between gap-6">

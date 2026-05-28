@@ -867,7 +867,7 @@ export const SkyForceGame = () => {
 
         <div 
           ref={containerRef}
-          className="relative w-full max-w-[1728px] h-[450px] md:h-[540px] lg:h-[630px] bg-black/60 border border-white/10 rounded-2xl overflow-hidden cursor-crosshair group select-none touch-none"
+          className="relative w-full max-w-[1728px] h-[85vh] md:h-[540px] lg:h-[630px] bg-black/60 border border-white/10 rounded-2xl overflow-hidden cursor-crosshair group select-none touch-none"
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
         >

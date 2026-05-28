@@ -109,7 +109,7 @@ export const Navbar = ({ navbarContent, locale: localeProp }: NavbarProps = {}) 
       <nav
         className={`fixed top-0 left-0 w-full z-50 transition-[height,border-color,background-color,box-shadow] duration-500 border-b overflow-hidden ${
           isScrolled
-            ? "h-16 border-border/80 bg-background/98 shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
+            ? "h-16 border-border/80 bg-background/98 shadow-[0_4px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
             : "h-20 border-border/20 bg-background/30"
         }`}
       >
