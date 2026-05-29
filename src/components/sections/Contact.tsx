@@ -36,7 +36,7 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
   const [copied, setCopied] = useState(false);
 
   const handleSend = () => {
-    const subject = encodeURIComponent(title || "Technical Inquiry");
+    const subject = encodeURIComponent(title || t('fallbackSubject'));
     const body = encodeURIComponent(message);
     window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
   };
@@ -77,7 +77,7 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
                   <Radio className="w-5 h-5 text-indigo-400 animate-pulse" />
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-[9px] md:text-[10px] font-mono text-text-muted/80 uppercase tracking-widest font-black">Email:</span>
+                  <span className="text-[9px] md:text-[10px] font-mono text-text-muted/80 uppercase tracking-widest font-black">{t('emailLabel')}:</span>
                   <span className="text-sm md:text-base font-mono text-text-main tracking-tight group-hover/form:text-cyan-400 transition-colors break-all md:break-normal">{email}</span>
                 </div>
               </div>
@@ -90,7 +90,7 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
                 className="flex items-center justify-center gap-3 text-[10px] font-black text-cyan-500 uppercase tracking-widest hover:text-cyan-300 transition-all bg-cyan-500/10 px-6 py-3 md:px-4 md:py-2 border border-cyan-500/20 w-full md:w-auto"
               >
                 {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
-                {copied ? 'COPIED' : buttonCopyUid}
+                {copied ? t('copied') : buttonCopyUid}
               </button>
             </div>
 
@@ -144,7 +144,7 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
                  <div className="space-y-4">
                     <span className="font-mono text-[9px] text-cyan-500 font-black uppercase tracking-[0.3em] flex items-center gap-2">
                        <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse inline-block" />
-                       Sys_Diagnostics
+                       {t('diagnostics')}
                     </span>
                     <div className="space-y-2">
                        {[...Array(5)].map((_, i) => (
@@ -168,8 +168,8 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
               <div className="flex items-center gap-4">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.4)] animate-pulse"></span>
                 <div className="flex flex-col">
-                  <span className="text-[9px] md:text-[10px] font-mono text-text-muted/80 uppercase tracking-widest font-black leading-none">Response Time:</span>
-                  <span className="text-[9px] md:text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-widest mt-1">Within 24 hours</span>
+                  <span className="text-[9px] md:text-[10px] font-mono text-text-muted/80 uppercase tracking-widest font-black leading-none">{t('responseTimeLabel')}:</span>
+                  <span className="text-[9px] md:text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-widest mt-1">{t('responseTimeValue')}</span>
                 </div>
               </div>
               <div className="hidden md:flex flex-col items-end">

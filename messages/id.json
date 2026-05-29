@@ -5,7 +5,11 @@
     "experience": "Pengalaman",
     "projects": "Proyek",
     "blog": "Blog",
-    "contact": "Kontak"
+    "contact": "Kontak",
+    "backToHome": "Kembali ke Beranda",
+    "menuLabel": "Menu",
+    "skipToMain": "Langsung ke konten utama",
+    "skipGame": "Lewati bagian game"
   },
   "hero": {
     "tagline": "Fullstack & Mobile Engineer",
@@ -33,22 +37,25 @@
   "projects": {
     "title": "Proyek",
     "cta": "Lihat Semua Proyek",
-    "viewDetail": "View_Detail",
-    "archiveTitle": "Arsip Proyek",
+    "viewDetail": "Lihat Detail",
+    "archiveTitle": "Semua Proyek",
     "archiveSubtitle": "Studi kasus teknis dan desain sistem",
+    "backToHome": "Kembali ke Beranda",
     "metadata": {
-      "access": "Lihat Detail",
-      "checksum": "Checksum: Validated",
-      "target": "Target: Prod_Env"
+      "access": "Lihat Detail"
     }
   },
   "blog": {
     "title": "Blog",
     "cta": "Lihat Semua Artikel",
     "readEntry": "Baca Artikel",
-    "archiveTitle": "Semua Catatan Teknis",
-    "archiveSubtitle": "Dokumentasi teknis dan catatan pengembangan",
-    "readTime": "{minutes} menit baca"
+    "archiveTitle": "Semua Artikel",
+    "archiveSubtitle": "Artikel teknis dan catatan pengembangan",
+    "readTime": "{minutes} menit baca",
+    "backToHome": "Kembali ke Beranda",
+    "backToBlog": "Kembali ke Blog",
+    "badgeType": "Artikel Teknis",
+    "badgeStatus": "Diterbitkan"
   },
   "contact": {
     "headline": "Mari bangun solusi bersama.",
@@ -64,7 +71,13 @@
     "buttons": {
       "transmit": "Kirim Pesan",
       "copyUid": "Salin Email"
-    }
+    },
+    "emailLabel": "Email",
+    "copied": "Tersalin",
+    "diagnostics": "Diagnostik",
+    "responseTimeLabel": "Waktu Respons",
+    "responseTimeValue": "Dalam 24 jam",
+    "fallbackSubject": "Permintaan Proyek"
   },
   "footer": {
     "role": "Software Developer"
@@ -72,7 +85,7 @@
   "hireBanner": {
     "badge": "Terbuka untuk Kerja Sama",
     "headline": "Butuh Developer untuk Mewujudkan Visi Anda?",
-    "desc": "Berpengalaman di distributed systems, mobile offline-first, dan database management. Hubungi saya kalau butuh engineer untuk proyek Anda.",
+    "desc": "Berpengalaman membangun aplikasi web, mobile, dan sistem backend yang scalable. Hubungi saya kalau butuh developer untuk proyek Anda.",
     "cta": "Mari Bekerja Sama"
   },
   "game": {
@@ -103,6 +116,31 @@
       "identitySecured": "Tersimpan:",
       "sharePerformance": "Bagikan Skor",
       "redeploy": "Main Lagi"
+    },
+    "shareText": "Saya baru saja mencetak skor {score} di Sky Defender! Bisa kalahkan rekor saya?",
+    "shareTitle": "Sky Defender - Skor Tertinggi",
+    "ariaLabel": "Sky Defender - game penembak luar angkasa interaktif"
+  },
+  "errors": {
+    "notFound": {
+      "badge": "404",
+      "title": "Halaman tidak ditemukan",
+      "desc": "Halaman yang Anda cari tidak ada atau telah dipindahkan.",
+      "cta": "Kembali ke Beranda"
+    },
+    "page": {
+      "badge": "Error",
+      "title": "Terjadi kesalahan",
+      "desc": "Terjadi kesalahan saat memuat halaman ini. Anda bisa mencoba lagi atau kembali ke halaman utama.",
+      "retry": "Coba Lagi",
+      "home": "Kembali ke Beranda"
+    },
+    "blog": {
+      "badge": "Error",
+      "title": "Gagal memuat artikel",
+      "desc": "Artikel ini tidak dapat dimuat. Mungkin telah dihapus atau data sementara tidak tersedia.",
+      "retry": "Coba Lagi",
+      "back": "Kembali ke Blog"
     }
   },
   "seo": {

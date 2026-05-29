@@ -5,7 +5,11 @@
     "experience": "Experience",
     "projects": "Projects",
     "blog": "Blog",
-    "contact": "Contact"
+    "contact": "Contact",
+    "backToHome": "Back to Home",
+    "menuLabel": "Menu",
+    "skipToMain": "Skip to main content",
+    "skipGame": "Skip game section"
   },
   "hero": {
     "tagline": "Fullstack & Mobile Engineer",
@@ -33,22 +37,25 @@
   "projects": {
     "title": "Projects",
     "cta": "View All Projects",
-    "viewDetail": "View_Detail",
-    "archiveTitle": "System Architecture Archives",
-    "archiveSubtitle": "Comprehensive Technical Case Studies & System Designs",
+    "viewDetail": "View Detail",
+    "archiveTitle": "All Projects",
+    "archiveSubtitle": "Technical case studies and system designs",
+    "backToHome": "Back to Home",
     "metadata": {
-      "access": "View Details",
-      "checksum": "Checksum: Validated",
-      "target": "Target: Prod_Env"
+      "access": "View Details"
     }
   },
   "blog": {
     "title": "Blog",
     "cta": "View All Posts",
     "readEntry": "Read Article",
-    "archiveTitle": "Full Technical Archives",
-    "archiveSubtitle": "Comprehensive Technical Documentation & Field Logs",
-    "readTime": "{minutes} min read"
+    "archiveTitle": "All Posts",
+    "archiveSubtitle": "Technical articles and development notes",
+    "readTime": "{minutes} min read",
+    "backToHome": "Back to Home",
+    "backToBlog": "Back to Blog",
+    "badgeType": "Technical Article",
+    "badgeStatus": "Published"
   },
   "contact": {
     "headline": "Let's engineer solutions together.",
@@ -59,12 +66,18 @@
     },
     "placeholders": {
       "title": "Enter project subject...",
-      "payload": "Describe project architecture constraints..."
+      "payload": "Describe your project needs..."
     },
     "buttons": {
       "transmit": "Send Message",
       "copyUid": "Copy Email"
-    }
+    },
+    "emailLabel": "Email",
+    "copied": "Copied",
+    "diagnostics": "Diagnostics",
+    "responseTimeLabel": "Response Time",
+    "responseTimeValue": "Within 24 hours",
+    "fallbackSubject": "Project Inquiry"
   },
   "footer": {
     "role": "Software Developer"
@@ -72,7 +85,7 @@
   "hireBanner": {
     "badge": "Available for Hire",
     "headline": "Need an Architect to Scale Your Vision?",
-    "desc": "Specializing in high-throughput distributed systems, offline-first mobile cores, and robust database orchestration. Let's build the next generation of resilient software.",
+    "desc": "Experienced in building web apps, mobile apps, and backend systems that scale. Let me know if you need a developer for your next project.",
     "cta": "Let's Work Together"
   },
   "game": {
@@ -103,6 +116,31 @@
       "identitySecured": "Saved:",
       "sharePerformance": "Share Score",
       "redeploy": "Play Again"
+    },
+    "shareText": "I just scored {score} on Sky Defender! Can you beat my record?",
+    "shareTitle": "Sky Defender - High Score",
+    "ariaLabel": "Sky Defender - interactive space shooter game"
+  },
+  "errors": {
+    "notFound": {
+      "badge": "404",
+      "title": "Page not found",
+      "desc": "The page you are looking for does not exist or has been moved.",
+      "cta": "Back to Home"
+    },
+    "page": {
+      "badge": "Error",
+      "title": "Something went wrong",
+      "desc": "An error occurred while loading this page. You can try again or navigate back to the homepage.",
+      "retry": "Try Again",
+      "home": "Back to Home"
+    },
+    "blog": {
+      "badge": "Error",
+      "title": "Failed to load article",
+      "desc": "This article could not be loaded. It may have been removed or the data is temporarily unavailable.",
+      "retry": "Try Again",
+      "back": "Back to Blog"
     }
   },
   "seo": {

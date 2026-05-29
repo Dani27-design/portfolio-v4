@@ -265,7 +265,7 @@ export const Navbar = ({ navbarContent, locale: localeProp }: NavbarProps = {}) 
             <div className="flex justify-between items-center relative z-20">
               <div className="flex items-center gap-3">
                 <Terminal className="w-5 h-5 text-cyan-500" />
-                <span className="font-mono text-[10px] text-text-main font-black tracking-widest uppercase">NAV_TERMINAL</span>
+                <span className="font-mono text-[10px] text-text-main font-black tracking-widest uppercase">{t('menuLabel')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <button

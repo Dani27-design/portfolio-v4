@@ -1,396 +1,233 @@
-# Un-Humanized Wording Audit
+# Un-translated / Non-bilingual Wording Audit
 
 Audit date: 2026-05-30
-Focus: All user-facing text across every section — identifying robotic, overly-jargon, or machine-like wording that doesn't sound like a real human wrote it.
+Focus: All user-facing text that is English-only and not translated to Indonesian when the user switches to ID locale.
 
 ---
 
-## ~~WORD-01: Hero CTA button says "Protocol_Initialize"~~ [FIXED]
+## Category A: Translation file values that are still untranslated jargon
 
-**Problem**: The contact CTA button on the hero section reads `Protocol_Initialize` — this is robotic jargon with an underscore, not a human call-to-action.
+### ~~I18N-01: `projects.viewDetail` is "View_Detail" in both EN and ID~~ [FIXED]
 
-**Root cause**: `messages/en.json` line 15: `"ctaContact": "Protocol_Initialize"`. Same in `id.json` line 15.
+**Problem**: The value `View_Detail` has an underscore and is identical in both languages. Not translated.
 
-**Proof**: Hero.tsx:122 renders `{ctaContact}` which resolves to this string.
+**Root cause**: `messages/en.json:36` and `messages/id.json:36` both have `"viewDetail": "View_Detail"`.
 
-**Impact**: HIGH — This is a primary CTA. Recruiters and visitors see this immediately. It doesn't communicate what the button does. A recruiter won't click "Protocol_Initialize" — they'll scroll past.
+**Proof**: Same string in both locale files. Indonesian users see English with underscore.
 
-**Solution**: EN: "Get in Touch" or "Let's Talk". ID: "Hubungi Saya" or "Mari Bicara".
+**Impact**: LOW — this key doesn't appear to be actively rendered in any current component (it was for a feature that may have been removed). But it's in the translation file and could be used in the future.
 
----
-
-## ~~WORD-02: Hero tagline says "System Architect Core"~~ [FIXED]
-
-**Problem**: `System Architect Core` sounds like a product name or internal code label, not a human tagline.
-
-**Root cause**: `messages/en.json` line 11: `"tagline": "System Architect Core"`. Same in id.json.
-
-**Proof**: Hero.tsx:84 renders `{tagline}`.
-
-**Impact**: MEDIUM — First text visitors see above the headline. Doesn't tell the visitor who you are in human terms.
-
-**Solution**: EN: "Fullstack & Mobile Engineer" or "Building Reliable Software". ID: "Fullstack & Mobile Engineer" or "Membangun Software Handal".
+**Solution**: EN: `"View Detail"` (remove underscore). ID: `"Lihat Detail"`.
 
 ---
 
-## ~~WORD-03: Hero headline "I don't return undefined."~~ [KEPT AS-IS — Owner's preference]
+### ~~I18N-02: `projects.metadata.checksum` and `projects.metadata.target` are untranslated jargon~~ [FIXED]
 
-**Problem**: A JavaScript joke (`undefined`) — only developers understand this. Recruiters, HR, project managers, and non-technical visitors see a confusing sentence.
+**Problem**: `"Checksum: Validated"` and `"Target: Prod_Env"` are identical in both EN and ID. These are fake technical jargon that were never translated.
 
-**Root cause**: `messages/en.json` line 12: `"headline": "I don't return undefined."`. ID: `"Saya tidak mengembalikan undefined."`.
+**Root cause**: `messages/en.json:41-42` and `messages/id.json:41-42`. Leftover from the tactical HUD aesthetic.
 
-**Proof**: Hero.tsx:94 renders `{headline}`.
+**Proof**: Same string in both locale files.
 
-**Impact**: MEDIUM — The main headline. Clever for devs but alienating for non-dev visitors. A portfolio should communicate value to ALL visitors, not just engineers.
+**Impact**: LOW — These keys don't appear to be rendered in any current component (removed during gimmick text cleanup). But they're in the translation files.
 
-**Solution**: EN: "I Build Systems That Just Work." or "Engineering Reliability Into Every Line." ID: "Saya Membangun Sistem yang Andal." — Keep it confident but universally understandable.
-
----
-
-## ~~WORD-04: Hero description uses dense jargon~~ [FIXED]
-
-**Problem**: "Architecting fault-tolerant distributed systems and robust mobile cores. I solve for complexity through rigorous structural design and end-to-end technical ownership." — Every word is a technical buzzword. No human talks like this.
-
-**Root cause**: `messages/en.json` line 13.
-
-**Proof**: Hero.tsx:108 renders `{desc}`.
-
-**Impact**: MEDIUM — Supporting text that should explain what you do in accessible language.
-
-**Solution**: EN: "I build web and mobile applications from the ground up — from system design to deployment. I focus on making things reliable, fast, and easy to maintain." ID: keep current (already more natural in Indonesian).
+**Solution**: Remove these keys from both files, or if kept for future use: EN: `"Verified"` / `"Production"`. ID: `"Terverifikasi"` / `"Produksi"`.
 
 ---
 
-## ~~WORD-05: About section title says "Structural Engineer"~~ [FIXED]
+### ~~I18N-03: `projects.archiveTitle` and `projects.archiveSubtitle` EN still have jargon~~ [FIXED]
 
-**Problem**: "Structural Engineer" is a civil engineering job title (buildings/bridges). Confusing for a software portfolio.
+**Problem**: EN: `"System Architecture Archives"` and `"Comprehensive Technical Case Studies & System Designs"` — jargon-heavy. ID versions are already good (`"Arsip Proyek"` / `"Studi kasus teknis dan desain sistem"`).
 
-**Root cause**: `messages/en.json` line 18: `"title": "Structural Engineer"`.
+**Root cause**: `messages/en.json:37-38`. These were missed during the WORD-* fixes — only the homepage section title was updated, not the archive page title.
 
-**Proof**: About.tsx:55 renders `{title}`.
+**Proof**: Rendered in `ProjectListPage.tsx:40` and `:45` as the heading on the `/projects` archive page.
 
-**Impact**: LOW — Small label above the headline. But misleading — visitors may think this is a construction portfolio.
+**Impact**: MEDIUM — visible on the projects archive page.
 
-**Solution**: EN: "About Me" or "Who I Am". ID already uses "Software Developer" which is fine.
-
----
-
-## ~~WORD-06: About section description is overly dense~~ [FIXED]
-
-**Problem**: "From technical flowcharts and PRDs to backend infrastructure and mobile cores, I own the entire lifecycle. I thrive in the complexity that others avoid, delivering robust, maintainable solutions with a commitment to lifetime maintenance." — Jargon-heavy, sounds like a LinkedIn auto-generated summary.
-
-**Root cause**: `messages/en.json` line 20.
-
-**Proof**: About.tsx:70 renders `{desc}`.
-
-**Impact**: MEDIUM — This is where visitors learn about you. Dense jargon pushes non-technical visitors away.
-
-**Solution**: EN: "I handle the full development process — from planning and design to building and shipping. I enjoy solving hard problems and building software that's reliable and easy to maintain long-term."
+**Solution**: EN: `"All Projects"` and `"Technical case studies and system designs"`.
 
 ---
 
-## ~~WORD-07: Experience title says "Professional Trajectory"~~ [FIXED]
+### ~~I18N-04: `blog.archiveTitle` and `blog.archiveSubtitle` EN still have jargon~~ [FIXED]
 
-**Problem**: "Professional Trajectory" is an unusual phrase. Normal portfolios say "Experience" or "Work History."
+**Problem**: EN: `"Full Technical Archives"` and `"Comprehensive Technical Documentation & Field Logs"` — jargon. ID versions are already good (`"Semua Catatan Teknis"` / `"Dokumentasi teknis dan catatan pengembangan"`).
 
-**Root cause**: `messages/en.json` line 31: `"title": "Professional Trajectory"`.
+**Root cause**: `messages/en.json:49-50`.
 
-**Proof**: Experience.tsx:31 renders `{t('title')}`.
+**Proof**: Rendered in `BlogListPage.tsx:39` and `:43` as the heading on the `/blog` archive page.
 
-**Impact**: LOW — Section heading. "Professional Trajectory" sounds academic/corporate, not natural.
+**Impact**: MEDIUM — visible on the blog archive page.
 
-**Solution**: EN: "Work Experience" or "Experience". ID already uses "Pengalaman Kerja" which is natural.
-
----
-
-## ~~WORD-08: Projects section title "System Architecture & Deployment"~~ [FIXED]
-
-**Problem**: Overly technical section heading. Visitors expect "Projects" or "My Work."
-
-**Root cause**: `messages/en.json` line 34: `"title": "System Architecture & Deployment"`.
-
-**Proof**: Projects.tsx:34 renders `{t('title')}`.
-
-**Impact**: LOW — Section heading.
-
-**Solution**: EN: "Projects" or "Featured Work". ID: "Proyek" or "Proyek Unggulan".
+**Solution**: EN: `"All Posts"` and `"Technical articles and development notes"`.
 
 ---
 
-## ~~WORD-09: Projects CTA "ACCESS_SYSTEM_ARCHIVE"~~ [FIXED]
+## Category B: Hardcoded English strings in components (not in translation files)
 
-**Problem**: `ACCESS_SYSTEM_ARCHIVE` with underscores and all-caps — looks like a terminal command, not a button label.
+### ~~I18N-05: Back navigation links are hardcoded English~~ [FIXED]
 
-**Root cause**: `messages/en.json` line 35. Same in id.json.
+**Problem**: `"Back to Home"` (BlogListPage:34, ProjectListPage:35) and `"Back to Blog"` (BlogDetailsPage:36) are hardcoded in JSX. Indonesian users see English navigation.
 
-**Proof**: Projects.tsx:47 renders `{t('cta')}`.
+**Root cause**: These strings were changed from `BACK_TO_ROOT`/`RETURN_TO_ARCHIVES` to human text in WORD-22, but were hardcoded directly instead of being added to translation files.
 
-**Impact**: HIGH — This is the CTA to see all projects. Visitors won't click something that looks like a system command.
+**Proof**: Hardcoded strings in component JSX, not from `t()` calls.
 
-**Solution**: EN: "View All Projects". ID: "Lihat Semua Proyek".
+**Impact**: MEDIUM — navigation text visible on every sub-page.
 
----
-
-## ~~WORD-10: Projects metadata "Access: Granted"~~ [FIXED]
-
-**Problem**: `Access: Granted` on project cards — fake security jargon. Meaningless to visitors.
-
-**Root cause**: `messages/en.json` line 40. Same in id.json.
-
-**Proof**: Projects.tsx:88 renders `{t('metadata.access')}`.
-
-**Impact**: LOW — Small label at bottom of project cards.
-
-**Solution**: EN: "View Project" or "Details". ID: "Lihat Proyek".
+**Solution**: Add translation keys (e.g., `"backToHome"` and `"backToBlog"`) and use `t()`.
 
 ---
 
-## ~~WORD-11: Blog section title "Technical Logs"~~ [FIXED]
+### ~~I18N-06: Blog detail badges "Technical Article" and "Published" are hardcoded English~~ [FIXED]
 
-**Problem**: "Technical Logs" sounds like server logs, not blog posts.
+**Problem**: `"Technical Article"` (BlogDetailsPage:44) and `"Published"` (BlogDetailsPage:47) are hardcoded. Indonesian users see English badges.
 
-**Root cause**: `messages/en.json` line 46.
+**Root cause**: Changed from `LOG_TYPE :: TECHNICAL_LOG` / `STATUS :: DEPLOYED` in WORD-24, hardcoded instead of using translations.
 
-**Proof**: Blog.tsx:32 renders `{t('title')}`.
+**Proof**: Hardcoded strings in BlogDetailsPage.tsx JSX.
 
-**Impact**: MEDIUM — Section heading. Visitors expect "Blog" or "Articles."
+**Impact**: LOW — small badges on blog detail page.
 
-**Solution**: EN: "Blog" or "Latest Articles". ID: already uses "Catatan Teknis" which is OK but could be "Blog" or "Artikel Terbaru".
-
----
-
-## ~~WORD-12: Blog CTA "ACCESS_FULL_ARCHIVE"~~ [FIXED]
-
-**Problem**: Same terminal-command style as WORD-09.
-
-**Root cause**: `messages/en.json` line 47. Same in id.json.
-
-**Proof**: Blog.tsx:45 renders `{t('cta')}`.
-
-**Impact**: HIGH — CTA button.
-
-**Solution**: EN: "View All Posts". ID: "Lihat Semua Artikel".
+**Solution**: Add translation keys and use `t()`.
 
 ---
 
-## ~~WORD-13: Blog card "READ_LOG_ENTRY"~~ [FIXED]
+### ~~I18N-07: Blog detail author name is hardcoded~~ [KEPT — proper name, same in both languages]
 
-**Problem**: `READ_LOG_ENTRY` with underscores — robotic label for a "Read more" link.
+**Problem**: `"Daniansyah Chusyaidin"` (BlogDetailsPage:62) is hardcoded. This is a proper name so it doesn't need translation, but it's not editable via admin.
 
-**Root cause**: `messages/en.json` line 48. Same in id.json.
+**Root cause**: Hardcoded string changed from `DANIANSYAH_CORE` in WORD-25.
 
-**Proof**: Blog.tsx:88 and BlogListPage.tsx:84 render `{t('readEntry')}`.
+**Proof**: Hardcoded in JSX.
 
-**Impact**: MEDIUM — Every blog card has this label.
+**Impact**: LOW — proper name, same in both languages. Not a translation issue but an editability issue (should come from Firestore/aboutContent).
 
-**Solution**: EN: "Read Article". ID: "Baca Artikel".
-
----
-
-## ~~WORD-14: Blog read time "READ_TIME: {minutes} MIN"~~ [FIXED]
-
-**Problem**: `READ_TIME: 5 MIN` — underscore and colon formatting looks like a system log, not a reading estimate.
-
-**Root cause**: `messages/en.json` line 51. ID: `"WAKTU_BACA: {minutes} MIN"`.
-
-**Proof**: BlogDetailsPage.tsx:66 renders `{t('readTime', { minutes })}`.
-
-**Impact**: LOW — Blog detail page only.
-
-**Solution**: EN: "{minutes} min read". ID: "{minutes} menit baca".
+**Solution**: No translation needed (proper name). But could be wired to `footerContent.ownerName` or similar for editability.
 
 ---
 
-## ~~WORD-15: Contact description uses dense jargon~~ [FIXED]
+### ~~I18N-08: Contact section has multiple hardcoded English labels~~ [FIXED]
 
-**Problem**: EN: "Accepting high-priority inquiries for complex service architectures and scalable engineering collaborations. Establish verified transit below." — "Establish verified transit below" is meaningless to a human.
+**Problem**: These hardcoded strings in `Contact.tsx` are English-only:
+- Line 80: `"Email:"`
+- Line 93: `'COPIED'` (success feedback)
+- Line 147: `"Sys_Diagnostics"` (still has underscore!)
+- Line 171: `"Response Time:"`
+- Line 172: `"Within 24 hours"`
 
-**Root cause**: `messages/en.json` line 55.
+**Root cause**: These were either hardcoded from the start or changed during WORD-23 but not moved to translation files.
 
-**Proof**: Contact.tsx:62 renders `{desc}`.
+**Proof**: All hardcoded in Contact.tsx JSX.
 
-**Impact**: HIGH — Contact section description. Should encourage visitors to reach out, not confuse them.
+**Impact**: MEDIUM — `"COPIED"` and `"Response Time: Within 24 hours"` are visible to all users. `"Sys_Diagnostics"` is XL-only but still has underscore. `"Email:"` is a label next to the email address.
 
-**Solution**: EN: "Have a project in mind or want to collaborate? Drop me a message below and I'll get back to you within 24 hours."
-
----
-
-## ~~WORD-16: Contact form labels "01 / Request_Title" and "02 / Query_Payload"~~ [FIXED]
-
-**Problem**: `Request_Title` and `Query_Payload` with underscores and numbering — looks like an API schema, not a form.
-
-**Root cause**: `messages/en.json` lines 57-58. ID has better versions: "Judul Pesan" / "Isi Pesan".
-
-**Proof**: Contact.tsx:104 and :118 render these labels.
-
-**Impact**: MEDIUM — Form labels that users interact with.
-
-**Solution**: EN: "Subject" and "Message". Keep the 01/02 numbering if desired but drop underscores: "01 / Subject" and "02 / Message".
+**Solution**: Add all to translation files. `"COPIED"` → EN: `"Copied"` / ID: `"Tersalin"`. `"Sys_Diagnostics"` → remove underscore: `"Sys Diagnostics"` / ID: `"Diagnostik"`. Others need proper ID translations.
 
 ---
 
-## ~~WORD-17: Contact send button "Transmit_Protocol"~~ [FIXED]
+### ~~I18N-09: Navbar mobile overlay "NAV_TERMINAL" is hardcoded English with underscore~~ [FIXED]
 
-**Problem**: `Transmit_Protocol` — no human clicks a button called this.
+**Problem**: `"NAV_TERMINAL"` (Navbar.tsx:268) — hardcoded English with underscore. Shown in the mobile menu overlay header.
 
-**Root cause**: `messages/en.json` line 65. Same in id.json line 65.
+**Root cause**: Never moved to translations. Still has underscore from original design.
 
-**Proof**: Contact.tsx:137 renders `{buttonTransmit}`.
+**Proof**: Hardcoded in Navbar.tsx JSX.
 
-**Impact**: HIGH — Primary action button on the contact form.
+**Impact**: LOW — small decorative label in mobile menu.
 
-**Solution**: EN: "Send Message". ID: "Kirim Pesan".
-
----
-
-## ~~WORD-18: Contact copy button "COPY_UID"~~ [FIXED]
-
-**Problem**: `COPY_UID` — "UID" (User ID) is incorrect context. This copies an email address, not a user ID.
-
-**Root cause**: `messages/en.json` line 66. Same in id.json.
-
-**Proof**: Contact.tsx:93 renders `{buttonCopyUid}`.
-
-**Impact**: LOW — Small secondary button.
-
-**Solution**: EN: "Copy Email". ID: "Salin Email".
+**Solution**: Change to `"Navigation"` or `"Menu"` and move to translations. Or remove it entirely (the menu is self-evident).
 
 ---
 
-## ~~WORD-19: Hire banner badge "SYSTEM_AVAILABILITY :: OPEN_FOR_MISSIONS"~~ [FIXED]
+### ~~I18N-10: Project card "[01] PRODUCTION" badge is hardcoded English~~ [KEPT — universal tech term]
 
-**Problem**: `SYSTEM_AVAILABILITY :: OPEN_FOR_MISSIONS` — robotic jargon with double colons and underscores.
+**Problem**: `[{idx}] PRODUCTION` (Projects.tsx:71, ProjectListPage.tsx:68) — "PRODUCTION" is hardcoded English. Indonesian users see English status text.
 
-**Root cause**: `messages/en.json` line 73. Same in id.json.
+**Root cause**: Hardcoded in JSX, not from translations.
 
-**Proof**: HireMeBanner.tsx:65 renders `{badge}`.
+**Proof**: Hardcoded in both Projects.tsx and ProjectListPage.tsx.
 
-**Impact**: MEDIUM — Prominent banner shown across multiple pages.
+**Impact**: LOW — small badge on project cards. "PRODUCTION" is widely understood in Indonesian tech context.
 
-**Solution**: EN: "Available for Hire" or "Open to Work". ID: "Tersedia untuk Direkrut" or "Terbuka untuk Kerja Sama".
-
----
-
-## ~~WORD-20: Hire banner CTA "INITIALIZE_Recruitment_Protocol"~~ [FIXED]
-
-**Problem**: `INITIALIZE_Recruitment_Protocol` — the most egregious example. Underscores, mixed case, "Protocol" — sounds like starting a military operation.
-
-**Root cause**: `messages/en.json` line 76. Same in id.json.
-
-**Proof**: HireMeBanner.tsx CTA button renders `{ctaText}`.
-
-**Impact**: HIGH — CTA button on the hire banner, shown on multiple pages.
-
-**Solution**: EN: "Let's Work Together" or "Get in Touch". ID: "Mari Bekerja Sama" or "Hubungi Saya".
+**Solution**: Could stay as-is (universal tech term) or add to translations: ID: `"PRODUKSI"`.
 
 ---
 
-## ~~WORD-21: Hardcoded "LOG_DATE:" prefix on blog cards~~ [FIXED]
+### ~~I18N-11: Error and 404 pages are entirely English-only~~ [FIXED]
 
-**Problem**: `LOG_DATE: 2025-05-17` — "LOG_DATE:" prefix with underscore makes dates look like system logs.
+**Problem**: Three error/404 pages have all English text with no i18n:
+- `not-found.tsx`: "404 :: ROUTE_NOT_FOUND", "Page not found", "The page you are looking for...", "Back to Home"
+- `error.tsx`: "ERROR :: PAGE_FAULT", "Something went wrong", "An error occurred...", "Try Again", "Back to Home"
+- `blog/[slug]/error.tsx`: "ERROR :: LOG_CORRUPTED", "Failed to load entry", "This blog entry could not...", "Try Again", "Back to Archives"
 
-**Root cause**: Hardcoded in Blog.tsx:69 and BlogListPage.tsx:65: `LOG_DATE: {blog.date}`.
+**Root cause**: These are edge-case pages that were built English-only. They don't use `useTranslations()`.
 
-**Proof**: Visible on every blog card in both the homepage section and archive page.
+**Proof**: All text hardcoded in JSX across 3 files.
 
-**Impact**: MEDIUM — Every blog card shows this.
+**Impact**: MEDIUM — Indonesian users see English error messages. Error/404 pages are important for UX trust.
 
-**Solution**: Just show the date directly without a prefix, or use "Published:" or a calendar icon with the date.
-
----
-
-## ~~WORD-22: Hardcoded "BACK_TO_ROOT" and "RETURN_TO_ARCHIVES" navigation~~ [FIXED]
-
-**Problem**: `BACK_TO_ROOT` and `RETURN_TO_ARCHIVES` — underscored terminal commands as navigation labels.
-
-**Root cause**: Hardcoded in BlogListPage.tsx:34, ProjectListPage.tsx:35, BlogDetailsPage.tsx:36.
-
-**Proof**: Visible as back-navigation links on archive and detail pages.
-
-**Impact**: MEDIUM — Navigation labels on sub-pages.
-
-**Solution**: "Back to Home" / "Back to Blog" — simple, human navigation text.
+**Solution**: Add error/404 translation keys to both message files. Use `useTranslations()` in the components. Note: `not-found.tsx` is a server component — need to use `getTranslations()` instead.
 
 ---
 
-## ~~WORD-23: Hardcoded "Secure_Endpoint:" and "Response_Time:" in Contact~~ [FIXED]
+### ~~I18N-12: Game share text is hardcoded English~~ [FIXED]
 
-**Problem**: `Secure_Endpoint:` labels the email address. `Response_Time: <24h / Verified` uses underscore and "Verified" as if it's a certificate.
+**Problem**: `SkyForceGame.tsx:283` — `"I just hit a high score of ${score} on SYSTEM_SHOT: DEFENDER! 🚀 Can you beat my record?"` — hardcoded English share message.
 
-**Root cause**: Hardcoded in Contact.tsx:80 and :171-172.
+**Root cause**: Hardcoded string in component, not from translations.
 
-**Proof**: Visible on the contact form header and footer.
+**Proof**: Line 283 and 288 in SkyForceGame.tsx.
 
-**Impact**: LOW — Decorative labels, but still reads as robotic.
+**Impact**: LOW — only triggered when user clicks Share. But Indonesian users share English text.
 
-**Solution**: "Email:" for the endpoint. "Typical response: within 24 hours" for the response time.
-
----
-
-## ~~WORD-24: Blog detail "LOG_TYPE :: TECHNICAL_LOG" and "STATUS :: DEPLOYED" badges~~ [FIXED]
-
-**Problem**: `LOG_TYPE :: TECHNICAL_LOG` and `STATUS :: DEPLOYED` — double-colon syntax and uppercase labels look like database entries.
-
-**Root cause**: Hardcoded in BlogDetailsPage.tsx:44 and :47.
-
-**Proof**: Visible as badges at the top of every blog post.
-
-**Impact**: LOW — Small badges on blog detail page.
-
-**Solution**: "Technical Article" and "Published" — or remove them entirely (they add no real information).
+**Solution**: Move share text template to translations with `{score}` interpolation.
 
 ---
 
-## ~~WORD-25: Blog detail author "DANIANSYAH_CORE"~~ [FIXED]
+### ~~I18N-13: Skip links and aria-labels are hardcoded English~~ [FIXED]
 
-**Problem**: `DANIANSYAH_CORE` — underscore and "CORE" suffix make the author name look like a system process.
+**Problem**:
+- `PublicShell.tsx:30`: `"Skip to main content"` — hardcoded
+- `HomePage.tsx:35`: `"Skip game section"` — hardcoded
+- `SkyForceGame.tsx:890`: `aria-label="SYSTEM_SHOT: DEFENDER — interactive space shooter game"` — hardcoded
 
-**Root cause**: Hardcoded in BlogDetailsPage.tsx:62.
+**Root cause**: Accessibility strings added as hardcoded English.
 
-**Proof**: Visible as the author name on every blog post.
+**Proof**: Hardcoded in JSX.
 
-**Impact**: MEDIUM — The author's name should be human-readable.
+**Impact**: LOW — only affects screen reader users on the ID locale. Skip links are `sr-only` (visually hidden).
 
-**Solution**: "Daniansyah Chusyaidin" or "Daniansyah" — the actual name without system-style formatting.
-
----
-
-## ~~WORD-26: Game section uses excessive underscore/system terminology~~ [FIXED]
-
-**Problem**: Multiple game strings use underscore formatting: `Session_Score`, `Terminal_High_Mark`, `Near_Record`, `System_Simulation`, `Sync_In_Progress`, `Simulation_Terminated`, `Final_Harvest`, `New_Terminal_Mark`, `PILOT_ID`, `COMMIT_IDENTITY`, `Identity_Secured:`.
-
-**Root cause**: `messages/en.json` lines 81-103 and `messages/id.json` same section.
-
-**Proof**: Rendered throughout SkyForceGame.tsx HUD and overlays.
-
-**Impact**: LOW — The game is intentionally styled as a "system simulation" so some tactical language fits. But the underscores are still unnecessary.
-
-**Solution**: Remove underscores but keep the tactical tone: "Score", "High Score", "Near Record", "System Simulation", "Syncing...", "Game Over", "Final Score", "New Record", "Enter Name", "Save", "Saved:", "Share Score", "Play Again".
+**Solution**: Move to translation files for proper bilingual accessibility.
 
 ---
 
-## ~~WORD-27: HireMeBanner skill tags use underscores~~ [FIXED]
+### ~~I18N-14: Contact mailto fallback subject is hardcoded English~~ [FIXED]
 
-**Problem**: `Distributed_Eng`, `Security_First`, `High_Performance` — underscored labels.
+**Problem**: `Contact.tsx:39` — `title || "Technical Inquiry"` — the fallback email subject is hardcoded English.
 
-**Root cause**: Hardcoded in HireMeBanner.tsx:80, 84, 88.
+**Root cause**: Hardcoded fallback string.
 
-**Proof**: Visible as skill tags in the hire banner.
+**Proof**: Line 39 in Contact.tsx.
 
-**Impact**: LOW — Decorative skill tags.
+**Impact**: LOW — only triggers if user submits with empty title field.
 
-**Solution**: "Distributed Systems", "Security First", "High Performance" — remove underscores.
+**Solution**: Move to translations or use a locale-aware fallback.
 
 ---
 
 ## Summary
 
-| Severity | Count | Category |
-|----------|-------|----------|
-| HIGH | 5 | CTAs and primary buttons (WORD-01, 09, 12, 17, 20) |
-| MEDIUM | 11 | Section headings, descriptions, labels (WORD-02, 03, 04, 06, 13, 15, 19, 21, 22, 25, 16) |
-| LOW | 11 | Small labels, badges, decorative text (WORD-05, 07, 08, 10, 11, 14, 18, 23, 24, 26, 27) |
-| **Total** | **27** | |
+| Category | Count | Files affected |
+|----------|-------|---------------|
+| Translation file values (untranslated/jargon) | 4 | messages/en.json, messages/id.json |
+| Hardcoded English in components | 10 | 9 component files |
+| **Total** | **14** | |
 
-### Root pattern
-The site uses a "tactical HUD / terminal" aesthetic. While this works for visual design (borders, fonts, colors), it was also applied to **actual text content** — CTAs, descriptions, labels, and navigation. The visual aesthetic and the copywriting should be separate: keep the tactical visual style but write text that a human would actually say.
+### Priority order for fixing:
+1. **I18N-05** (back nav) + **I18N-08** (contact labels) — MEDIUM, visible on every page visit
+2. **I18N-03** + **I18N-04** (archive titles) — MEDIUM, visible on sub-pages
+3. **I18N-11** (error/404 pages) — MEDIUM, important for UX trust
+4. **I18N-06** (blog badges) + **I18N-09** (NAV_TERMINAL) + **I18N-10** (PRODUCTION) — LOW
+5. **I18N-01** + **I18N-02** (unused translation keys) — LOW, cleanup
+6. **I18N-12** (game share) + **I18N-13** (skip links) + **I18N-14** (mailto fallback) — LOW

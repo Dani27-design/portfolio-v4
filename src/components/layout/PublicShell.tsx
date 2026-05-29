@@ -1,6 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { CustomCursor } from '@/components/ui/CustomCursor';
@@ -18,6 +19,7 @@ interface PublicShellProps {
 
 export function PublicShell({ children, navbarContent, footerContent, locale }: PublicShellProps) {
   const pathname = usePathname();
+  const t = useTranslations('nav');
   const isAdmin = pathname.includes('/admin');
 
   if (isAdmin) {
@@ -27,7 +29,7 @@ export function PublicShell({ children, navbarContent, footerContent, locale }: 
   return (
     <div id="top" className="min-h-screen selection:bg-blue-100 selection:text-primary transition-colors duration-300">
       <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-6 focus:py-3 focus:bg-background focus:text-cyan-500 focus:border focus:border-cyan-500/40 focus:font-mono focus:text-sm focus:font-bold focus:uppercase focus:tracking-widest">
-        Skip to main content
+        {t('skipToMain')}
       </a>
       <CustomCursor />
       <ScrollToTop />

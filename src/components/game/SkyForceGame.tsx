@@ -280,12 +280,12 @@ export const SkyForceGame = () => {
   };
 
   const handleShare = async () => {
-    const shareText = `I just hit a high score of ${score} on SYSTEM_SHOT: DEFENDER! 🚀 Can you beat my record? Check it out at ${window.location.origin}`;
+    const shareText = `${t('shareText', { score })} ${window.location.origin}`;
     
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'SYSTEM_SHOT: DEFENDER - High Score',
+          title: t('shareTitle'),
           text: shareText,
           url: window.location.href,
         });
@@ -887,7 +887,7 @@ export const SkyForceGame = () => {
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
         >
-          <canvas ref={canvasRef} className="w-full h-full" role="img" aria-label="SYSTEM_SHOT: DEFENDER — interactive space shooter game" />
+          <canvas ref={canvasRef} className="w-full h-full" role="img" aria-label={t('ariaLabel')} />
 
           {/* HUD Layer */}
           <div className="absolute top-4 left-4 right-4 flex justify-between pointer-events-none z-20">

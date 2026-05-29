@@ -513,7 +513,7 @@ const contactContent = {
   },
   placeholders: {
     title: { en: 'Enter project subject...', id: 'Tulis subjek proyek...' },
-    payload: { en: 'Describe project architecture constraints...', id: 'Jelaskan kebutuhan proyek Anda...' },
+    payload: { en: 'Describe your project needs...', id: 'Jelaskan kebutuhan proyek Anda...' },
   },
   buttons: {
     transmit: { en: 'Send Message', id: 'Kirim Pesan' },
