@@ -8,16 +8,16 @@
     "contact": "Kontak"
   },
   "hero": {
-    "tagline": "System Architect Core",
+    "tagline": "Fullstack & Mobile Engineer",
     "headline": "Saya tidak mengembalikan undefined.",
-    "desc": "Membangun distributed systems dan aplikasi mobile yang reliable. Saya handle dari desain arsitektur sampai production.",
+    "desc": "Saya membangun software siap production dari nol. Desain sistem, backend, mobile, sampai deployment.",
     "ctaGame": "Mau main game?",
-    "ctaContact": "Protocol_Initialize"
+    "ctaContact": "Hubungi Saya"
   },
   "about": {
     "title": "Software Developer",
     "headline": "Saya membangun sistem yang mengutamakan keandalan.",
-    "desc": "Mulai dari flowchart teknis dan PRD hingga infrastruktur backend dan aplikasi mobile, saya menangani keseluruhan proses pengembangan. Saya terbiasa menghadapi kompleksitas yang sering dihindari, dan menghasilkan solusi yang solid serta mudah di-maintain.",
+    "desc": "Saya menangani seluruh proses pengembangan. Dari perencanaan dan desain sistem sampai menulis kode dan deploy ke production. Saya suka menyelesaikan masalah yang kompleks dan membangun software yang andal dan mudah di-maintain jangka panjang.",
     "stats": {
       "e2e": "End-to-End Ownership",
       "zero": "Zero Tolerance for Fluff",
@@ -31,78 +31,78 @@
     "title": "Pengalaman Kerja"
   },
   "projects": {
-    "title": "Arsitektur Sistem & Deployment",
-    "cta": "ACCESS_SYSTEM_ARCHIVE",
+    "title": "Proyek",
+    "cta": "Lihat Semua Proyek",
     "viewDetail": "View_Detail",
     "archiveTitle": "Arsip Proyek",
     "archiveSubtitle": "Studi kasus teknis dan desain sistem",
     "metadata": {
-      "access": "Access: Granted",
+      "access": "Lihat Detail",
       "checksum": "Checksum: Validated",
       "target": "Target: Prod_Env"
     }
   },
   "blog": {
-    "title": "Catatan Teknis",
-    "cta": "ACCESS_FULL_ARCHIVE",
-    "readEntry": "READ_LOG_ENTRY",
+    "title": "Blog",
+    "cta": "Lihat Semua Artikel",
+    "readEntry": "Baca Artikel",
     "archiveTitle": "Semua Catatan Teknis",
     "archiveSubtitle": "Dokumentasi teknis dan catatan pengembangan",
-    "readTime": "WAKTU_BACA: {minutes} MIN"
+    "readTime": "{minutes} menit baca"
   },
   "contact": {
     "headline": "Mari bangun solusi bersama.",
-    "desc": "Terbuka untuk kolaborasi proyek teknis. Sampaikan kebutuhan Anda lewat form di bawah.",
+    "desc": "Punya ide yang perlu dibangun? Kirim detailnya di bawah. Saya selalu terbuka untuk proyek menarik dan kolaborasi baru.",
     "labels": {
-      "title": "01 / Judul Pesan",
-      "payload": "02 / Isi Pesan"
+      "title": "01 / Subjek",
+      "payload": "02 / Pesan"
     },
     "placeholders": {
       "title": "Tulis subjek proyek...",
       "payload": "Jelaskan kebutuhan proyek Anda..."
     },
     "buttons": {
-      "transmit": "Transmit_Protocol",
-      "copyUid": "COPY_UID"
+      "transmit": "Kirim Pesan",
+      "copyUid": "Salin Email"
     }
   },
   "footer": {
     "role": "Software Developer"
   },
   "hireBanner": {
-    "badge": "SYSTEM_AVAILABILITY :: OPEN_FOR_MISSIONS",
+    "badge": "Terbuka untuk Kerja Sama",
     "headline": "Butuh Developer untuk Mewujudkan Visi Anda?",
     "desc": "Berpengalaman di distributed systems, mobile offline-first, dan database management. Hubungi saya kalau butuh engineer untuk proyek Anda.",
-    "cta": "INITIALIZE_Recruitment_Protocol"
+    "cta": "Mari Bekerja Sama"
   },
   "game": {
-    "badge": "[ ENTER_SIMULATION ]",
+    "badge": "Mini Game",
     "hud": {
-      "sessionScore": "Session_Score",
-      "terminalHigh": "Terminal_High_Mark",
-      "nearRecord": "Near_Record",
-      "newHighScore": "New_High_Score"
+      "sessionScore": "Skor",
+      "terminalHigh": "Skor Tertinggi",
+      "nearRecord": "Hampir Rekor",
+      "newHighScore": "Rekor Baru"
     },
     "preGame": {
-      "title": "System_Simulation",
-      "waiting": "Menunggu deployment..."
+      "title": "Sky Defender",
+      "waiting": "Tap atau klik untuk mulai"
     },
     "countdown": {
       "go": "GO",
-      "syncing": "Sync_In_Progress"
+      "syncing": "Bersiap"
     },
     "gameOver": {
       "title": "FALLEN",
-      "subtitle": "Simulation_Terminated",
-      "finalHarvest": "Final_Harvest"
+      "subtitle": "Game Over",
+      "finalHarvest": "Skor Akhir"
     },
     "highScore": {
-      "newMark": "New_Terminal_Mark",
-      "pilotId": "PILOT_ID",
-      "commitIdentity": "SIMPAN_IDENTITAS",
-      "identitySecured": "Identity_Secured:",
-      "sharePerformance": "BAGIKAN_SKOR",
-      "redeploy": "MAIN_LAGI"
+      "newMark": "Rekor Baru",
+      "pilotId": "Nama Kamu",
+      "commitIdentity": "Simpan",
+      "identitySecured": "Tersimpan:",
+      "sharePerformance": "Bagikan Skor",
+      "redeploy": "Main Lagi"
     }
   },
   "seo": {

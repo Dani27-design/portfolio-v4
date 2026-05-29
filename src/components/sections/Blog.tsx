@@ -66,7 +66,7 @@ export const Blog = ({ blogs, locale }: BlogProps) => {
                      <div className="flex flex-col gap-2">
                         <div className="text-[10px] font-mono text-cyan-600 dark:text-cyan-400 mb-2 uppercase tracking-widest font-black flex items-center gap-3">
                           <span className="w-2 h-2 bg-cyan-500 rounded-sm group-hover:scale-125 transition-transform dark:shadow-[0_0_8px_#06b6d4]"></span>
-                          LOG_DATE: {blog.date}
+                          {blog.date}
                         </div>
                      </div>
                      <div className="font-mono text-[9px] text-indigo-600 dark:text-indigo-400 bg-indigo-500/5 px-2 py-0.5 border border-indigo-500/10 uppercase tracking-tighter group-hover:bg-indigo-500/20 group-hover:border-indigo-500/40 transition-colors">

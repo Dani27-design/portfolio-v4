@@ -77,7 +77,7 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
                   <Radio className="w-5 h-5 text-indigo-400 animate-pulse" />
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-[9px] md:text-[10px] font-mono text-text-muted/80 uppercase tracking-widest font-black">Secure_Endpoint:</span>
+                  <span className="text-[9px] md:text-[10px] font-mono text-text-muted/80 uppercase tracking-widest font-black">Email:</span>
                   <span className="text-sm md:text-base font-mono text-text-main tracking-tight group-hover/form:text-cyan-400 transition-colors break-all md:break-normal">{email}</span>
                 </div>
               </div>
@@ -168,8 +168,8 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
               <div className="flex items-center gap-4">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.4)] animate-pulse"></span>
                 <div className="flex flex-col">
-                  <span className="text-[9px] md:text-[10px] font-mono text-text-muted/80 uppercase tracking-widest font-black leading-none">Response_Time:</span>
-                  <span className="text-[9px] md:text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-widest mt-1">&lt;24h / Verified</span>
+                  <span className="text-[9px] md:text-[10px] font-mono text-text-muted/80 uppercase tracking-widest font-black leading-none">Response Time:</span>
+                  <span className="text-[9px] md:text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-widest mt-1">Within 24 hours</span>
                 </div>
               </div>
               <div className="hidden md:flex flex-col items-end">

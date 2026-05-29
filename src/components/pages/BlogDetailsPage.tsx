@@ -33,7 +33,7 @@ export const BlogDetailsPage = ({ blog, locale, hireBannerContent }: BlogDetails
           className="inline-flex items-center gap-3 text-cyan-500 font-mono text-[10px] font-black uppercase tracking-[0.4em] mb-12 hover:text-text-main transition-colors group"
         >
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-2 transition-transform" />
-          RETURN_TO_ARCHIVES
+          Back to Blog
         </Link>
 
         <article>
@@ -41,10 +41,10 @@ export const BlogDetailsPage = ({ blog, locale, hireBannerContent }: BlogDetails
             <div className="mb-10 md:mb-16">
               <div className="flex flex-wrap items-center gap-2 md:gap-4 mb-6 md:mb-8">
                 <span className="font-mono text-[8px] md:text-[9px] text-cyan-600 dark:text-cyan-500 font-black uppercase tracking-[0.3em] md:tracking-[0.4em] bg-cyan-500/10 px-2 md:px-3 py-1 border border-cyan-500/20">
-                  LOG_TYPE :: TECHNICAL_LOG
+                  Technical Article
                 </span>
                 <span className="font-mono text-[8px] md:text-[9px] text-indigo-600 dark:text-indigo-400 font-black uppercase tracking-[0.3em] md:tracking-[0.4em] bg-indigo-500/10 px-2 md:px-3 py-1 border border-indigo-500/20">
-                  STATUS :: DEPLOYED
+                  Published
                 </span>
               </div>
 
@@ -59,7 +59,7 @@ export const BlogDetailsPage = ({ blog, locale, hireBannerContent }: BlogDetails
                 </div>
                 <div className="flex items-center gap-2 md:gap-3 text-text-muted">
                   <User className="w-3.5 h-3.5 md:w-4 md:h-4 text-cyan-500 shrink-0" />
-                  <span className="font-mono text-[9px] md:text-[10px] uppercase tracking-widest">DANIANSYAH_CORE</span>
+                  <span className="font-mono text-[9px] md:text-[10px] uppercase tracking-widest">Daniansyah Chusyaidin</span>
                 </div>
                 <div className="flex items-center gap-2 md:gap-3 text-text-muted">
                   <Clock className="w-3.5 h-3.5 md:w-4 md:h-4 text-cyan-500 shrink-0" />

@@ -373,8 +373,8 @@ const skills = [
     id: 'core-engineering',
     title: { en: 'Core Engineering', id: 'Rekayasa Inti' },
     context: {
-      en: 'Building strictly-typed, scalable service architectures and server-side logic layers.',
-      id: 'Membangun arsitektur layanan bertipe ketat, skalabel, dan lapisan logika sisi server.',
+      en: 'The languages and frameworks I use to build backend services and server-side logic.',
+      id: 'Bahasa dan framework yang saya gunakan untuk membangun layanan backend dan logika server.',
     },
     skills: [
       { name: 'TypeScript', tag: 'STRICT' },
@@ -388,8 +388,8 @@ const skills = [
     id: 'client-interface',
     title: { en: 'Client & Interface', id: 'Klien & Antarmuka' },
     context: {
-      en: 'Architecting responsive web applications and modular cross-platform mobile interfaces.',
-      id: 'Merancang aplikasi web responsif dan antarmuka mobile lintas platform yang modular.',
+      en: 'Tools I use to build web frontends and cross-platform mobile apps.',
+      id: 'Tools yang saya gunakan untuk membangun frontend web dan aplikasi mobile lintas platform.',
     },
     skills: [
       { name: 'React.js', tag: 'SPA' },
@@ -403,8 +403,8 @@ const skills = [
     id: 'persistence-data',
     title: { en: 'Persistence & Data', id: 'Persistensi & Data' },
     context: {
-      en: 'Designing consistent schemas and high-performance data access layers across SQL and NoSQL stores.',
-      id: 'Mendesain skema yang konsisten dan lapisan akses data berperforma tinggi di SQL dan NoSQL.',
+      en: 'Databases and ORMs I work with for storing and managing application data.',
+      id: 'Database dan ORM yang saya gunakan untuk menyimpan dan mengelola data aplikasi.',
     },
     skills: [
       { name: 'PostgreSQL', tag: 'RELATIONAL' },
@@ -418,8 +418,8 @@ const skills = [
     id: 'communication-layers',
     title: { en: 'Communication Layers', id: 'Lapisan Komunikasi' },
     context: {
-      en: 'Handling real-time messaging, asynchronous event brokering, and API contract design.',
-      id: 'Menangani messaging real-time, brokering event asinkron, dan desain kontrak API.',
+      en: 'Protocols and tools for real-time messaging, message queues, and API communication.',
+      id: 'Protokol dan tools untuk messaging real-time, message queue, dan komunikasi API.',
     },
     skills: [
       { name: 'RabbitMQ', tag: 'BROKER' },
@@ -433,8 +433,8 @@ const skills = [
     id: 'devops-tooling',
     title: { en: 'DevOps & Tooling', id: 'DevOps & Peralatan' },
     context: {
-      en: 'Managing version control workflows, CI/CD pipelines, and development toolchain.',
-      id: 'Mengelola alur kerja version control, pipeline CI/CD, dan toolchain pengembangan.',
+      en: 'Version control, containerization, and deployment tools I use daily.',
+      id: 'Version control, containerization, dan tools deployment yang saya gunakan sehari-hari.',
     },
     skills: [
       { name: 'Git', tag: 'VERSIONING' },
@@ -448,8 +448,8 @@ const skills = [
     id: 'mobile-platform',
     title: { en: 'Mobile & Platform', id: 'Mobile & Platform' },
     context: {
-      en: 'Developing native-bridge mobile apps and cross-platform deployment targets.',
-      id: 'Mengembangkan aplikasi mobile native-bridge dan target deployment lintas platform.',
+      en: 'Mobile development tools for building native and hybrid apps.',
+      id: 'Tools pengembangan mobile untuk membangun aplikasi native dan hybrid.',
     },
     skills: [
       { name: 'Android Studio', tag: 'NATIVE' },
@@ -465,14 +465,14 @@ const skills = [
 // ─────────────────────────────────────────────
 
 const heroContent = {
-  tagline: { en: 'System Architect Core', id: 'System Architect Core' },
+  tagline: { en: 'Fullstack & Mobile Engineer', id: 'Fullstack & Mobile Engineer' },
   headline: { en: "I don't return undefined.", id: 'Saya tidak mengembalikan undefined.' },
   desc: {
-    en: 'Architecting fault-tolerant distributed systems and robust mobile cores. I solve for complexity through rigorous structural design and end-to-end technical ownership.',
-    id: 'Membangun distributed systems dan aplikasi mobile yang reliable. Saya handle dari desain arsitektur sampai production.',
+    en: 'I build production-ready software from scratch. System design, backend, mobile, all the way to deployment.',
+    id: 'Saya membangun software siap production dari nol. Desain sistem, backend, mobile, sampai deployment.',
   },
   ctaGame: { en: 'Wanna play a game?', id: 'Mau main game?' },
-  ctaContact: { en: 'Protocol_Initialize', id: 'Protocol_Initialize' },
+  ctaContact: { en: 'Get in Touch', id: 'Hubungi Saya' },
   phrases: {
     en: ['Software Developer', 'Fullstack Engineer', 'Mobile Developer', 'React & Node.js'],
     id: ['Software Developer', 'Fullstack Engineer', 'Mobile Developer', 'React & Node.js'],
@@ -480,14 +480,14 @@ const heroContent = {
 };
 
 const aboutContent = {
-  title: { en: 'Structural Engineer', id: 'Software Developer' },
+  title: { en: 'About Me', id: 'Software Developer' },
   headline: {
     en: 'I architect systems where reliability is the baseline.',
     id: 'Saya membangun sistem yang mengutamakan keandalan.',
   },
   desc: {
-    en: 'From technical flowcharts and PRDs to backend infrastructure and mobile cores, I own the entire lifecycle. I thrive in the complexity that others avoid, delivering robust, maintainable solutions with a commitment to lifetime maintenance.',
-    id: 'Mulai dari flowchart teknis dan PRD hingga infrastruktur backend dan aplikasi mobile, saya menangani keseluruhan proses pengembangan. Saya terbiasa menghadapi kompleksitas yang sering dihindari, dan menghasilkan solusi yang solid serta mudah di-maintain.',
+    en: "I handle the full development process. From planning and system design to writing code and shipping to production. I enjoy solving hard problems and building software that's reliable and easy to maintain long-term.",
+    id: 'Saya menangani seluruh proses pengembangan. Dari perencanaan dan desain sistem sampai menulis kode dan deploy ke production. Saya suka menyelesaikan masalah yang kompleks dan membangun software yang andal dan mudah di-maintain jangka panjang.',
   },
   avatarInitials: 'DC',
   stats: {
@@ -503,21 +503,21 @@ const contactContent = {
     id: 'Mari bangun solusi bersama.',
   },
   desc: {
-    en: 'Accepting high-priority inquiries for complex service architectures and scalable engineering collaborations. Establish verified transit below.',
-    id: 'Terbuka untuk kolaborasi proyek teknis. Sampaikan kebutuhan Anda lewat form di bawah.',
+    en: "Got an idea that needs building? Send me the details below. I'm always open to interesting projects and new collaborations.",
+    id: 'Punya ide yang perlu dibangun? Kirim detailnya di bawah. Saya selalu terbuka untuk proyek menarik dan kolaborasi baru.',
   },
   email: 'daniansyah@chusyaidin.engineer',
   labels: {
-    title: { en: '01 / Request_Title', id: '01 / Judul Pesan' },
-    payload: { en: '02 / Query_Payload', id: '02 / Isi Pesan' },
+    title: { en: '01 / Subject', id: '01 / Subjek' },
+    payload: { en: '02 / Message', id: '02 / Pesan' },
   },
   placeholders: {
     title: { en: 'Enter project subject...', id: 'Tulis subjek proyek...' },
     payload: { en: 'Describe project architecture constraints...', id: 'Jelaskan kebutuhan proyek Anda...' },
   },
   buttons: {
-    transmit: { en: 'Transmit_Protocol', id: 'Transmit_Protocol' },
-    copyUid: { en: 'COPY_UID', id: 'COPY_UID' },
+    transmit: { en: 'Send Message', id: 'Kirim Pesan' },
+    copyUid: { en: 'Copy Email', id: 'Salin Email' },
   },
   socials: {
     github: 'https://github.com/Dani27-design',
@@ -533,16 +533,16 @@ const footerContent = {
 };
 
 const hireBannerContent = {
-  badge: { en: 'SYSTEM_AVAILABILITY :: OPEN_FOR_MISSIONS', id: 'SYSTEM_AVAILABILITY :: OPEN_FOR_MISSIONS' },
+  badge: { en: 'Available for Hire', id: 'Terbuka untuk Kerja Sama' },
   headline: {
     en: 'Need an Architect to Scale Your Vision?',
     id: 'Butuh Developer untuk Mewujudkan Visi Anda?',
   },
   desc: {
-    en: "Specializing in high-throughput distributed systems, offline-first mobile cores, and robust database orchestration. Let's build the next generation of resilient software.",
-    id: 'Berpengalaman di distributed systems, mobile offline-first, dan database management. Hubungi saya kalau butuh engineer untuk proyek Anda.',
+    en: "Experienced in building web apps, mobile apps, and backend systems that scale. Let me know if you need a developer for your next project.",
+    id: 'Berpengalaman membangun aplikasi web, mobile, dan sistem backend yang scalable. Hubungi saya kalau butuh developer untuk proyek Anda.',
   },
-  cta: { en: 'INITIALIZE_Recruitment_Protocol', id: 'INITIALIZE_Recruitment_Protocol' },
+  cta: { en: "Let's Work Together", id: 'Mari Bekerja Sama' },
 };
 
 const navbarContent = {

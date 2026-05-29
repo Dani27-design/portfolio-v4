@@ -32,7 +32,7 @@ export const ProjectListPage = ({ projects, locale, hireBannerContent }: Project
           className="inline-flex items-center gap-3 text-cyan-500 font-mono text-[10px] font-black uppercase tracking-[0.4em] mb-12 hover:text-text-main transition-colors group"
         >
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-2 transition-transform" />
-          BACK_TO_ROOT
+          Back to Home
         </Link>
 
         <Reveal>

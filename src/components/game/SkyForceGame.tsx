@@ -233,7 +233,23 @@ export const SkyForceGame = () => {
   const fetchLeaderboard = async () => {
     try {
       const res = await fetch('/api/leaderboard');
-      if (res.ok) setLeaderboard(await res.json());
+      if (!res.ok) return;
+      const entries: LeaderboardEntry[] = await res.json();
+      setLeaderboard(entries);
+
+      // If global #1 is higher than local high score, use it as the record to beat
+      if (entries.length > 0) {
+        const top = entries[0];
+        setHighScore(prev => {
+          if (top.score > prev) {
+            setHighScoreName(top.name);
+            setDisplayHighScore(top.score);
+            setDisplayHighScoreName(top.name);
+            return top.score;
+          }
+          return prev;
+        });
+      }
     } catch { /* silent — leaderboard is non-critical */ }
   };
 
@@ -241,7 +257,7 @@ export const SkyForceGame = () => {
     const savedScore = localStorage.getItem("skyforce_highscore");
     const savedName = localStorage.getItem("skyforce_highscore_name");
     const scoreVal = savedScore ? parseInt(savedScore) : 0;
-    const nameVal = savedName || "LEGACY_PILOT";
+    const nameVal = savedName || "";
     setHighScore(scoreVal);
     setHighScoreName(nameVal);
     setDisplayHighScore(scoreVal);

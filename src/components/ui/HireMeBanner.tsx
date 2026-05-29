@@ -77,15 +77,15 @@ export const HireMeBanner = ({ hireBannerContent, locale }: HireMeBannerProps = 
                 <div className="flex flex-wrap justify-center lg:justify-start gap-4 md:gap-6">
                   <div className="flex items-center gap-2 md:gap-3">
                     <Cpu className="w-4 h-4 md:w-5 md:h-5 text-indigo-600 dark:text-indigo-400" />
-                    <span className="font-mono text-[8px] md:text-[9px] uppercase tracking-widest text-text-muted">Distributed_Eng</span>
+                    <span className="font-mono text-[8px] md:text-[9px] uppercase tracking-widest text-text-muted">Distributed Systems</span>
                   </div>
                   <div className="flex items-center gap-2 md:gap-3">
                     <ShieldCheck className="w-4 h-4 md:w-5 md:h-5 text-indigo-600 dark:text-indigo-400" />
-                    <span className="font-mono text-[8px] md:text-[9px] uppercase tracking-widest text-text-muted">Security_First</span>
+                    <span className="font-mono text-[8px] md:text-[9px] uppercase tracking-widest text-text-muted">Security First</span>
                   </div>
                   <div className="flex items-center gap-2 md:gap-3">
                     <Zap className="w-4 h-4 md:w-5 md:h-5 text-indigo-600 dark:text-indigo-400" />
-                    <span className="font-mono text-[8px] md:text-[9px] uppercase tracking-widest text-text-muted">High_Performance</span>
+                    <span className="font-mono text-[8px] md:text-[9px] uppercase tracking-widest text-text-muted">High Performance</span>
                   </div>
                 </div>
               </div>

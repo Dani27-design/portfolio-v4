@@ -110,23 +110,23 @@ describe('Navigation Translations', () => {
 
 describe('Hero Section Translations', () => {
   it('should have EN hero content', () => {
-    expect(en.hero.tagline).toBe('System Architect Core');
+    expect(en.hero.tagline).toBe('Fullstack & Mobile Engineer');
     expect(en.hero.headline).toBe("I don't return undefined.");
     expect(en.hero.ctaGame).toBe('Wanna play a game?');
-    expect(en.hero.ctaContact).toBe('Protocol_Initialize');
+    expect(en.hero.ctaContact).toBe('Get in Touch');
   });
 
   it('should have ID hero content', () => {
-    expect(id.hero.tagline).toBe('System Architect Core');
+    expect(id.hero.tagline).toBe('Fullstack & Mobile Engineer');
     expect(id.hero.headline).toBe('Saya tidak mengembalikan undefined.');
     expect(id.hero.ctaGame).toBe('Mau main game?');
-    expect(id.hero.ctaContact).toBe('Protocol_Initialize');
+    expect(id.hero.ctaContact).toBe('Hubungi Saya');
   });
 });
 
 describe('About Section Translations', () => {
   it('should have EN about content', () => {
-    expect(en.about.title).toBe('Structural Engineer');
+    expect(en.about.title).toBe('About Me');
     expect(en.about.headline).toBe('I architect systems where reliability is the baseline.');
     expect(en.about.stats.e2e).toBe('Lifecycle Ownership');
     expect(en.about.stats.zero).toBe('Tolerance for Fluff');
@@ -149,26 +149,26 @@ describe('Section Titles', () => {
   });
 
   it('should have experience title', () => {
-    expect(en.experience.title).toBe('Professional Trajectory');
+    expect(en.experience.title).toBe('Work Experience');
     expect(id.experience.title).toBe('Pengalaman Kerja');
   });
 });
 
 describe('Projects Section Translations', () => {
   it('should have EN projects section content', () => {
-    expect(en.projects.title).toBe('System Architecture & Deployment');
-    expect(en.projects.cta).toBe('ACCESS_SYSTEM_ARCHIVE');
+    expect(en.projects.title).toBe('Projects');
+    expect(en.projects.cta).toBe('View All Projects');
     expect(en.projects.viewDetail).toBe('View_Detail');
-    expect(en.projects.metadata.access).toBe('Access: Granted');
+    expect(en.projects.metadata.access).toBe('View Details');
     expect(en.projects.metadata.checksum).toBe('Checksum: Validated');
     expect(en.projects.metadata.target).toBe('Target: Prod_Env');
   });
 
   it('should have ID projects section content', () => {
-    expect(id.projects.title).toBe('Arsitektur Sistem & Deployment');
-    expect(id.projects.cta).toBe('ACCESS_SYSTEM_ARCHIVE');
+    expect(id.projects.title).toBe('Proyek');
+    expect(id.projects.cta).toBe('Lihat Semua Proyek');
     expect(id.projects.viewDetail).toBe('View_Detail');
-    expect(id.projects.metadata.access).toBe('Access: Granted');
+    expect(id.projects.metadata.access).toBe('Lihat Detail');
     expect(id.projects.metadata.checksum).toBe('Checksum: Validated');
     expect(id.projects.metadata.target).toBe('Target: Prod_Env');
   });
@@ -176,37 +176,37 @@ describe('Projects Section Translations', () => {
 
 describe('Blog Section Translations', () => {
   it('should have EN blog section content', () => {
-    expect(en.blog.title).toBe('Technical Logs');
-    expect(en.blog.cta).toBe('ACCESS_FULL_ARCHIVE');
-    expect(en.blog.readEntry).toBe('READ_LOG_ENTRY');
+    expect(en.blog.title).toBe('Blog');
+    expect(en.blog.cta).toBe('View All Posts');
+    expect(en.blog.readEntry).toBe('Read Article');
   });
 
   it('should have ID blog section content', () => {
-    expect(id.blog.title).toBe('Catatan Teknis');
-    expect(id.blog.cta).toBe('ACCESS_FULL_ARCHIVE');
-    expect(id.blog.readEntry).toBe('READ_LOG_ENTRY');
+    expect(id.blog.title).toBe('Blog');
+    expect(id.blog.cta).toBe('Lihat Semua Artikel');
+    expect(id.blog.readEntry).toBe('Baca Artikel');
   });
 });
 
 describe('Contact Section Translations', () => {
   it('should have EN contact content', () => {
     expect(en.contact.headline).toBe("Let's engineer solutions together.");
-    expect(en.contact.labels.title).toBe('01 / Request_Title');
-    expect(en.contact.labels.payload).toBe('02 / Query_Payload');
+    expect(en.contact.labels.title).toBe('01 / Subject');
+    expect(en.contact.labels.payload).toBe('02 / Message');
     expect(en.contact.placeholders.title).toBe('Enter project subject...');
     expect(en.contact.placeholders.payload).toBe('Describe project architecture constraints...');
-    expect(en.contact.buttons.transmit).toBe('Transmit_Protocol');
-    expect(en.contact.buttons.copyUid).toBe('COPY_UID');
+    expect(en.contact.buttons.transmit).toBe('Send Message');
+    expect(en.contact.buttons.copyUid).toBe('Copy Email');
   });
 
   it('should have ID contact content', () => {
     expect(id.contact.headline).toBe('Mari bangun solusi bersama.');
-    expect(id.contact.labels.title).toBe('01 / Judul Pesan');
-    expect(id.contact.labels.payload).toBe('02 / Isi Pesan');
+    expect(id.contact.labels.title).toBe('01 / Subjek');
+    expect(id.contact.labels.payload).toBe('02 / Pesan');
     expect(id.contact.placeholders.title).toBe('Tulis subjek proyek...');
     expect(id.contact.placeholders.payload).toBe('Jelaskan kebutuhan proyek Anda...');
-    expect(id.contact.buttons.transmit).toBe('Transmit_Protocol');
-    expect(id.contact.buttons.copyUid).toBe('COPY_UID');
+    expect(id.contact.buttons.transmit).toBe('Kirim Pesan');
+    expect(id.contact.buttons.copyUid).toBe('Salin Email');
   });
 });
 
@@ -219,59 +219,59 @@ describe('Footer Translations', () => {
 
 describe('HireBanner Translations', () => {
   it('should have EN hire banner content', () => {
-    expect(en.hireBanner.badge).toBe('SYSTEM_AVAILABILITY :: OPEN_FOR_MISSIONS');
+    expect(en.hireBanner.badge).toBe('Available for Hire');
     expect(en.hireBanner.headline).toBe('Need an Architect to Scale Your Vision?');
-    expect(en.hireBanner.cta).toBe('INITIALIZE_Recruitment_Protocol');
+    expect(en.hireBanner.cta).toBe("Let's Work Together");
   });
 
   it('should have ID hire banner content', () => {
-    expect(id.hireBanner.badge).toBe('SYSTEM_AVAILABILITY :: OPEN_FOR_MISSIONS');
+    expect(id.hireBanner.badge).toBe('Terbuka untuk Kerja Sama');
     expect(id.hireBanner.headline).toBe('Butuh Developer untuk Mewujudkan Visi Anda?');
-    expect(id.hireBanner.cta).toBe('INITIALIZE_Recruitment_Protocol');
+    expect(id.hireBanner.cta).toBe('Mari Bekerja Sama');
   });
 });
 
 describe('SkyForceGame Translations', () => {
   it('should have EN game UI content', () => {
-    expect(en.game.badge).toBe('[ ENTER_SIMULATION ]');
-    expect(en.game.hud.sessionScore).toBe('Session_Score');
-    expect(en.game.hud.terminalHigh).toBe('Terminal_High_Mark');
-    expect(en.game.hud.nearRecord).toBe('Near_Record');
-    expect(en.game.hud.newHighScore).toBe('New_High_Score');
-    expect(en.game.preGame.title).toBe('System_Simulation');
-    expect(en.game.preGame.waiting).toBe('Awaiting defensive deployment...');
+    expect(en.game.badge).toBe('Mini Game');
+    expect(en.game.hud.sessionScore).toBe('Score');
+    expect(en.game.hud.terminalHigh).toBe('High Score');
+    expect(en.game.hud.nearRecord).toBe('Near Record');
+    expect(en.game.hud.newHighScore).toBe('New High Score');
+    expect(en.game.preGame.title).toBe('Sky Defender');
+    expect(en.game.preGame.waiting).toBe('Tap or click to start');
     expect(en.game.countdown.go).toBe('GO');
-    expect(en.game.countdown.syncing).toBe('Sync_In_Progress');
+    expect(en.game.countdown.syncing).toBe('Get Ready');
     expect(en.game.gameOver.title).toBe('FALLEN');
-    expect(en.game.gameOver.subtitle).toBe('Simulation_Terminated');
-    expect(en.game.gameOver.finalHarvest).toBe('Final_Harvest');
-    expect(en.game.highScore.newMark).toBe('New_Terminal_Mark');
-    expect(en.game.highScore.pilotId).toBe('PILOT_ID');
-    expect(en.game.highScore.commitIdentity).toBe('COMMIT_IDENTITY');
-    expect(en.game.highScore.identitySecured).toBe('Identity_Secured:');
-    expect(en.game.highScore.sharePerformance).toBe('SHARE_PERFORMANCE');
-    expect(en.game.highScore.redeploy).toBe('RE-DEPLOY');
+    expect(en.game.gameOver.subtitle).toBe('Game Over');
+    expect(en.game.gameOver.finalHarvest).toBe('Final Score');
+    expect(en.game.highScore.newMark).toBe('New Record');
+    expect(en.game.highScore.pilotId).toBe('Your Name');
+    expect(en.game.highScore.commitIdentity).toBe('Save');
+    expect(en.game.highScore.identitySecured).toBe('Saved:');
+    expect(en.game.highScore.sharePerformance).toBe('Share Score');
+    expect(en.game.highScore.redeploy).toBe('Play Again');
   });
 
-  it('should have ID game UI content (same as EN — design language)', () => {
-    expect(id.game.badge).toBe('[ ENTER_SIMULATION ]');
-    expect(id.game.hud.sessionScore).toBe('Session_Score');
-    expect(id.game.hud.terminalHigh).toBe('Terminal_High_Mark');
-    expect(id.game.hud.nearRecord).toBe('Near_Record');
-    expect(id.game.hud.newHighScore).toBe('New_High_Score');
-    expect(id.game.preGame.title).toBe('System_Simulation');
-    expect(id.game.preGame.waiting).toBe('Menunggu deployment...');
+  it('should have ID game UI content', () => {
+    expect(id.game.badge).toBe('Mini Game');
+    expect(id.game.hud.sessionScore).toBe('Skor');
+    expect(id.game.hud.terminalHigh).toBe('Skor Tertinggi');
+    expect(id.game.hud.nearRecord).toBe('Hampir Rekor');
+    expect(id.game.hud.newHighScore).toBe('Rekor Baru');
+    expect(id.game.preGame.title).toBe('Sky Defender');
+    expect(id.game.preGame.waiting).toBe('Tap atau klik untuk mulai');
     expect(id.game.countdown.go).toBe('GO');
-    expect(id.game.countdown.syncing).toBe('Sync_In_Progress');
+    expect(id.game.countdown.syncing).toBe('Bersiap');
     expect(id.game.gameOver.title).toBe('FALLEN');
-    expect(id.game.gameOver.subtitle).toBe('Simulation_Terminated');
-    expect(id.game.gameOver.finalHarvest).toBe('Final_Harvest');
-    expect(id.game.highScore.newMark).toBe('New_Terminal_Mark');
-    expect(id.game.highScore.pilotId).toBe('PILOT_ID');
-    expect(id.game.highScore.commitIdentity).toBe('SIMPAN_IDENTITAS');
-    expect(id.game.highScore.identitySecured).toBe('Identity_Secured:');
-    expect(id.game.highScore.sharePerformance).toBe('BAGIKAN_SKOR');
-    expect(id.game.highScore.redeploy).toBe('MAIN_LAGI');
+    expect(id.game.gameOver.subtitle).toBe('Game Over');
+    expect(id.game.gameOver.finalHarvest).toBe('Skor Akhir');
+    expect(id.game.highScore.newMark).toBe('Rekor Baru');
+    expect(id.game.highScore.pilotId).toBe('Nama Kamu');
+    expect(id.game.highScore.commitIdentity).toBe('Simpan');
+    expect(id.game.highScore.identitySecured).toBe('Tersimpan:');
+    expect(id.game.highScore.sharePerformance).toBe('Bagikan Skor');
+    expect(id.game.highScore.redeploy).toBe('Main Lagi');
   });
 });
 
