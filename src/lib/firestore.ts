@@ -15,6 +15,36 @@ export async function getProjects(): Promise<Project[]> {
   }
 }
 
+export async function getProjectBySlug(slug: string): Promise<Project | null> {
+  if (!adminDb) return null;
+  try {
+    const snapshot = await adminDb
+      .collection('projects')
+      .where('slug', '==', slug)
+      .limit(1)
+      .get();
+    if (snapshot.empty) return null;
+    const doc = snapshot.docs[0];
+    return { id: doc.id, ...doc.data() } as Project;
+  } catch (err) {
+    console.error('Failed to fetch project by slug:', err);
+    return null;
+  }
+}
+
+export async function getAllProjectSlugs(): Promise<string[]> {
+  if (!adminDb) return [];
+  try {
+    const snapshot = await adminDb.collection('projects').select('slug').get();
+    return snapshot.docs
+      .map((doc) => doc.data().slug as string)
+      .filter(Boolean);
+  } catch (err) {
+    console.error('Failed to fetch project slugs:', err);
+    return [];
+  }
+}
+
 export async function getBlogs(): Promise<Blog[]> {
   if (!adminDb) return [];
   try {

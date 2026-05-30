@@ -25,9 +25,9 @@
 
 .dark {
   --primary-color: #3b82f6;
-  --bg-color: #0f1115;
-  --surface-color: #1a1d23;
-  --surface-hover-color: #23272f;
+  --bg-color: #0b0d10;
+  --surface-color: #16181e;
+  --surface-hover-color: #1e2128;
   --text-color: #f8fafc;
   --text-muted-color: #94a3b8;
   --border-color: #2d333b;
@@ -52,7 +52,7 @@
   }
 
   /* Spacing Scale */
-  .section-padding { @apply py-20 md:py-32; }
+  .section-padding { @apply py-6 md:py-16 lg:py-24; }
 
   /* Custom Cursor */
   #cursor {

@@ -41,6 +41,7 @@ const mockExperience: ExperienceItem[] = [
 const mockProjects: Project[] = [
   {
     id: '1',
+    slug: 'test-project',
     name: { en: 'Test Project', id: 'Proyek Uji' },
     desc: { en: 'A test project', id: 'Proyek pengujian' },
     tech: ['TypeScript', 'React'],

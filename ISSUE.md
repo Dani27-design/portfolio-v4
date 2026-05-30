@@ -1,3 +1,17 @@
+# Issue Tracker
+
+---
+
+## ~~GAME-02: Game arena has blank black space and misplaced red defense line on mobile~~ [FIXED]
+
+**Problem**: The game container was set to `h-[85vh]` on mobile but the canvas height was hardcoded to 360px. This left ~330px of blank black empty space below the game content. The red dashed defense line drew at the bottom of the 360px canvas (in the middle of the visible container) instead of at the bottom of the full arena.
+
+**Root cause**: `SkyForceGame.tsx:312` — `const logicalHeight = logicalWidth < 768 ? 360 : Math.min(540, logicalWidth * 0.54)` ignored the actual container height.
+
+**Fix applied**: Changed to `const logicalHeight = containerRef.current.clientHeight` — canvas now uses the actual rendered container height on all screen sizes. The defense line, enemies, player, and all game elements render relative to the full arena height automatically.
+
+---
+
 # Un-translated / Non-bilingual Wording Audit
 
 Audit date: 2026-05-30

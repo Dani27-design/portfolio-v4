@@ -1,48 +1,54 @@
 'use client';
 
 import dynamic from "next/dynamic";
+import { Github, Linkedin, Instagram, MessageCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
-import type { FooterContent, Locale } from "@/types";
+import type { FooterContent, ContactContent, Locale } from "@/types";
 
 const KernelSubstrateGimmick = dynamic(() => import("@/components/gimmicks/KernelSubstrateGimmick").then(m => ({ default: m.KernelSubstrateGimmick })), { ssr: false });
 
 interface FooterProps {
   footerContent?: FooterContent | null;
+  contactContent?: ContactContent | null;
   locale?: string;
-  logoUrl?: string;
 }
 
-export const Footer = ({ footerContent, locale, logoUrl }: FooterProps = {}) => {
+export const Footer = ({ footerContent, contactContent, locale }: FooterProps = {}) => {
   const t = useTranslations('footer');
   const loc = (locale || 'en') as Locale;
   const currentYear = new Date().getFullYear();
 
-  const ownerName = footerContent?.ownerName ?? 'DANIANSYAH CHUSYAIDIN';
+  const ownerName = footerContent?.ownerName ?? 'Daniansyah Chusyaidin';
   const role = footerContent?.role[loc] ?? t('role');
 
+  const socials = [
+    { name: "GitHub", icon: <Github className="w-3.5 h-3.5" />, href: contactContent?.socials.github ?? "https://github.com/Dani27-design" },
+    { name: "LinkedIn", icon: <Linkedin className="w-3.5 h-3.5" />, href: contactContent?.socials.linkedin ?? "https://www.linkedin.com/in/daniansyahchusyaidin/" },
+    { name: "Instagram", icon: <Instagram className="w-3.5 h-3.5" />, href: contactContent?.socials.instagram ?? "https://www.instagram.com/danichusyaidin" },
+    { name: "WhatsApp", icon: <MessageCircle className="w-3.5 h-3.5" />, href: contactContent?.socials.whatsapp ?? "https://wa.me/6285790428078" },
+  ];
+
   return (
-    <footer className="bg-background border-t border-border/60 relative overflow-hidden">
+    <footer className="bg-surface border-t border-border/40 relative overflow-hidden">
       <KernelSubstrateGimmick />
 
-      <div className="container-custom py-4 relative z-10">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex flex-col items-center md:items-start gap-2">
-             <div className="flex items-center gap-2">
-                {logoUrl ? (
-                  <img src={logoUrl} alt={ownerName} className="w-6 h-6 object-cover rounded-sm group cursor-pointer transition-all hover:scale-110" />
-                ) : (
-                  <div className="w-6 h-6 rounded-sm bg-text-main text-background flex items-center justify-center font-black text-[8px] select-none group cursor-pointer transition-all hover:scale-110">DC</div>
-                )}
-                <div className="flex flex-col">
-                   <span className="text-[11px] font-black text-text-main tracking-[0.2em] uppercase">{ownerName}</span>
-                   <span className="text-[8px] font-mono text-cyan-500/80 font-bold uppercase tracking-widest leading-none">{role}</span>
-                </div>
-             </div>
-             <p className="text-[7px] font-mono text-text-muted/60 uppercase tracking-widest text-center md:text-left">
-                &copy; {currentYear} All rights reserved.
-             </p>
-          </div>
-
+      <div className="container-custom py-4 relative z-10 flex items-center justify-between">
+        <span className="text-xs text-text-muted/40">
+          &copy; {currentYear} {ownerName} · {role}
+        </span>
+        <div className="flex items-center gap-1">
+          {socials.map((social) => (
+            <a
+              key={social.name}
+              href={social.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={social.name}
+              className="w-7 h-7 rounded flex items-center justify-center text-text-muted/30 hover:text-cyan-500 transition-colors"
+            >
+              {social.icon}
+            </a>
+          ))}
         </div>
       </div>
     </footer>

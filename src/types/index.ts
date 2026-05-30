@@ -4,11 +4,16 @@ export type BilingualArray = Record<Locale, string[]>;
 
 export interface Project {
   id: string;
+  slug: string;
   name: Bilingual;
   desc: Bilingual;
+  content?: Bilingual;
   tech: string[];
   version: string;
   status: string;
+  image?: string;
+  videoUrl?: string;
+  url?: string;
   order: number;
   createdAt: string;
   updatedAt: string;
@@ -146,5 +151,6 @@ export interface LeaderboardEntry {
   id: string;
   name: string;
   score: number;
-  createdAt: string;
+  createdAt?: unknown;
+  updatedAt?: unknown;
 }

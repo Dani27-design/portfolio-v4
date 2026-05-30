@@ -22,79 +22,55 @@ export const BlogListPage = ({ blogs, locale, hireBannerContent }: BlogListPageP
   const loc = locale as Locale;
 
   return (
-    <section className="section-padding bg-background relative min-h-screen overflow-hidden pt-32">
+    <section className="pb-8 md:pb-14 bg-background relative min-h-screen overflow-hidden pt-24 md:pt-28">
       <LazyGimmick><LogStreamGimmick /></LazyGimmick>
 
       <div className="container-custom relative z-10">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-3 text-cyan-500 font-mono text-[10px] font-black uppercase tracking-[0.4em] mb-12 hover:text-text-main transition-colors group"
-        >
-          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-2 transition-transform" />
-          {t('backToHome')}
-        </Link>
-
         <Reveal>
-          <div className="mb-12 md:mb-24 relative flex flex-col items-center md:items-start text-center md:text-left">
+          <div className="mb-12 md:mb-16 lg:mb-24">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-sm text-text-muted hover:text-cyan-500 transition-colors mb-6"
+              aria-label={t('backToHome')}
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span className="font-mono text-xs uppercase tracking-wider">{t('backToHome')}</span>
+            </Link>
             <h1 className="text-3xl font-bold tracking-tighter text-text-main md:text-5xl lg:text-6xl">{t('archiveTitle')}</h1>
-            <div className="h-1.5 w-24 bg-gradient-to-r from-cyan-500 to-indigo-500 mt-6 shadow-[0_0_20px_rgba(6,182,212,0.4)] md:mx-0"></div>
-            <p className="text-cyan-500/80 mt-8 font-mono text-[11px] uppercase tracking-[0.4em] font-black flex items-center justify-center md:justify-start gap-4">
-              <span className="h-px w-8 bg-cyan-500/30" />
+            <p className="text-text-muted/70 mt-3 md:mt-4 text-sm md:text-base">
               {t('archiveSubtitle')}
             </p>
+            <div className="h-1 w-16 bg-gradient-to-r from-cyan-500 to-indigo-500 mt-5 md:mt-6 rounded-full" />
           </div>
         </Reveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
           {blogs.map((blog, idx) => (
-            <Reveal key={blog.id} delay={idx * 0.05} width="100%">
+            <Reveal key={blog.id} delay={idx * 0.1} width="100%">
               <Link href={`/blog/${blog.slug}`} className="block h-full">
                 <div
-                  className="p-6 md:p-10 bg-surface/90 border border-border/40 hover:border-cyan-500/50 hover:-translate-y-2 transition-all duration-500 cursor-pointer group h-full flex flex-col shadow-xl relative group/blog overflow-hidden"
+                  className="p-5 md:p-8 bg-surface border border-border/40 rounded-xl hover:border-cyan-500/40 hover:-translate-y-1 transition-all duration-300 cursor-pointer group h-full flex flex-col relative overflow-hidden"
                 >
-                  {/* Background Archive Texture */}
-                  <div className="absolute inset-0 opacity-5 [background-image:linear-gradient(var(--border-color)_1px,transparent_1px),linear-gradient(90deg,var(--border-color)_1px,transparent_1px)] [background-size:15px_15px] pointer-events-none" />
-
-                  {/* Tactical Rail */}
-                  <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-transparent via-border/20 to-transparent group-hover:via-cyan-500/40 transition-colors duration-700" />
-
-                  <div className="flex justify-between items-start mb-6 md:mb-10 relative z-10">
-                     <div className="flex flex-col gap-2">
-                        <div className="text-[10px] font-mono text-cyan-600 dark:text-cyan-400 mb-2 uppercase tracking-widest font-black flex items-center gap-3">
-                          <span className="w-2 h-2 bg-cyan-500 rounded-sm group-hover:scale-125 transition-transform dark:shadow-[0_0_8px_#06b6d4]"></span>
-                          {blog.date}
-                        </div>
-                     </div>
-                     <div className="font-mono text-[9px] text-indigo-600 dark:text-indigo-400 bg-indigo-500/5 px-2 py-0.5 border border-indigo-500/10 uppercase tracking-tighter group-hover:bg-indigo-500/20 group-hover:border-indigo-500/40 transition-colors">
-                       #{idx.toString().padStart(2, '0')}
-                     </div>
+                  <div className="mb-4 md:mb-5">
+                    <span className="text-xs font-mono text-cyan-600 dark:text-cyan-400 font-semibold">
+                      {blog.date}
+                    </span>
                   </div>
 
-                  <h3 className="text-2xl font-bold text-text-main group-hover:text-cyan-700 dark:group-hover:text-cyan-200 transition-colors mb-8 leading-tight tracking-tighter border-l-2 border-transparent group-hover:border-cyan-500/50 group-hover:pl-4 transition-all duration-500">
+                  <h3 className="text-lg md:text-xl font-bold text-text-main group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors leading-snug tracking-tight">
                     {blog.title[loc]}
                   </h3>
 
-                  <p className="text-sm text-text-muted/80 line-clamp-4 leading-relaxed mb-8 md:mb-12 flex-grow italic group-hover:text-text-main transition-colors">
+                  <p className="text-sm text-text-muted/70 line-clamp-3 leading-relaxed mt-3 flex-grow group-hover:text-text-muted transition-colors">
                     {blog.excerpt[loc]}
                   </p>
 
-                  <div className="mt-auto pt-8 border-t border-border/20 flex justify-between items-center group/btn relative z-10">
-                    <div className="flex flex-col gap-1">
-                      <span className="text-[11px] font-black uppercase tracking-[0.3em] text-cyan-500 group-hover:translate-x-2 transition-all duration-300">
-                        {t('readEntry')}
-                      </span>
-                      <div className="w-6 h-[2px] bg-cyan-500 group-hover:w-full transition-all duration-500" />
-                    </div>
-                    <div className="w-10 h-10 rounded-full border border-border/40 bg-background flex items-center justify-center opacity-40 group-hover:opacity-100 group-hover:border-cyan-500/60 transition-all duration-500 group-hover:rotate-45">
-                      <div className="w-2 h-2 bg-cyan-500 rounded-full shadow-[0_0_8px_#06b6d4]"></div>
-                    </div>
+                  <div className="mt-auto pt-5 border-t border-border/20 flex justify-between items-center">
+                    <span className="text-xs font-semibold uppercase tracking-widest text-cyan-500 group-hover:translate-x-1 transition-transform duration-300">
+                      {t('readEntry')}
+                    </span>
+                    <div className="w-6 h-[2px] bg-cyan-500/40 group-hover:w-10 group-hover:bg-cyan-500 transition-all duration-300 rounded-full" />
                   </div>
-
-                  {/* Corner Scan Accent */}
-                  <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-transparent group-hover:border-indigo-500/30 transition-colors" />
-
-                  {/* Horizontal Wave */}
-                  <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent -translate-x-full group-hover:animate-sweep pointer-events-none" />
                 </div>
               </Link>
             </Reveal>

@@ -170,7 +170,7 @@ export const ScrollToTop = () => {
               {/* Technical Data HUD */}
               <div className="absolute -bottom-8 opacity-0 group-hover:opacity-100 transition-opacity">
                 <span className="text-[7px] font-mono font-black text-orange-500 uppercase tracking-widest whitespace-nowrap">
-                  {(isLaunching || isDeploying) ? "ENG_IGNITION" : "READY_FOR_LIFT"}
+                  {(isLaunching || isDeploying) ? "Launching" : "Scroll to top"}
                 </span>
               </div>
             </div>

@@ -39,6 +39,7 @@ const now = new Date().toISOString();
 const projects = [
   {
     id: 'omnichannel-marketplace-platform',
+    slug: 'omnichannel-marketplace-platform',
     name: {
       en: 'Omnichannel Marketplace Platform',
       id: 'Platform Marketplace Omnichannel',
@@ -54,6 +55,7 @@ const projects = [
   },
   {
     id: 'fulfilment-app',
+    slug: 'fulfilment-app',
     name: {
       en: 'Fulfilment App Server & Mobile',
       id: 'Aplikasi Fulfilment Server & Mobile',
@@ -69,6 +71,7 @@ const projects = [
   },
   {
     id: 'port-information-system',
+    slug: 'port-information-system',
     name: {
       en: 'Port Information System',
       id: 'Sistem Informasi Pelabuhan',
@@ -84,6 +87,7 @@ const projects = [
   },
   {
     id: 'company-management-dashboard',
+    slug: 'company-management-dashboard',
     name: {
       en: 'Company Management Dashboard',
       id: 'Dashboard Manajemen Perusahaan',
@@ -99,6 +103,7 @@ const projects = [
   },
   {
     id: 'firecheck-mobile-app',
+    slug: 'firecheck-mobile-app',
     name: {
       en: 'FireCheck Mobile App',
       id: 'Aplikasi Mobile FireCheck',
@@ -114,6 +119,7 @@ const projects = [
   },
   {
     id: 'warehouse-management-system',
+    slug: 'warehouse-management-system',
     name: {
       en: 'Warehouse Management System',
       id: 'Sistem Manajemen Gudang',

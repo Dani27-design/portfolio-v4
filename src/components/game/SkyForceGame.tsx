@@ -6,6 +6,8 @@ import { Play, RotateCcw, Crosshair, Zap, Shield, Cpu, Share2, Award, User, Chec
 import { useTheme } from "@/context/ThemeProvider";
 import { Reveal } from "@/components/ui/Reveal";
 import { useTranslations } from "next-intl";
+import { db } from "@/lib/firebase";
+import { collection, query, orderBy, limit, onSnapshot } from "firebase/firestore";
 import type { LeaderboardEntry } from "@/types";
 
 interface Particle {
@@ -43,12 +45,8 @@ export const SkyForceGame = () => {
   const [score, setScore] = useState(0);
   const scoreRef = useRef(0);
   const [gameOver, setGameOver] = useState(false);
-  const [highScore, setHighScore] = useState(0);
-  const [highScoreName, setHighScoreName] = useState("LEGACY_PILOT");
-  // The records shown in the HUD during gameplay (don't update mid-game)
-  const [displayHighScore, setDisplayHighScore] = useState(0);
-  const [displayHighScoreName, setDisplayHighScoreName] = useState("LEGACY_PILOT");
-  const [isNewRecord, setIsNewRecord] = useState(false);
+  const [leaderTop, setLeaderTop] = useState<{ score: number; name: string }>({ score: 0, name: '' });
+  const [totalPlayers, setTotalPlayers] = useState(0);
   const [tempPlayerName, setTempPlayerName] = useState("");
   const [hasSubmittedName, setHasSubmittedName] = useState(false);
   const [hasStartedAuto, setHasStartedAuto] = useState(false);
@@ -145,9 +143,6 @@ export const SkyForceGame = () => {
     setTempPlayerName("");
     setHasSubmittedName(false);
     
-    // Lock in the high score to beat for this session
-    setDisplayHighScore(highScore);
-    setDisplayHighScoreName(highScoreName);
     gameState.current.enemies = [];
     gameState.current.bullets = [];
     gameState.current.particles = [];
@@ -230,53 +225,62 @@ export const SkyForceGame = () => {
     };
   }, [isPlaying, gameOver, hasStartedAuto]);
 
-  const fetchLeaderboard = async () => {
+  const updateLeaderboardState = (entries: LeaderboardEntry[]) => {
+    setLeaderboard(entries);
+    if (entries.length > 0) {
+      setLeaderTop({ score: entries[0].score, name: entries[0].name });
+    }
+  };
+
+  const fetchLeaderboardREST = async () => {
     try {
       const res = await fetch('/api/leaderboard');
       if (!res.ok) return;
-      const entries: LeaderboardEntry[] = await res.json();
-      setLeaderboard(entries);
-
-      // If global #1 is higher than local high score, use it as the record to beat
-      if (entries.length > 0) {
-        const top = entries[0];
-        setHighScore(prev => {
-          if (top.score > prev) {
-            setHighScoreName(top.name);
-            setDisplayHighScore(top.score);
-            setDisplayHighScoreName(top.name);
-            return top.score;
-          }
-          return prev;
-        });
-      }
-    } catch { /* silent — leaderboard is non-critical */ }
+      const data = await res.json();
+      // Handle both old format (array) and new format ({ entries, totalPlayers })
+      const entries = Array.isArray(data) ? data : data.entries || [];
+      const total = Array.isArray(data) ? entries.length : data.totalPlayers || 0;
+      updateLeaderboardState(entries);
+      setTotalPlayers(total);
+    } catch { /* silent */ }
   };
 
+  // Real-time leaderboard via Firestore onSnapshot, REST fallback
   useEffect(() => {
-    const savedScore = localStorage.getItem("skyforce_highscore");
-    const savedName = localStorage.getItem("skyforce_highscore_name");
-    const scoreVal = savedScore ? parseInt(savedScore) : 0;
-    const nameVal = savedName || "";
-    setHighScore(scoreVal);
-    setHighScoreName(nameVal);
-    setDisplayHighScore(scoreVal);
-    setDisplayHighScoreName(nameVal);
-    fetchLeaderboard();
+    let unsubscribe: (() => void) | null = null;
+
+    try {
+      const q = query(
+        collection(db, 'leaderboard'),
+        orderBy('score', 'desc'),
+        limit(10)
+      );
+
+      unsubscribe = onSnapshot(q, (snapshot) => {
+        const entries: LeaderboardEntry[] = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        } as LeaderboardEntry));
+        updateLeaderboardState(entries);
+      }, () => {
+        // onSnapshot failed (security rules / index missing) — fall back to REST
+        fetchLeaderboardREST();
+      });
+    } catch {
+      // Firestore client init failed — fall back to REST
+      fetchLeaderboardREST();
+    }
+
+    return () => { if (unsubscribe) unsubscribe(); };
   }, []);
 
   const saveHighScore = (newScore: number, name: string) => {
-    setHighScore(newScore);
-    setHighScoreName(name);
-    // Don't update displayHighScore here yet, let user enjoy seeing their name on next run
-    localStorage.setItem("skyforce_highscore", newScore.toString());
-    localStorage.setItem("skyforce_highscore_name", name);
-    // Submit to global leaderboard (fire-and-forget)
+    // Submit to global leaderboard — onSnapshot/REST will refresh leaderTop automatically
     fetch('/api/leaderboard', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, score: newScore }),
-    }).then(() => fetchLeaderboard()).catch(() => {});
+    }).then(() => fetchLeaderboardREST()).catch(() => {});
   };
 
   const handleShare = async () => {
@@ -294,7 +298,7 @@ export const SkyForceGame = () => {
       }
     } else {
       navigator.clipboard.writeText(shareText);
-      alert("Score result copied to clipboard!");
+      alert(t('copiedToClipboard'));
     }
   };
 
@@ -309,7 +313,7 @@ export const SkyForceGame = () => {
       if (containerRef.current && canvas) {
         const dpr = window.devicePixelRatio || 1;
         const logicalWidth = containerRef.current.clientWidth;
-        const logicalHeight = logicalWidth < 768 ? 360 : Math.min(540, logicalWidth * 0.54);
+        const logicalHeight = containerRef.current.clientHeight;
 
         canvas.width = logicalWidth * dpr;
         canvas.height = logicalHeight * dpr;
@@ -410,12 +414,13 @@ export const SkyForceGame = () => {
 
       // Difficulty scaling - Non-linear curve
       // Slow start, but ramps up significantly, especially when approaching high score
-      const scoreProgress = score / Math.max(highScore, 1000);
+      const topScore = leaderTop.score;
+      const scoreProgress = score / Math.max(topScore, 1000);
       g.difficulty = 1 + (g.frame / 4000) + (scoreProgress * 0.5);
-      
+
       // High score "Pressure" logic
-      const isRecordBreaking = score > highScore && highScore > 0;
-      const isNearingRecord = score > highScore * 0.8 && highScore > 500;
+      const isRecordBreaking = score > topScore && topScore > 0;
+      const isNearingRecord = score > topScore * 0.8 && topScore > 500;
       
       // Enemy Spawning - Wave management
       // Alternates between density bursts and calm periods (False hope logic)
@@ -455,24 +460,20 @@ export const SkyForceGame = () => {
         const distToPlayer = Math.hypot(e.x - g.player.x, e.y - g.player.y);
         if (distToPlayer < g.player.radius + 15) {
           setGameOver(true);
-          setIsNewRecord(scoreRef.current > displayHighScore);
           setHasSubmittedName(false);
           g.shake = 20;
           createExplosion(g.player.x, g.player.y, "#ef4444");
           playExplosionSound(true);
-          fetchLeaderboard();
         }
 
         // REACHED BOTTOM (GROUND IMPACT)
         if (e.y > canvasSize.current.height - 10) {
           setGameOver(true);
-          setIsNewRecord(scoreRef.current > displayHighScore);
           setHasSubmittedName(false);
           g.shake = 30;
           createExplosion(e.x, e.y, "#ef4444");
           createExplosion(canvasSize.current.width / 2, canvasSize.current.height, "#ef4444");
           playExplosionSound(true);
-          fetchLeaderboard();
         }
 
         // Collision with bullets
@@ -528,7 +529,7 @@ export const SkyForceGame = () => {
       }
 
       // Background Grid
-      const isHighIntensity = score > highScore * 0.9 && highScore > 0;
+      const isHighIntensity = score > leaderTop.score * 0.9 && leaderTop.score > 0;
       ctx.strokeStyle = isHighIntensity 
         ? "rgba(236, 72, 153, 0.15)" 
         : (theme === 'dark' ? "rgba(6, 182, 212, 0.05)" : "rgba(6, 182, 212, 0.1)");
@@ -551,7 +552,7 @@ export const SkyForceGame = () => {
       }
 
       // Glitch Effect for Record Breaking runs
-      if (score > highScore && highScore > 0 && Math.random() > 0.97) {
+      if (score > leaderTop.score && leaderTop.score > 0 && Math.random() > 0.97) {
         ctx.fillStyle = "rgba(236, 72, 153, 0.1)";
         ctx.fillRect(0, Math.random() * ch, cw, Math.random() * 10);
       }
@@ -867,16 +868,20 @@ export const SkyForceGame = () => {
       }
     };
 
+  // Derived from live leaderboard — no stale state
+  const isNewRecord = gameOver && score > leaderTop.score && leaderTop.score > 0;
+  const highScoreName = hasSubmittedName ? tempPlayerName : '';
+
   return (
-    <section id="mini-game" className="py-24 relative overflow-hidden bg-background border-y border-white/5">
+    <section id="mini-game" className="py-12 md:py-20 lg:py-24 relative overflow-hidden bg-background border-y border-white/5">
       <div className="w-full px-6 md:px-12 lg:px-20 flex flex-col items-center">
         <Reveal>
-          <div className="flex flex-col items-center mb-12 text-center">
-            <span className="font-mono text-[10px] text-cyan-500 font-black uppercase tracking-[0.4em] mb-4">
+          <div className="flex flex-col items-center mb-6 md:mb-12 text-center">
+            <span className="font-mono text-[10px] text-cyan-500 font-black uppercase tracking-[0.4em] mb-2 md:mb-4">
               {t('badge')}
             </span>
             <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-text-main">
-              SYSTEM_SHOT: <span className="text-cyan-500">DEFENDER</span>
+              {t('gameTitle')}
             </h2>
           </div>
         </Reveal>
@@ -890,45 +895,45 @@ export const SkyForceGame = () => {
           <canvas ref={canvasRef} className="w-full h-full" role="img" aria-label={t('ariaLabel')} />
 
           {/* HUD Layer */}
-          <div className="absolute top-4 left-4 right-4 flex justify-between pointer-events-none z-20">
-            <div className="flex flex-col gap-1">
-              <span className="font-mono text-[8px] text-white/40 uppercase">{t('hud.sessionScore')}</span>
-              <span className="font-mono text-xl font-bold text-cyan-400">{score.toString().padStart(6, '0')}</span>
+          <div className="absolute top-3 left-3 right-3 md:top-4 md:left-4 md:right-4 flex justify-between items-start pointer-events-none z-20">
+            {/* Left: Session Score — color shifts near/past record */}
+            <div className="bg-black/40 rounded-lg px-3 py-2 backdrop-blur-sm">
+              <span className="font-mono text-[7px] text-white/50 uppercase tracking-wider block">{t('hud.sessionScore')}</span>
+              <span className={`font-mono text-lg md:text-xl font-black tabular-nums block ${
+                score > leaderTop.score && leaderTop.score > 0
+                  ? 'text-yellow-400'
+                  : score > leaderTop.score * 0.8 && leaderTop.score > 500
+                    ? 'text-pink-400'
+                    : 'text-white'
+              }`}>{score.toString().padStart(6, '0')}</span>
+              {score > leaderTop.score && leaderTop.score > 0 && (
+                <span className="font-mono text-[8px] text-yellow-400/80 italic block">{t('hud.newHighScore')}</span>
+              )}
+              {score > leaderTop.score * 0.8 && score <= leaderTop.score && leaderTop.score > 500 && (
+                <span className="font-mono text-[8px] text-pink-400/80 italic block">{t('hud.nearRecord')}</span>
+              )}
             </div>
-            
-            {/* Warning indicator when nearing high score */}
-            {score > displayHighScore * 0.8 && score < displayHighScore && displayHighScore > 500 && (
-              <motion.div 
-                animate={{ opacity: [0.4, 1, 0.4] }}
-                transition={{ duration: 0.5, repeat: Infinity }}
-                className="flex flex-col items-center"
-              >
-                <span className="font-mono text-[8px] text-pink-500 font-black uppercase tracking-widest">{t('hud.nearRecord')}</span>
-                <div className="w-20 h-1 bg-pink-500/20 mt-1">
-                   <motion.div 
-                     className="h-full bg-pink-500" 
-                     style={{ width: `${(score / displayHighScore) * 100}%` }}
-                   />
+
+            {/* Right: Leaderboard Top 3 */}
+            <div className="bg-black/40 rounded-lg px-3 py-2 backdrop-blur-sm">
+              <span className="font-mono text-[7px] text-white/50 uppercase tracking-wider block text-right mb-1">{t('hud.terminalHigh')}</span>
+              {leaderboard.length > 0 ? (
+                <div className="flex flex-col items-end gap-px">
+                  {leaderboard.slice(0, 3).map((entry, i) => (
+                    <div key={entry.id} className={`font-mono font-bold flex items-center gap-1.5 ${
+                      i === 0 ? 'text-sm md:text-base text-white' : 'text-[9px] text-white/40'
+                    }`}>
+                      <span className="tabular-nums">{entry.score.toLocaleString()}</span>
+                      <span className={i === 0 ? 'text-[8px] text-white/50' : 'text-[7px] text-white/30'}>{entry.name}</span>
+                    </div>
+                  ))}
                 </div>
-              </motion.div>
-            )}
-
-            {score > displayHighScore && displayHighScore > 0 && (
-              <motion.div 
-                animate={{ scale: [1, 1.05, 1], opacity: [0.7, 1, 0.7] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-                className="flex items-center justify-center bg-yellow-500/10 px-4 py-1.5 rounded-full border border-yellow-500/20"
-              >
-                <span className="font-mono text-[9px] text-yellow-500 font-black uppercase tracking-[0.2em] leading-none translate-y-[0.5px]">{t('hud.newHighScore')}</span>
-              </motion.div>
-            )}
-
-            <div className="flex flex-col items-end gap-1">
-              <span className="font-mono text-[8px] text-white/40 uppercase">{t('hud.terminalHigh')}</span>
-              <span className="font-mono text-xl font-bold text-indigo-400">
-                {displayHighScore.toString().padStart(6, '0')}
-                <span className="text-[9px] ml-2 opacity-50 uppercase">{displayHighScoreName}</span>
-              </span>
+              ) : leaderTop.score > 0 ? (
+                <div className="font-mono text-sm md:text-base font-bold text-white text-right tabular-nums">
+                  {leaderTop.score.toLocaleString()}
+                  <span className="text-[8px] ml-1.5 text-white/50">{leaderTop.name}</span>
+                </div>
+              ) : null}
             </div>
           </div>
 
@@ -951,7 +956,7 @@ export const SkyForceGame = () => {
                   </div>
                   {leaderboard.length > 0 && (
                     <div className="w-full pt-4 border-t border-cyan-500/20 space-y-1.5">
-                      <span className="font-mono text-[7px] text-cyan-400/60 font-black uppercase tracking-[0.3em]">TOP_PILOTS</span>
+                      <span className="font-mono text-[7px] text-cyan-400/60 font-black uppercase tracking-[0.3em]">{t('topPilots')}</span>
                       {leaderboard.slice(0, 3).map((entry, i) => (
                         <div key={entry.id} className={`flex items-center justify-between font-mono text-[9px] ${i === 0 ? 'text-yellow-400' : 'text-white/40'}`}>
                           <span className="font-bold">{['🥇','🥈','🥉'][i]} {entry.name}</span>
@@ -993,112 +998,130 @@ export const SkyForceGame = () => {
                 key="game-over"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="absolute inset-0 flex flex-col items-center bg-red-950/90 backdrop-blur-md z-50 overflow-y-auto px-4 py-4"
+                className="absolute inset-0 z-50 flex items-center justify-center overflow-y-auto py-4"
+                style={{ background: 'radial-gradient(ellipse at center top, rgba(127,29,29,1) 0%, rgba(0,0,0,1) 70%)' }}
               >
-                <div className="w-full max-w-sm my-auto flex flex-col items-center space-y-3">
-                  <div className="text-center">
-                    <h2 className="text-4xl font-black text-white italic tracking-tighter uppercase leading-none">{t('gameOver.title')}</h2>
-                    <p className="font-mono text-red-500 text-[9px] tracking-[.3em] uppercase font-black mt-1">{t('gameOver.subtitle')}</p>
-                  </div>
-                  
-                  <div className="w-full bg-black/60 border border-white/10 p-4 md:p-6 rounded-lg shadow-2xl backdrop-blur-xl space-y-4">
-                     <div className="text-center space-y-0.5">
-                        <span className="block font-mono text-[7px] text-white/40 uppercase tracking-widest font-black">{t('gameOver.finalHarvest')}</span>
-                        <span className="block font-mono text-4xl md:text-5xl font-black text-white tracking-widest leading-none drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">{score.toLocaleString()}</span>
-                     </div>
+                <div className="w-full max-w-sm mx-4 my-auto flex flex-col items-center gap-3">
 
-                     <div className="flex flex-col gap-3 pt-4 border-t border-white/10">
-                       {/* Identity Commitment Portal - Ultra Compact */}
-                       {isNewRecord && !hasSubmittedName && (
-                         <div className="flex flex-col gap-2.5">
-                           <div className="flex items-center justify-center gap-2 text-yellow-500 bg-yellow-500/5 py-1 rounded-full border border-yellow-500/10">
-                             <Award className="w-3 h-3" />
-                             <span className="font-mono text-[7px] font-black uppercase tracking-widest">{t('highScore.newMark')}</span>
-                           </div>
-                           <div className="flex flex-col gap-1.5">
-                             <div className="relative">
-                               <User className="absolute left-3 top-1/2 -translate-y-1/2 w-3 h-3 text-white/30" />
-                               <input 
-                                 type="text" 
-                                 maxLength={12}
-                                 value={tempPlayerName}
-                                 onChange={(e) => setTempPlayerName(e.target.value.toUpperCase().replace(/[^A-Z0-9_]/g, ''))}
-                                 placeholder={t('highScore.pilotId')}
-                                 className="w-full bg-white/5 border border-white/10 pl-9 pr-3 py-2.5 text-sm font-mono text-white outline-none focus:border-cyan-500 transition-all rounded"
-                               />
-                             </div>
-                             <button 
-                               onClick={() => {
-                                 if (tempPlayerName.trim()) {
-                                   saveHighScore(score, tempPlayerName.trim());
-                                   setHasSubmittedName(true);
-                                 }
-                               }}
-                               className="w-full py-2.5 bg-cyan-600 text-white font-mono font-black text-[9px] uppercase tracking-[0.2em] hover:bg-cyan-500 transition-all rounded flex items-center justify-center gap-2"
-                             >
-                               <Check className="w-3.5 h-3.5" />
-                               {t('highScore.commitIdentity')}
-                             </button>
-                           </div>
-                         </div>
-                       )}
-
-                       {isNewRecord && hasSubmittedName && (
-                         <div className="flex flex-col items-center gap-1 py-1.5 text-cyan-400 bg-cyan-500/5 rounded border border-cyan-500/10">
-                            <span className="font-mono text-[8px] font-black uppercase tracking-widest italic">{t('highScore.identitySecured')} {highScoreName}</span>
-                         </div>
-                       )}
-
-                       <button
-                         onClick={handleShare}
-                         className="w-full py-2.5 bg-white/5 border border-white/10 hover:bg-white/10 text-white/70 font-mono font-black text-[8px] uppercase tracking-[0.2em] transition-all rounded flex items-center justify-center gap-2"
-                       >
-                         <Share2 className="w-3.5 h-3.5" />
-                         {t('highScore.sharePerformance')}
-                       </button>
-                     </div>
-
-                     {/* Global Leaderboard */}
-                     {leaderboard.length > 0 && (
-                       <div className="pt-4 border-t border-white/10">
-                         <div className="flex items-center justify-center gap-2 mb-3">
-                           <div className="h-px flex-1 bg-white/10" />
-                           <span className="font-mono text-[7px] text-cyan-400 font-black uppercase tracking-[0.3em]">GLOBAL_RANKINGS</span>
-                           <div className="h-px flex-1 bg-white/10" />
-                         </div>
-                         <div className="space-y-1">
-                           {leaderboard.map((entry, i) => {
-                             const isCurrentPlayer = hasSubmittedName && entry.name === highScoreName && entry.score === score;
-                             return (
-                               <div
-                                 key={entry.id}
-                                 className={`flex items-center justify-between px-2.5 py-1.5 rounded font-mono text-[8px] ${
-                                   isCurrentPlayer
-                                     ? 'bg-cyan-500/10 border border-cyan-500/20 text-cyan-400'
-                                     : i === 0 ? 'text-yellow-400' : 'text-white/50'
-                                 }`}
-                               >
-                                 <span className="flex items-center gap-2">
-                                   <span className="w-5 text-right font-black">{String(i + 1).padStart(2, '0')}.</span>
-                                   <span className="font-bold tracking-wider">{entry.name}</span>
-                                   {isCurrentPlayer && <span className="text-[6px] text-cyan-500 tracking-widest">&larr; YOU</span>}
-                                 </span>
-                                 <span className="font-black tracking-widest">{entry.score.toLocaleString()}</span>
-                               </div>
-                             );
-                           })}
-                         </div>
-                       </div>
-                     )}
-                  </div>
-
-                  <button
-                    onClick={startLevel}
-                    className="h-12 w-full max-w-[220px] flex items-center justify-center gap-3 bg-white text-black px-8 font-mono font-black text-[10px] uppercase tracking-[0.3em] hover:bg-cyan-400 transition-all rounded shadow-lg shadow-white/5"
+                  {/* Game Over Title */}
+                  <motion.h2
+                    initial={{ y: -30, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.1 }}
+                    className="text-3xl md:text-4xl font-black text-white italic tracking-tight uppercase drop-shadow-[0_0_40px_rgba(239,68,68,0.5)]"
                   >
-                    <RotateCcw className="w-3.5 h-3.5" />
-                    {t('highScore.redeploy')}
-                  </button>
+                    {t('gameOver.subtitle')}
+                  </motion.h2>
+
+                  {/* Score Block */}
+                  <motion.div
+                    initial={{ scale: 0.5, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 0.2, type: "spring", stiffness: 160 }}
+                    className={`text-center px-6 py-3 rounded-2xl border ${isNewRecord ? 'bg-yellow-500/10 border-yellow-500/20' : 'bg-white/5 border-white/10'}`}
+                  >
+                    <span className={`font-mono text-xs uppercase tracking-[0.3em] mb-2 flex items-center justify-center gap-2 ${isNewRecord ? 'text-yellow-400' : 'text-white/40'}`}>
+                      {isNewRecord && <Award className="w-4 h-4" />}
+                      {isNewRecord ? t('highScore.newMark') : t('gameOver.finalHarvest')}
+                    </span>
+                    <span className={`block font-mono text-4xl md:text-5xl font-black tracking-wider leading-none ${isNewRecord ? 'text-yellow-400 drop-shadow-[0_0_30px_rgba(250,204,21,0.3)]' : 'text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.1)]'}`}>
+                      {score.toLocaleString()}
+                    </span>
+                  </motion.div>
+
+                  {/* New Record — Name Input */}
+                  {isNewRecord && !hasSubmittedName && (
+                    <motion.div
+                      initial={{ y: 15, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.4 }}
+                      className="w-full flex flex-col gap-2.5"
+                    >
+                      <div className="relative">
+                        <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+                        <input
+                          type="text"
+                          maxLength={12}
+                          value={tempPlayerName}
+                          onChange={(e) => setTempPlayerName(e.target.value.toUpperCase().replace(/[^A-Z0-9_]/g, ''))}
+                          placeholder={t('highScore.pilotId')}
+                          className="w-full bg-white/10 border border-white/20 pl-10 pr-4 py-2.5 text-sm font-mono text-white outline-none focus:border-yellow-400/50 focus:bg-white/15 transition-all rounded-xl placeholder:text-white/30"
+                        />
+                      </div>
+                      <button
+                        onClick={() => {
+                          if (tempPlayerName.trim()) {
+                            saveHighScore(score, tempPlayerName.trim());
+                            setHasSubmittedName(true);
+                          }
+                        }}
+                        className="w-full py-2.5 bg-yellow-500 text-black font-mono font-black text-[11px] uppercase tracking-[0.15em] hover:bg-yellow-400 active:scale-[0.98] transition-all rounded-xl flex items-center justify-center gap-2"
+                      >
+                        <Check className="w-4 h-4" />
+                        {t('highScore.commitIdentity')}
+                      </button>
+                    </motion.div>
+                  )}
+
+                  {isNewRecord && hasSubmittedName && (
+                    <div className="flex items-center gap-2 text-yellow-300 font-mono text-[10px] font-bold uppercase tracking-wider">
+                      <Check className="w-4 h-4" />
+                      {t('highScore.identitySecured')} {highScoreName}
+                    </div>
+                  )}
+
+                  {/* Actions */}
+                  <div className="w-full flex gap-2">
+                    <button
+                      onClick={startLevel}
+                      className="flex-1 py-2.5 bg-white text-black font-mono font-black text-[11px] uppercase tracking-[0.2em] hover:bg-cyan-400 hover:text-white active:scale-[0.98] transition-all rounded-xl flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+                    >
+                      <RotateCcw className="w-4 h-4" />
+                      {t('highScore.redeploy')}
+                    </button>
+                    <button
+                      onClick={handleShare}
+                      className="py-2.5 px-4 bg-white/10 border border-white/20 hover:bg-white/15 text-white/60 hover:text-white active:scale-[0.98] transition-all rounded-xl flex items-center justify-center"
+                      aria-label={t('highScore.sharePerformance')}
+                    >
+                      <Share2 className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  {/* Leaderboard */}
+                  {leaderboard.length > 0 && (
+                    <div className="w-full bg-white/[0.06] border border-white/10 rounded-xl p-3">
+                      <span className="block font-mono text-xs text-white/50 font-bold uppercase tracking-[0.3em] text-center mb-3">{t('globalRankings')}</span>
+                      <div className="max-h-[120px] overflow-y-auto">
+                        {leaderboard.slice(0, 10).map((entry, i) => {
+                          const isCurrentPlayer = hasSubmittedName && entry.name === highScoreName && entry.score === score;
+                          const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '';
+                          return (
+                            <div
+                              key={entry.id}
+                              className={`flex items-center justify-between px-3 py-1 rounded-lg font-mono text-[10px] ${
+                                isCurrentPlayer
+                                  ? 'bg-yellow-500/10 text-yellow-300 border border-yellow-500/20'
+                                  : i === 0 ? 'text-yellow-200' : i < 3 ? 'text-white/70' : 'text-white/40'
+                              }`}
+                            >
+                              <span className="flex items-center gap-2.5">
+                                <span className="w-5 text-center">{medal || `${i + 1}`}</span>
+                                <span className="font-bold">{entry.name}</span>
+                                {isCurrentPlayer && <span className="text-[7px] text-yellow-400">{t('youLabel')}</span>}
+                              </span>
+                              <span className="font-black">{entry.score.toLocaleString()}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      {totalPlayers > 10 && (
+                        <span className="block font-mono text-[8px] text-white/30 text-center mt-2">
+                          {t('totalPlayers', { count: totalPlayers > 99 ? '99+' : totalPlayers })}
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </div>
               </motion.div>
             )}

@@ -26,11 +26,11 @@ export const Experience = ({ experience, locale }: ExperienceProps) => {
 
       <div className="container-custom relative z-10">
         <Reveal>
-          <div className="mb-12 md:mb-24 relative">
-            <h2 className="text-3xl font-bold tracking-tighter text-text-main md:text-5xl lg:text-6xl">
+          <div className="mb-6 md:mb-16 lg:mb-24 relative">
+            <h2 className="text-2xl font-bold tracking-tighter text-text-main md:text-5xl lg:text-6xl">
               <CodeText tag="h2" type="html">{t('title')}</CodeText>
             </h2>
-            <div className="h-1.5 w-24 bg-gradient-to-r from-cyan-600 to-indigo-600 mt-6 opacity-80"></div>
+            <div className="h-1 w-16 bg-gradient-to-r from-cyan-600 to-indigo-600 mt-4 md:mt-6 rounded-full"></div>
           </div>
         </Reveal>
 
@@ -41,10 +41,10 @@ export const Experience = ({ experience, locale }: ExperienceProps) => {
 
             {experience.map((job, idx) => (
               <Reveal key={job.id} delay={idx * 0.1}>
-                <div className="relative pl-8 lg:pl-16 pb-16 md:pb-24 last:pb-8 last:md:pb-12 group/experience">
+                <div className="relative pl-8 lg:pl-16 pb-8 md:pb-24 last:pb-2 last:md:pb-12 group/experience">
                   {/* Date Range - Desktop */}
                   <div className="hidden lg:block absolute -left-48 top-0 w-32 text-right">
-                    <span className="text-[10px] font-mono text-cyan-600 dark:text-cyan-400 uppercase tracking-widest font-black group-hover/experience:text-cyan-500 dark:group-hover/experience:text-cyan-300 transition-colors dark:drop-shadow-[0_0_5px_rgba(6,182,212,0.3)]">
+                    <span className="text-xs font-mono text-cyan-600 dark:text-cyan-400 uppercase tracking-wider font-bold group-hover/experience:text-cyan-500 dark:group-hover/experience:text-cyan-300 transition-colors">
                       <CodeText type="logic">{job.period[loc]}</CodeText>
                     </span>
                   </div>
@@ -59,35 +59,35 @@ export const Experience = ({ experience, locale }: ExperienceProps) => {
                   </div>
 
                   {/* Mobile Date */}
-                  <div className="lg:hidden mb-4">
-                    <span className="text-[10px] font-mono text-cyan-600 dark:text-cyan-400 uppercase tracking-widest font-black px-2 py-1 bg-cyan-500/10 border border-cyan-500/30">
+                  <div className="lg:hidden mb-2">
+                    <span className="text-xs font-mono text-cyan-600 dark:text-cyan-400 uppercase tracking-wider font-bold px-2.5 py-1 bg-cyan-500/10 border border-cyan-500/30 rounded">
                       {job.period[loc]}
                     </span>
                   </div>
 
-                  <div className="space-y-8">
-                    <div className="space-y-3 relative">
+                  <div className="space-y-3 md:space-y-8">
+                    <div className="space-y-2 md:space-y-3 relative">
                       <div className="flex items-center gap-4 flex-wrap">
-                        <h3 className="text-2xl md:text-3xl font-bold text-text-main tracking-tight group-hover/experience:text-cyan-700 dark:group-hover/experience:text-cyan-50 transition-colors">
+                        <h3 className="text-lg md:text-3xl font-bold text-text-main tracking-tight group-hover/experience:text-cyan-700 dark:group-hover/experience:text-cyan-50 transition-colors">
                           <CodeText tag="h3">{job.title[loc]}</CodeText>
                         </h3>
                       </div>
-                      <div className="text-sm md:text-base text-cyan-600 dark:text-cyan-400 font-black tracking-[0.25em] uppercase flex items-center gap-3">
+                      <div className="text-xs md:text-base text-cyan-600 dark:text-cyan-400 font-black tracking-[0.25em] uppercase flex items-center gap-3">
                         <span className="w-6 h-[2px] bg-cyan-500 dark:shadow-[0_0_8px_#06b6d4]" />
                         <CodeText label="company" type="js">{job.company}</CodeText>
                       </div>
                     </div>
 
-                    <ul className="space-y-6 max-w-2xl relative">
+                    <ul className="space-y-3 md:space-y-6 max-w-2xl relative">
                       {job.points[loc].slice(0, 3).map((point, pIdx) => (
                         <li key={`job-point-${pIdx}`} className="flex gap-3 md:gap-6 group/point relative">
                           <div className="flex flex-col items-center">
-                             <span className="text-cyan-500 font-mono text-[10px] mt-1.5 font-bold group-hover/point:text-cyan-300 transition-colors">
+                             <span className="text-cyan-500 font-mono text-xs mt-1.5 font-semibold group-hover/point:text-cyan-300 transition-colors">
                                0{pIdx + 1}
                              </span>
                              <div className="w-px h-full bg-border/20 mt-2" />
                           </div>
-                          <p className="text-sm md:text-lg leading-relaxed text-text-muted transition-all duration-300 border-l border-border/30 pl-4 hover:border-cyan-500/20">
+                          <p className="text-xs md:text-lg leading-relaxed text-text-muted transition-all duration-300 border-l border-border/30 pl-4 hover:border-cyan-500/20">
                             <CodeText tag="li" type="css">{point}</CodeText>
                           </p>
                         </li>

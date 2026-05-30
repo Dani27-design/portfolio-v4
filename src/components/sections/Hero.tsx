@@ -45,7 +45,7 @@ const TypewriterText = ({ phrases }: { phrases: string[] }) => {
   }, [text, isDeleting, phraseIndex, typingSpeed, phrases]);
 
   return (
-    <span className="text-xl md:text-3xl font-mono text-primary typewriter">
+    <span className="text-base md:text-3xl font-mono text-primary typewriter">
       <CodeText type="js">
         {text}
       </CodeText>
@@ -74,13 +74,13 @@ export const Hero = ({ heroContent, locale }: HeroProps = {}) => {
     <section id="hero" className="relative min-h-dvh flex flex-col items-center overflow-hidden grid-bg px-6 pt-16">
       <LazyGimmick><SystemGimmick /></LazyGimmick>
 
-      <div className="flex-1 flex flex-col items-center justify-center container-custom relative z-10 text-center pb-24 pt-10">
+      <div className="flex-1 flex flex-col items-center justify-center container-custom relative z-10 text-center pb-8 md:pb-24 pt-4 md:pt-10">
         <Reveal>
-          <div className="flex items-center gap-3 mb-8">
+          <div className="flex items-center gap-3 mb-5 md:mb-8">
             <span className="w-8 h-px bg-cyan-500/37"></span>
             <div className="px-3 py-1 border border-cyan-500/26 bg-cyan-500/18 flex items-center gap-2 dark:shadow-[0_0_11px_rgba(6,182,212,0.15)]">
               <Layers className="w-3 h-3 text-cyan-500/75" />
-              <CodeText tag="tag" type="html" className="text-cyan-500/75 font-bold text-[9px] uppercase tracking-[0.3em]">
+              <CodeText tag="tag" type="html" className="text-cyan-500/75 font-bold text-xs uppercase tracking-wider">
                 {tagline}
               </CodeText>
             </div>
@@ -89,7 +89,7 @@ export const Hero = ({ heroContent, locale }: HeroProps = {}) => {
         </Reveal>
 
         <Reveal delay={0.2} className="relative text-text-main">
-          <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight leading-tight max-w-4xl relative z-10">
+          <h1 className="text-3xl md:text-5xl lg:text-7xl font-bold tracking-tight leading-tight max-w-4xl relative z-10">
             <CodeText tag="h1" type="html">
               {headline}
             </CodeText>
@@ -97,13 +97,13 @@ export const Hero = ({ heroContent, locale }: HeroProps = {}) => {
         </Reveal>
 
         <Reveal delay={0.3}>
-          <div className="h-12 flex items-center justify-center mt-6">
+          <div className="h-10 md:h-12 flex items-center justify-center mt-4 md:mt-6">
             <TypewriterText phrases={phrases} />
           </div>
         </Reveal>
 
         <Reveal delay={0.4}>
-          <p className="mt-8 text-lg md:text-xl max-w-2xl mx-auto">
+          <p className="mt-5 md:mt-8 text-sm md:text-xl max-w-2xl mx-auto">
             <CodeText tag="p" type="css">
               {desc}
             </CodeText>
@@ -111,16 +111,16 @@ export const Hero = ({ heroContent, locale }: HeroProps = {}) => {
         </Reveal>
 
         <Reveal delay={0.6}>
-          <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="mt-8 md:mt-12 flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
             <a
               href="#mini-game"
-              className="px-10 py-4 bg-text-main text-background text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-primary transition-all duration-300 min-w-[200px] flex items-center justify-center text-center"
+              className="px-8 md:px-10 py-3 md:py-4 bg-text-main text-background text-xs font-bold uppercase tracking-wider rounded-lg hover:bg-primary transition-all duration-300 min-w-[180px] md:min-w-[200px] flex items-center justify-center text-center"
             >
               {ctaGame}
             </a>
             <a
               href="#contact"
-              className="px-10 py-4 border border-border text-text-main text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-surface-hover transition-all duration-300 min-w-[200px] flex items-center justify-center text-center"
+              className="px-8 md:px-10 py-3 md:py-4 border border-border text-text-main text-xs font-bold uppercase tracking-wider rounded-lg hover:bg-surface-hover transition-all duration-300 min-w-[180px] md:min-w-[200px] flex items-center justify-center text-center"
             >
               {ctaContact}
             </a>

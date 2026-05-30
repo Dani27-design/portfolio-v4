@@ -33,11 +33,11 @@ export const About = ({ aboutContent, locale }: AboutProps = {}) => {
     <section id="about" className="section-padding bg-background border-y border-border relative overflow-hidden">
       <LazyGimmick><NetworkTopologyGimmick /></LazyGimmick>
 
-      <div className="container-custom flex flex-col md:flex-row gap-16 lg:gap-24 items-center relative z-10">
+      <div className="container-custom flex flex-col md:flex-row gap-6 md:gap-16 lg:gap-24 items-center relative z-10">
         <div className="w-full md:w-5/12">
           <Reveal>
             <div className="relative group mx-auto md:mx-0 max-w-fit">
-              <div className="w-64 h-64 md:w-80 md:h-80 bg-surface border border-border flex items-center justify-center text-6xl font-bold text-text-muted/10 tracking-tighter relative z-10 select-none overflow-hidden">
+              <div className="w-48 h-48 md:w-80 md:h-80 bg-surface border border-border flex items-center justify-center text-5xl md:text-6xl font-bold text-text-muted/10 tracking-tighter relative z-10 select-none overflow-hidden">
                 {aboutContent?.avatarUrl ? (
                   <img src={aboutContent.avatarUrl} alt={avatarInitials} className="absolute inset-0 w-full h-full object-cover" />
                 ) : (
@@ -49,23 +49,23 @@ export const About = ({ aboutContent, locale }: AboutProps = {}) => {
                 <div className="absolute top-0 left-0 w-full h-[1px] bg-primary/10 -translate-y-4 group-hover:translate-y-4 transition-transform duration-700" />
                 <div className="absolute bottom-0 right-0 w-full h-[1px] bg-primary/10 translate-y-4 group-hover:-translate-y-4 transition-transform duration-700" />
               </div>
-              <div className="absolute -bottom-4 -right-4 w-64 h-64 md:w-80 md:h-80 border border-primary/20 -z-0 transition-all duration-500 group-hover:translate-x-1 group-hover:translate-y-1 group-hover:border-primary/40"></div>
+              <div className="absolute -bottom-4 -right-4 w-48 h-48 md:w-80 md:h-80 border border-primary/20 -z-0 transition-all duration-500 group-hover:translate-x-1 group-hover:translate-y-1 group-hover:border-primary/40"></div>
             </div>
           </Reveal>
         </div>
 
-        <div className="w-full md:w-7/12 space-y-12">
+        <div className="w-full md:w-7/12 space-y-5 md:space-y-12">
           <Reveal delay={0.2}>
-            <div className="space-y-4">
-              <span className="text-primary uppercase tracking-[0.2em] text-[10px] font-bold block">
+            <div className="space-y-3 md:space-y-4">
+              <span className="text-primary uppercase tracking-widest text-xs font-bold block">
                 <CodeText tag="span">{title}</CodeText>
               </span>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight leading-snug">
+              <h2 className="text-2xl md:text-4xl font-bold tracking-tight leading-snug">
                 <CodeText tag="h2" type="html">
                   {headline}
                 </CodeText>
               </h2>
-              <p className="text-lg md:text-xl">
+              <p className="text-sm md:text-xl">
                 <CodeText tag="p" type="css">
                   {desc}
                 </CodeText>
@@ -74,18 +74,18 @@ export const About = ({ aboutContent, locale }: AboutProps = {}) => {
           </Reveal>
 
           <Reveal delay={0.4}>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-12 border-t border-border">
+            <div className="grid grid-cols-3 gap-4 md:gap-8 pt-6 md:pt-12 border-t border-border">
               <div className="space-y-1">
-                <div className="text-3xl font-bold text-text-main">{stat1Value}</div>
-                <div className="text-[10px] uppercase tracking-widest text-text-muted font-bold">{stat1Label}</div>
+                <div className="text-xl md:text-3xl font-bold text-text-main">{stat1Value}</div>
+                <div className="text-xs uppercase tracking-wider text-text-muted font-semibold">{stat1Label}</div>
               </div>
               <div className="space-y-1">
-                <div className="text-3xl font-bold text-text-main">{stat2Value}</div>
-                <div className="text-[10px] uppercase tracking-widest text-text-muted font-bold">{stat2Label}</div>
+                <div className="text-xl md:text-3xl font-bold text-text-main">{stat2Value}</div>
+                <div className="text-xs uppercase tracking-wider text-text-muted font-semibold">{stat2Label}</div>
               </div>
               <div className="space-y-1">
-                <div className="text-3xl font-bold text-text-main">{stat3Value}</div>
-                <div className="text-[10px] uppercase tracking-widest text-text-muted font-bold">{stat3Label}</div>
+                <div className="text-xl md:text-3xl font-bold text-text-main">{stat3Value}</div>
+                <div className="text-xs uppercase tracking-wider text-text-muted font-semibold">{stat3Label}</div>
               </div>
             </div>
           </Reveal>

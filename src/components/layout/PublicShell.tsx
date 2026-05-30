@@ -8,16 +8,17 @@ import { CustomCursor } from '@/components/ui/CustomCursor';
 import { ScrollToTop } from '@/components/ui/ScrollToTop';
 import { ScrollProgress } from '@/components/ui/ScrollProgress';
 import type { ReactNode } from 'react';
-import type { NavbarContent, FooterContent } from '@/types';
+import type { NavbarContent, FooterContent, ContactContent } from '@/types';
 
 interface PublicShellProps {
   children: ReactNode;
   navbarContent?: NavbarContent | null;
   footerContent?: FooterContent | null;
+  contactContent?: ContactContent | null;
   locale?: string;
 }
 
-export function PublicShell({ children, navbarContent, footerContent, locale }: PublicShellProps) {
+export function PublicShell({ children, navbarContent, footerContent, contactContent, locale }: PublicShellProps) {
   const pathname = usePathname();
   const t = useTranslations('nav');
   const isAdmin = pathname.includes('/admin');
@@ -36,7 +37,7 @@ export function PublicShell({ children, navbarContent, footerContent, locale }: 
       <ScrollProgress />
       <Navbar navbarContent={navbarContent} locale={locale} />
       <main id="main-content">{children}</main>
-      <Footer footerContent={footerContent} locale={locale} logoUrl={navbarContent?.logoUrl} />
+      <Footer footerContent={footerContent} contactContent={contactContent} locale={locale} />
     </div>
   );
 }

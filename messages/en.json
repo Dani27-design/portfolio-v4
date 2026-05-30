@@ -37,13 +37,20 @@
   "projects": {
     "title": "Projects",
     "cta": "View All Projects",
+    "badge": "Production",
     "viewDetail": "View Detail",
     "archiveTitle": "All Projects",
     "archiveSubtitle": "Technical case studies and system designs",
     "backToHome": "Back to Home",
     "metadata": {
       "access": "View Details"
-    }
+    },
+    "backToProjects": "Back to Projects",
+    "techStack": "Tech Stack",
+    "version": "Version",
+    "status": "Status",
+    "visitProject": "Visit Project",
+    "overview": "Overview"
   },
   "blog": {
     "title": "Blog",
@@ -80,7 +87,10 @@
     "fallbackSubject": "Project Inquiry"
   },
   "footer": {
-    "role": "Software Developer"
+    "role": "Software Developer",
+    "navigation": "Navigation",
+    "connect": "Connect",
+    "rights": "All rights reserved."
   },
   "hireBanner": {
     "badge": "Available for Hire",
@@ -117,8 +127,14 @@
       "sharePerformance": "Share Score",
       "redeploy": "Play Again"
     },
+    "topPilots": "Top Players",
+    "globalRankings": "Global Rankings",
+    "gameTitle": "Sky Defender",
+    "copiedToClipboard": "Score copied to clipboard!",
+    "youLabel": "YOU",
     "shareText": "I just scored {score} on Sky Defender! Can you beat my record?",
     "shareTitle": "Sky Defender - High Score",
+    "totalPlayers": "{count} players worldwide",
     "ariaLabel": "Sky Defender - interactive space shooter game"
   },
   "errors": {

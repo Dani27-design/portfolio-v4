@@ -118,13 +118,19 @@ export default function AdminProjectsPage() {
 
 function ProjectForm({ project, onClose, onSave }: { project: Project | null; onClose: () => void; onSave: () => void }) {
   const [form, setForm] = useState({
+    slug: project?.slug || '',
     nameEn: project?.name.en || '',
     nameId: project?.name.id || '',
     descEn: project?.desc.en || '',
     descId: project?.desc.id || '',
+    contentEn: project?.content?.en || '',
+    contentId: project?.content?.id || '',
     tech: project?.tech.join(', ') || '',
     version: project?.version || '',
     status: project?.status || 'PRODUCTION',
+    image: project?.image || '',
+    videoUrl: project?.videoUrl || '',
+    url: project?.url || '',
     order: project?.order || 0,
   });
   const [saving, setSaving] = useState(false);
@@ -135,14 +141,20 @@ function ProjectForm({ project, onClose, onSave }: { project: Project | null; on
     setError('');
     setSaving(true);
     try {
+      const slug = form.slug || form.nameEn.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
       const data = {
+        slug,
         name: { en: form.nameEn, id: form.nameId },
         desc: { en: form.descEn, id: form.descId },
         tech: form.tech.split(',').map(t => t.trim()).filter(Boolean),
         version: form.version,
         status: form.status,
         order: form.order,
-      };
+        ...(form.contentEn || form.contentId ? { content: { en: form.contentEn, id: form.contentId } } : {}),
+        ...(form.image ? { image: form.image } : {}),
+        ...(form.videoUrl ? { videoUrl: form.videoUrl } : {}),
+        ...(form.url ? { url: form.url } : {}),
+      } as Omit<Project, 'id' | 'createdAt' | 'updatedAt'>;
       if (project) {
         await updateProject(project.id, data);
       } else {
@@ -163,37 +175,61 @@ function ProjectForm({ project, onClose, onSave }: { project: Project | null; on
       <h2 className="text-lg font-bold text-white mb-4">{project ? 'Edit' : 'Create'} Project</h2>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {error && <div className="md:col-span-2 p-3 bg-red-500/10 border border-red-500/20 rounded text-red-400 text-sm">{error}</div>}
+        <div className="md:col-span-2">
+          <label className="block text-xs text-slate-400 mb-1">Slug (auto-generated if empty)</label>
+          <input value={form.slug} onChange={e => setForm({...form, slug: e.target.value})} placeholder="my-project-slug" className={inputClass + " w-full"} />
+        </div>
         <div>
-          <label className="block text-xs text-slate-400 mb-1 lg:hidden">Name (EN)</label>
+          <label className="block text-xs text-slate-400 mb-1">Name (EN)</label>
           <input value={form.nameEn} onChange={e => setForm({...form, nameEn: e.target.value})} placeholder="Name (EN)" required className={inputClass + " w-full"} />
         </div>
         <div>
-          <label className="block text-xs text-slate-400 mb-1 lg:hidden">Name (ID)</label>
+          <label className="block text-xs text-slate-400 mb-1">Name (ID)</label>
           <input value={form.nameId} onChange={e => setForm({...form, nameId: e.target.value})} placeholder="Name (ID)" required className={inputClass + " w-full"} />
         </div>
         <div>
-          <label className="block text-xs text-slate-400 mb-1 lg:hidden">Description (EN)</label>
+          <label className="block text-xs text-slate-400 mb-1">Description (EN)</label>
           <textarea value={form.descEn} onChange={e => setForm({...form, descEn: e.target.value})} placeholder="Description (EN)" rows={3} required className={inputClass + " w-full"} />
         </div>
         <div>
-          <label className="block text-xs text-slate-400 mb-1 lg:hidden">Description (ID)</label>
+          <label className="block text-xs text-slate-400 mb-1">Description (ID)</label>
           <textarea value={form.descId} onChange={e => setForm({...form, descId: e.target.value})} placeholder="Description (ID)" rows={3} required className={inputClass + " w-full"} />
         </div>
         <div>
-          <label className="block text-xs text-slate-400 mb-1 lg:hidden">Tech (comma-separated)</label>
-          <input value={form.tech} onChange={e => setForm({...form, tech: e.target.value})} placeholder="Tech (comma-separated)" className={inputClass + " w-full"} />
+          <label className="block text-xs text-slate-400 mb-1">Content / Overview (EN) — Markdown</label>
+          <textarea value={form.contentEn} onChange={e => setForm({...form, contentEn: e.target.value})} placeholder="Detailed overview in Markdown (EN)" rows={5} className={inputClass + " w-full"} />
         </div>
         <div>
-          <label className="block text-xs text-slate-400 mb-1 lg:hidden">Version</label>
-          <input value={form.version} onChange={e => setForm({...form, version: e.target.value})} placeholder="Version" className={inputClass + " w-full"} />
+          <label className="block text-xs text-slate-400 mb-1">Content / Overview (ID) — Markdown</label>
+          <textarea value={form.contentId} onChange={e => setForm({...form, contentId: e.target.value})} placeholder="Detailed overview in Markdown (ID)" rows={5} className={inputClass + " w-full"} />
         </div>
         <div>
-          <label className="block text-xs text-slate-400 mb-1 lg:hidden">Status</label>
-          <input value={form.status} onChange={e => setForm({...form, status: e.target.value})} placeholder="Status" className={inputClass + " w-full"} />
+          <label className="block text-xs text-slate-400 mb-1">Tech (comma-separated)</label>
+          <input value={form.tech} onChange={e => setForm({...form, tech: e.target.value})} placeholder="React, Node.js, PostgreSQL" className={inputClass + " w-full"} />
         </div>
         <div>
-          <label className="block text-xs text-slate-400 mb-1 lg:hidden">Order</label>
-          <input type="number" value={form.order} onChange={e => setForm({...form, order: parseInt(e.target.value) || 0})} placeholder="Order" className={inputClass + " w-full"} />
+          <label className="block text-xs text-slate-400 mb-1">Version</label>
+          <input value={form.version} onChange={e => setForm({...form, version: e.target.value})} placeholder="v1.0.0" className={inputClass + " w-full"} />
+        </div>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1">Status</label>
+          <input value={form.status} onChange={e => setForm({...form, status: e.target.value})} placeholder="PRODUCTION" className={inputClass + " w-full"} />
+        </div>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1">Order</label>
+          <input type="number" value={form.order} onChange={e => setForm({...form, order: parseInt(e.target.value) || 0})} placeholder="1" className={inputClass + " w-full"} />
+        </div>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1">Image URL (optional)</label>
+          <input value={form.image} onChange={e => setForm({...form, image: e.target.value})} placeholder="https://..." className={inputClass + " w-full"} />
+        </div>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1">Video URL (optional, autoplay)</label>
+          <input value={form.videoUrl} onChange={e => setForm({...form, videoUrl: e.target.value})} placeholder="https://..." className={inputClass + " w-full"} />
+        </div>
+        <div className="md:col-span-2">
+          <label className="block text-xs text-slate-400 mb-1">Project URL (optional, live demo / repo)</label>
+          <input value={form.url} onChange={e => setForm({...form, url: e.target.value})} placeholder="https://..." className={inputClass + " w-full"} />
         </div>
         <div className="md:col-span-2 flex flex-col sm:flex-row gap-3">
           <button type="submit" disabled={saving} className="w-full sm:w-auto px-6 py-2.5 lg:py-2 bg-cyan-600 hover:bg-cyan-500 disabled:bg-slate-700 text-white text-sm font-bold rounded">{saving ? 'Saving...' : 'Save'}</button>

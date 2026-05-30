@@ -1,13 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { adminDb } from '@/lib/firebase-admin';
+import { FieldValue } from 'firebase-admin/firestore';
 import { getLeaderboard } from '@/lib/firestore';
 
 const NAME_REGEX = /^[A-Z0-9_]{1,12}$/;
 const MAX_SCORE = 99999;
 
 export async function GET() {
-  const entries = await getLeaderboard(10);
-  return NextResponse.json(entries);
+  if (!adminDb) return NextResponse.json([]);
+
+  const [entries, countSnapshot] = await Promise.all([
+    getLeaderboard(10),
+    adminDb.collection('leaderboard').count().get(),
+  ]);
+
+  const totalPlayers = countSnapshot.data().count;
+  return NextResponse.json({ entries, totalPlayers });
 }
 
 export async function POST(request: NextRequest) {
@@ -33,10 +41,34 @@ export async function POST(request: NextRequest) {
   }
 
   try {
+    // Check if player with same name already exists
+    const existing = await adminDb.collection('leaderboard')
+      .where('name', '==', name)
+      .limit(1)
+      .get();
+
+    if (!existing.empty) {
+      const doc = existing.docs[0];
+      const existingScore = doc.data().score as number;
+
+      if (score > existingScore) {
+        // Update with higher score
+        await doc.ref.update({
+          score,
+          updatedAt: FieldValue.serverTimestamp(),
+        });
+        return NextResponse.json({ id: doc.id, updated: true });
+      } else {
+        // Existing score is higher — keep it
+        return NextResponse.json({ id: doc.id, kept: true });
+      }
+    }
+
+    // New player — create entry
     const ref = await adminDb.collection('leaderboard').add({
       name,
       score,
-      createdAt: new Date().toISOString(),
+      createdAt: FieldValue.serverTimestamp(),
     });
     return NextResponse.json({ id: ref.id });
   } catch (err) {

@@ -54,11 +54,11 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
 
         <div className="container-custom max-w-4xl mx-auto relative z-10 px-0 md:px-6">
         <Reveal width="100%">
-          <div className="text-center mb-10 md:mb-20 space-y-8 px-6">
-            <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-text-main leading-[1.1]">
+          <div className="text-center mb-6 md:mb-16 space-y-3 md:space-y-8 px-6">
+            <h2 className="text-2xl md:text-6xl font-black tracking-tighter text-text-main leading-[1.1]">
               {headline}
             </h2>
-            <p className="text-sm md:text-lg text-text-muted max-w-2xl mx-auto leading-relaxed border-l-2 border-border/30 pl-6 md:pl-8 italic text-left md:text-center">
+            <p className="text-sm md:text-lg text-text-muted max-w-2xl mx-auto leading-relaxed text-center">
               {desc}
             </p>
           </div>
@@ -68,7 +68,7 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
           <div
             onFocus={() => setActiveMode(true)}
             onBlur={() => setActiveMode(false)}
-            className="bg-surface/90 border-y md:border border-border/60 shadow-[0_40px_100px_rgba(0,0,0,0.06)] dark:shadow-[0_40px_100px_rgba(0,0,0,0.4)] relative overflow-hidden group/form transition-all duration-700 mx-0 md:mx-0"
+            className="bg-surface/90 border-y md:border border-border/60 md:rounded-xl shadow-[0_40px_100px_rgba(0,0,0,0.06)] dark:shadow-[0_40px_100px_rgba(0,0,0,0.4)] relative overflow-hidden group/form transition-all duration-700 mx-0 md:mx-0"
           >
             {/* Header Rail */}
             <div className="px-4 md:px-10 py-6 border-b border-border/40 bg-background/40 flex flex-col md:flex-row items-center justify-between gap-6">
@@ -77,7 +77,7 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
                   <Radio className="w-5 h-5 text-indigo-400 animate-pulse" />
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-[9px] md:text-[10px] font-mono text-text-muted/80 uppercase tracking-widest font-black">{t('emailLabel')}:</span>
+                  <span className="text-xs font-mono text-text-muted/80 uppercase tracking-wider font-bold">{t('emailLabel')}:</span>
                   <span className="text-sm md:text-base font-mono text-text-main tracking-tight group-hover/form:text-cyan-400 transition-colors break-all md:break-normal">{email}</span>
                 </div>
               </div>
@@ -87,7 +87,7 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
                   setCopied(true);
                   setTimeout(() => setCopied(false), 2000);
                 }}
-                className="flex items-center justify-center gap-3 text-[10px] font-black text-cyan-500 uppercase tracking-widest hover:text-cyan-300 transition-all bg-cyan-500/10 px-6 py-3 md:px-4 md:py-2 border border-cyan-500/20 w-full md:w-auto"
+                className="flex items-center justify-center gap-2 text-xs font-bold text-cyan-500 uppercase tracking-wider hover:text-cyan-300 transition-all bg-cyan-500/10 px-5 py-2.5 border border-cyan-500/20 rounded-lg w-full md:w-auto"
               >
                 {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
                 {copied ? t('copied') : buttonCopyUid}
@@ -96,10 +96,10 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
 
             {/* Form Area */}
             <div className="flex flex-col lg:flex-row divide-y lg:divide-y-0 lg:divide-x divide-border/20">
-               <div className="p-4 md:p-12 space-y-6 md:space-y-12 flex-1">
+               <div className="p-4 md:p-12 space-y-4 md:space-y-12 flex-1">
                 <div className="space-y-5 md:space-y-10">
                   <div className="space-y-3 group/input">
-                    <label htmlFor="contact-title" className="text-[11px] font-mono text-text-muted/80 uppercase tracking-[0.3em] font-black block group-focus-within/input:text-cyan-400 transition-colors flex items-center gap-2">
+                    <label htmlFor="contact-title" className="text-xs font-mono text-text-muted/80 uppercase tracking-wider font-bold block group-focus-within/input:text-cyan-400 transition-colors flex items-center gap-2">
                        <Zap className="w-3 h-3 group-focus-within/input:text-cyan-500" aria-hidden="true" />
                        {labelTitle}
                     </label>
@@ -109,11 +109,11 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
                       placeholder={placeholderTitle}
-                      className="w-full bg-background/50 border border-border/40 px-3 md:px-6 py-3 md:py-5 outline-none focus:border-cyan-500/60 focus:bg-cyan-500/5 transition-all text-sm font-mono placeholder:opacity-20 group-hover/form:border-border/60"
+                      className="w-full bg-background/50 border border-border/40 rounded-lg px-3 md:px-6 py-3 md:py-4 outline-none focus:border-cyan-500/60 focus:bg-cyan-500/5 transition-all text-sm font-mono placeholder:opacity-20 group-hover/form:border-border/60"
                     />
                   </div>
                   <div className="space-y-3 group/input">
-                    <label htmlFor="contact-message" className="text-[11px] font-mono text-text-muted/60 uppercase tracking-[0.3em] font-black block group-focus-within/input:text-cyan-400 transition-colors flex items-center gap-2">
+                    <label htmlFor="contact-message" className="text-xs font-mono text-text-muted/60 uppercase tracking-wider font-bold block group-focus-within/input:text-cyan-400 transition-colors flex items-center gap-2">
                        <Radio className="w-3 h-3 group-focus-within/input:text-cyan-500" aria-hidden="true" />
                        {labelPayload}
                     </label>
@@ -124,14 +124,14 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
                       onChange={(e) => setMessage(e.target.value)}
                       placeholder={placeholderPayload}
                       enterKeyHint="send"
-                      className="w-full bg-background/50 border border-border/40 px-3 md:px-6 py-3 md:py-5 outline-none focus:border-cyan-500/60 focus:bg-cyan-500/5 transition-all text-sm font-mono resize-none placeholder:opacity-20 group-hover/form:border-border/60"
+                      className="w-full bg-background/50 border border-border/40 rounded-lg px-3 md:px-6 py-3 md:py-4 outline-none focus:border-cyan-500/60 focus:bg-cyan-500/5 transition-all text-sm font-mono resize-none placeholder:opacity-20 group-hover/form:border-border/60"
                     />
                   </div>
                 </div>
 
                 <button
                   onClick={handleSend}
-                  className="w-full py-4 md:py-6 bg-text-main text-background flex items-center justify-center gap-4 md:gap-6 text-[10px] md:text-[11px] font-black uppercase tracking-[0.4em] hover:bg-cyan-500 transition-all group/btn active:scale-[0.98] relative overflow-hidden mt-4 lg:mt-0"
+                  className="w-full py-4 md:py-5 bg-text-main text-background rounded-lg flex items-center justify-center gap-4 text-xs font-bold uppercase tracking-wider hover:bg-cyan-500 transition-all group/btn active:scale-[0.98] relative overflow-hidden mt-4 lg:mt-0"
                 >
                   <Send className="w-5 h-5 md:w-6 md:h-6 group-hover/btn:translate-x-3 group-hover/btn:-translate-y-3 transition-transform duration-500 relative z-10" />
                   <span className="relative z-10">{buttonTransmit}</span>
@@ -142,7 +142,7 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
               {/* Side Monitor Panel */}
               <div className="w-[300px] bg-background/20 p-8 hidden xl:flex flex-col gap-8 border-l border-border/20">
                  <div className="space-y-4">
-                    <span className="font-mono text-[9px] text-cyan-500 font-black uppercase tracking-[0.3em] flex items-center gap-2">
+                    <span className="font-mono text-xs text-cyan-500 font-bold uppercase tracking-wider flex items-center gap-2">
                        <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse inline-block" />
                        {t('diagnostics')}
                     </span>
@@ -168,8 +168,8 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
               <div className="flex items-center gap-4">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.4)] animate-pulse"></span>
                 <div className="flex flex-col">
-                  <span className="text-[9px] md:text-[10px] font-mono text-text-muted/80 uppercase tracking-widest font-black leading-none">{t('responseTimeLabel')}:</span>
-                  <span className="text-[9px] md:text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-widest mt-1">{t('responseTimeValue')}</span>
+                  <span className="text-xs font-mono text-text-muted/80 uppercase tracking-wider font-bold leading-none">{t('responseTimeLabel')}:</span>
+                  <span className="text-xs font-mono text-emerald-400 font-semibold uppercase tracking-wider mt-1">{t('responseTimeValue')}</span>
                 </div>
               </div>
               <div className="hidden md:flex flex-col items-end">
@@ -183,7 +183,7 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
 
         {/* Social Bridge */}
         <Reveal delay={0.4} width="100%">
-          <div className="mt-12 md:mt-16 grid grid-cols-2 sm:grid-cols-4 gap-6 md:gap-10 px-4 md:px-0">
+          <div className="mt-8 md:mt-16 grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-10 px-4 md:px-0">
             {socials.map((social) => (
               <a
                 key={social.name}
@@ -191,7 +191,7 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${social.name} (opens in new tab)`}
-                className="flex flex-col items-center justify-center p-6 bg-surface/30 border border-border/20 gap-3 text-[10px] font-black text-text-muted uppercase tracking-[0.3em] hover:text-cyan-400 hover:border-cyan-500/40 hover:bg-cyan-500/5 transition-all group/social"
+                className="flex flex-col items-center justify-center p-4 md:p-6 bg-surface/30 border border-border/20 rounded-xl gap-2 md:gap-3 text-xs font-bold text-text-muted uppercase tracking-wider hover:text-cyan-400 hover:border-cyan-500/40 hover:bg-cyan-500/5 transition-all group/social"
               >
                 <motion.div
                   whileHover={{ scale: 1.2, rotate: 10 }}
