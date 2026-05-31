@@ -1,12 +1,9 @@
-import dynamic from "next/dynamic";
 import Image from "next/image";
 import { Reveal } from "@/components/ui/Reveal";
 import { CodeText } from "@/components/ui/CodeText";
-import { LazyGimmick } from "@/components/ui/LazyGimmick";
+import { ClientGimmick } from "@/components/ui/ClientGimmick";
 import { getTranslations } from "next-intl/server";
 import type { AboutContent, Locale } from "@/types";
-
-const NetworkTopologyGimmick = dynamic(() => import("@/components/gimmicks/NetworkTopologyGimmick").then(m => ({ default: m.NetworkTopologyGimmick })), { ssr: false });
 
 interface AboutProps {
   aboutContent?: AboutContent | null;
@@ -29,7 +26,7 @@ export async function About({ aboutContent, locale }: AboutProps) {
 
   return (
     <section id="about" className="section-padding bg-background border-y border-border relative overflow-hidden">
-      <LazyGimmick><NetworkTopologyGimmick /></LazyGimmick>
+      <ClientGimmick name="network" />
 
       <div className="container-custom flex flex-col md:flex-row gap-6 md:gap-16 lg:gap-24 items-center relative z-10">
         <div className="w-full md:w-5/12">

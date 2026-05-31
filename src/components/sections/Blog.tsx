@@ -1,10 +1,7 @@
-import dynamic from "next/dynamic";
 import { Reveal } from "@/components/ui/Reveal";
-import { LazyGimmick } from "@/components/ui/LazyGimmick";
+import { ClientGimmick } from "@/components/ui/ClientGimmick";
 import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
-
-const LogStreamGimmick = dynamic(() => import("@/components/gimmicks/LogStreamGimmick").then(m => ({ default: m.LogStreamGimmick })), { ssr: false });
 import { getTranslations } from "next-intl/server";
 import type { Blog as BlogType, Locale } from "@/types";
 
@@ -21,7 +18,7 @@ export async function Blog({ blogs, locale }: BlogProps) {
 
   return (
     <section id="blog" className="section-padding bg-background relative overflow-hidden">
-      <LazyGimmick><LogStreamGimmick /></LazyGimmick>
+      <ClientGimmick name="logStream" />
 
       <div className="container-custom relative z-10">
         <Reveal>

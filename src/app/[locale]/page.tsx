@@ -8,13 +8,8 @@ import { Projects } from '@/components/sections/Projects';
 import { Blog } from '@/components/sections/Blog';
 import { Contact } from '@/components/sections/Contact';
 import { SkipGameLink } from '@/components/ui/SkipGameLink';
-import dynamic from 'next/dynamic';
+import { ClientSkyForceGame } from '@/components/game/ClientSkyForceGame';
 import { routing } from '@/i18n/routing';
-
-const SkyForceGame = dynamic(() => import('@/components/game/SkyForceGame').then(mod => ({ default: mod.SkyForceGame })), {
-  ssr: false,
-  loading: () => <div className="min-h-[85vh] md:min-h-[540px] bg-background" />,
-});
 
 export const revalidate = 3600; // ISR: revalidate every 1 hour
 
@@ -113,7 +108,7 @@ export default async function Page({ params }: Props) {
       <About aboutContent={aboutContent} locale={locale} />
       <Skills skills={skills} locale={locale} />
       <SkipGameLink />
-      <SkyForceGame />
+      <ClientSkyForceGame />
       <Experience experience={experience} locale={locale} />
       <Projects projects={projects} locale={locale} />
       <Blog blogs={blogs} locale={locale} />

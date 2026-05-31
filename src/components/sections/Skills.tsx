@@ -1,10 +1,7 @@
-import dynamic from "next/dynamic";
 import { Reveal } from "@/components/ui/Reveal";
 import { CodeText } from "@/components/ui/CodeText";
-import { LazyGimmick } from "@/components/ui/LazyGimmick";
+import { ClientGimmick } from "@/components/ui/ClientGimmick";
 import { getTranslations } from "next-intl/server";
-
-const ArchitectureSchematicGimmick = dynamic(() => import("@/components/gimmicks/ArchitectureSchematicGimmick").then(m => ({ default: m.ArchitectureSchematicGimmick })), { ssr: false });
 import type { SkillGroup, Locale } from "@/types";
 
 interface SkillsProps {
@@ -20,7 +17,7 @@ export async function Skills({ skills, locale }: SkillsProps) {
 
   return (
     <section id="skills" className="section-padding bg-surface relative overflow-hidden">
-      <LazyGimmick><ArchitectureSchematicGimmick /></LazyGimmick>
+      <ClientGimmick name="architecture" />
 
       <div className="container-custom max-w-5xl relative z-10">
         <Reveal width="100%">

@@ -1,10 +1,7 @@
-import dynamic from "next/dynamic";
 import { Reveal } from "@/components/ui/Reveal";
 import { CodeText } from "@/components/ui/CodeText";
-import { LazyGimmick } from "@/components/ui/LazyGimmick";
+import { ClientGimmick } from "@/components/ui/ClientGimmick";
 import { getTranslations } from "next-intl/server";
-
-const TacticalTrajectoryGimmick = dynamic(() => import("@/components/gimmicks/TacticalTrajectoryGimmick").then(m => ({ default: m.TacticalTrajectoryGimmick })), { ssr: false });
 import type { ExperienceItem, Locale } from "@/types";
 
 interface ExperienceProps {
@@ -20,7 +17,7 @@ export async function Experience({ experience, locale }: ExperienceProps) {
 
   return (
     <section id="work" className="section-padding bg-background relative overflow-hidden">
-      <LazyGimmick><TacticalTrajectoryGimmick /></LazyGimmick>
+      <ClientGimmick name="trajectory" />
 
       <div className="container-custom relative z-10">
         <Reveal>

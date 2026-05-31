@@ -1,11 +1,8 @@
-import dynamic from "next/dynamic";
 import { Reveal } from "@/components/ui/Reveal";
-import { LazyGimmick } from "@/components/ui/LazyGimmick";
+import { ClientGimmick } from "@/components/ui/ClientGimmick";
 import { HireMeBanner } from "@/components/ui/HireMeBanner";
 import { ArrowLeft, Calendar, User, Clock } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-
-const LogStreamGimmick = dynamic(() => import("@/components/gimmicks/LogStreamGimmick").then(m => ({ default: m.LogStreamGimmick })), { ssr: false });
 import Markdown from "react-markdown";
 import rehypeSanitize from "rehype-sanitize";
 import { getTranslations } from "next-intl/server";
@@ -24,7 +21,7 @@ export async function BlogDetailsPage({ blog, locale, hireBannerContent }: BlogD
 
   return (
     <section className="pb-8 md:pb-14 bg-background relative min-h-screen overflow-hidden pt-24 md:pt-28">
-      <LazyGimmick><LogStreamGimmick /></LazyGimmick>
+      <ClientGimmick name="logStream" />
 
       <div className="container-custom relative z-10">
         <article>

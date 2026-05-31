@@ -1,11 +1,8 @@
-import dynamic from "next/dynamic";
 import { Reveal } from "@/components/ui/Reveal";
 import { CodeText } from "@/components/ui/CodeText";
-import { LazyGimmick } from "@/components/ui/LazyGimmick";
+import { ClientGimmick } from "@/components/ui/ClientGimmick";
 import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
-
-const ServiceClusterGimmick = dynamic(() => import("@/components/gimmicks/ServiceClusterGimmick").then(m => ({ default: m.ServiceClusterGimmick })), { ssr: false });
 import { getTranslations } from "next-intl/server";
 import type { Project, Locale } from "@/types";
 
@@ -22,7 +19,7 @@ export async function Projects({ projects, locale }: ProjectsProps) {
 
   return (
     <section id="projects" className="section-padding bg-surface relative overflow-hidden">
-      <LazyGimmick><ServiceClusterGimmick /></LazyGimmick>
+      <ClientGimmick name="serviceCluster" />
 
       <div className="container-custom relative z-10">
         <Reveal>

@@ -1,11 +1,8 @@
-import dynamic from "next/dynamic";
 import { Reveal } from "@/components/ui/Reveal";
-import { LazyGimmick } from "@/components/ui/LazyGimmick";
+import { ClientGimmick } from "@/components/ui/ClientGimmick";
 import { HireMeBanner } from "@/components/ui/HireMeBanner";
 import { CodeText } from "@/components/ui/CodeText";
 import { Link } from "@/i18n/navigation";
-
-const ServiceClusterGimmick = dynamic(() => import("@/components/gimmicks/ServiceClusterGimmick").then(m => ({ default: m.ServiceClusterGimmick })), { ssr: false });
 import { ArrowLeft } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import type { Project, Locale, HireBannerContent } from "@/types";
@@ -22,7 +19,7 @@ export async function ProjectListPage({ projects, locale, hireBannerContent }: P
 
   return (
     <section className="pb-8 md:pb-14 bg-surface relative min-h-screen overflow-hidden pt-24 md:pt-28">
-      <LazyGimmick><ServiceClusterGimmick /></LazyGimmick>
+      <ClientGimmick name="serviceCluster" />
 
       <div className="container-custom relative z-10">
         <Reveal>
