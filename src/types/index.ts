@@ -9,7 +9,6 @@ export interface Project {
   desc: Bilingual;
   content?: Bilingual;
   tech: string[];
-  version: string;
   status: string;
   image?: string;
   videoUrl?: string;
@@ -84,7 +83,6 @@ export interface AboutContent {
     stat2: StatItem;
     stat3: StatItem;
   };
-  avatarInitials: string;
   avatarUrl?: string;
   updatedAt: string;
 }
@@ -124,7 +122,6 @@ export interface FooterContent {
 
 export interface HireBannerContent {
   id: string;
-  badge: Bilingual;
   headline: Bilingual;
   desc: Bilingual;
   cta: Bilingual;
@@ -142,7 +139,6 @@ export interface NavbarContent {
     contact: Bilingual;
   };
   logoUrl?: string;
-  brandInitials?: string;
   brandName?: string;
   updatedAt: string;
 }

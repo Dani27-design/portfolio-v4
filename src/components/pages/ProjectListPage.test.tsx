@@ -12,8 +12,8 @@ async function renderAsync(component: Promise<React.JSX.Element>) {
 }
 
 const mockProjects = [
-  { id: '1', slug: 'proj-1', name: { en: 'Project One', id: 'Proyek Satu' }, desc: { en: 'Desc 1', id: 'Desk 1' }, tech: ['React'], version: 'v1', status: 'PRODUCTION', order: 1, createdAt: '', updatedAt: '' },
-  { id: '2', slug: 'proj-2', name: { en: 'Project Two', id: 'Proyek Dua' }, desc: { en: 'Desc 2', id: 'Desk 2' }, tech: ['Node'], version: 'v2', status: 'DEPLOYED', order: 2, createdAt: '', updatedAt: '' },
+  { id: '1', slug: 'proj-1', name: { en: 'Project One', id: 'Proyek Satu' }, desc: { en: 'Desc 1', id: 'Desk 1' }, tech: ['React'], status: 'PRODUCTION', order: 1, createdAt: '', updatedAt: '' },
+  { id: '2', slug: 'proj-2', name: { en: 'Project Two', id: 'Proyek Dua' }, desc: { en: 'Desc 2', id: 'Desk 2' }, tech: ['Node'], status: 'DEPLOYED', order: 2, createdAt: '', updatedAt: '' },
 ];
 
 describe('ProjectListPage', () => {

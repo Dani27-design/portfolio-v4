@@ -17,7 +17,6 @@ const mockProject = {
   name: { en: 'Test Project', id: 'Proyek Uji' },
   desc: { en: 'A test project description', id: 'Deskripsi proyek uji' },
   tech: ['React', 'Node.js', 'PostgreSQL'],
-  version: 'v1.0.0',
   status: 'PRODUCTION',
   order: 1,
   createdAt: '2024-01-01',

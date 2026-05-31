@@ -16,7 +16,6 @@ export const HireMeBanner = ({ hireBannerContent, locale }: HireMeBannerProps = 
   const pathname = usePathname();
   const loc = (locale || 'en') as Locale;
 
-  const badge = hireBannerContent?.badge[loc] ?? t('badge');
   const headlineText = hireBannerContent?.headline[loc] ?? t('headline');
   const descText = hireBannerContent?.desc[loc] ?? t('desc');
   const ctaText = hireBannerContent?.cta[loc] ?? t('cta');

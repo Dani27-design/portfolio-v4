@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
 import { createProject, updateProject, deleteProject } from '@/actions/projects';
+import { AdminToast, type Toast } from '@/components/admin/AdminToast';
 import type { Project } from '@/types';
 
 export default function AdminProjectsPage() {
@@ -11,6 +12,8 @@ export default function AdminProjectsPage() {
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [editing, setEditing] = useState<Project | null>(null);
   const [creating, setCreating] = useState(false);
+  const [toast, setToast] = useState<Toast | null>(null);
+  const dismissToast = useCallback(() => setToast(null), []);
 
   const fetchProjects = async () => {
     setFetchError(null);
@@ -37,6 +40,8 @@ export default function AdminProjectsPage() {
 
   return (
     <div>
+      <AdminToast toast={toast} onDismiss={dismissToast} />
+
       <div className="flex items-center justify-between mb-6 lg:mb-8">
         <h1 className="text-xl lg:text-2xl font-bold text-white">Projects</h1>
         <button
@@ -58,7 +63,8 @@ export default function AdminProjectsPage() {
         <ProjectForm
           project={editing}
           onClose={() => { setEditing(null); setCreating(false); }}
-          onSave={() => { setEditing(null); setCreating(false); fetchProjects(); }}
+          onSave={(msg) => { setEditing(null); setCreating(false); setToast({ type: 'success', message: msg }); fetchProjects(); }}
+          onError={(msg) => setToast({ type: 'error', message: msg })}
         />
       )}
 
@@ -116,7 +122,7 @@ export default function AdminProjectsPage() {
   );
 }
 
-function ProjectForm({ project, onClose, onSave }: { project: Project | null; onClose: () => void; onSave: () => void }) {
+function ProjectForm({ project, onClose, onSave, onError }: { project: Project | null; onClose: () => void; onSave: (msg: string) => void; onError: (msg: string) => void }) {
   const [form, setForm] = useState({
     slug: project?.slug || '',
     nameEn: project?.name.en || '',
@@ -126,7 +132,6 @@ function ProjectForm({ project, onClose, onSave }: { project: Project | null; on
     contentEn: project?.content?.en || '',
     contentId: project?.content?.id || '',
     tech: project?.tech.join(', ') || '',
-    version: project?.version || '',
     status: project?.status || 'PRODUCTION',
     image: project?.image || '',
     videoUrl: project?.videoUrl || '',
@@ -134,11 +139,9 @@ function ProjectForm({ project, onClose, onSave }: { project: Project | null; on
     order: project?.order || 0,
   });
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
     setSaving(true);
     try {
       const slug = form.slug || form.nameEn.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -147,7 +150,6 @@ function ProjectForm({ project, onClose, onSave }: { project: Project | null; on
         name: { en: form.nameEn, id: form.nameId },
         desc: { en: form.descEn, id: form.descId },
         tech: form.tech.split(',').map(t => t.trim()).filter(Boolean),
-        version: form.version,
         status: form.status,
         order: form.order,
         ...(form.contentEn || form.contentId ? { content: { en: form.contentEn, id: form.contentId } } : {}),
@@ -160,9 +162,9 @@ function ProjectForm({ project, onClose, onSave }: { project: Project | null; on
       } else {
         await createProject(data);
       }
-      onSave();
+      onSave(project ? 'Project updated successfully' : 'Project created successfully');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save');
+      onError(err instanceof Error ? err.message : 'Failed to save');
     } finally {
       setSaving(false);
     }
@@ -174,7 +176,6 @@ function ProjectForm({ project, onClose, onSave }: { project: Project | null; on
     <div className="mb-6 lg:mb-8 bg-slate-800 border border-slate-700 rounded-lg p-4 lg:p-6">
       <h2 className="text-lg font-bold text-white mb-4">{project ? 'Edit' : 'Create'} Project</h2>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {error && <div className="md:col-span-2 p-3 bg-red-500/10 border border-red-500/20 rounded text-red-400 text-sm">{error}</div>}
         <div className="md:col-span-2">
           <label className="block text-xs text-slate-400 mb-1">Slug (auto-generated if empty)</label>
           <input value={form.slug} onChange={e => setForm({...form, slug: e.target.value})} placeholder="my-project-slug" className={inputClass + " w-full"} />
@@ -206,10 +207,6 @@ function ProjectForm({ project, onClose, onSave }: { project: Project | null; on
         <div>
           <label className="block text-xs text-slate-400 mb-1">Tech (comma-separated)</label>
           <input value={form.tech} onChange={e => setForm({...form, tech: e.target.value})} placeholder="React, Node.js, PostgreSQL" className={inputClass + " w-full"} />
-        </div>
-        <div>
-          <label className="block text-xs text-slate-400 mb-1">Version</label>
-          <input value={form.version} onChange={e => setForm({...form, version: e.target.value})} placeholder="v1.0.0" className={inputClass + " w-full"} />
         </div>
         <div>
           <label className="block text-xs text-slate-400 mb-1">Status</label>

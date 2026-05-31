@@ -37,8 +37,6 @@
   "projects": {
     "title": "Proyek",
     "cta": "Lihat Semua Proyek",
-    "badge": "Produksi",
-    "viewDetail": "Lihat Detail",
     "archiveTitle": "Semua Proyek",
     "archiveSubtitle": "Studi kasus teknis dan desain sistem",
     "backToHome": "Kembali ke Beranda",
@@ -47,8 +45,6 @@
     },
     "backToProjects": "Kembali ke Proyek",
     "techStack": "Tech Stack",
-    "version": "Versi",
-    "status": "Status",
     "visitProject": "Kunjungi Proyek",
     "overview": "Ringkasan"
   },
@@ -87,13 +83,9 @@
     "fallbackSubject": "Permintaan Proyek"
   },
   "footer": {
-    "role": "Software Developer",
-    "navigation": "Navigasi",
-    "connect": "Terhubung",
-    "rights": "Hak cipta dilindungi."
+    "role": "Software Developer"
   },
   "hireBanner": {
-    "badge": "Terbuka untuk Kerja Sama",
     "headline": "Butuh Developer untuk Mewujudkan Visi Anda?",
     "desc": "Berpengalaman membangun aplikasi web, mobile, dan sistem backend yang scalable. Hubungi saya kalau butuh developer untuk proyek Anda.",
     "cta": "Mari Bekerja Sama"

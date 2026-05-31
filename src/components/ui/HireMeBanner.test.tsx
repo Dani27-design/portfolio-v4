@@ -25,7 +25,6 @@ describe('HireMeBanner', () => {
       <HireMeBanner
         hireBannerContent={{
           id: '1',
-          badge: { en: 'Hiring', id: 'Rekrut' },
           headline: { en: 'Custom Headline', id: 'Judul' },
           desc: { en: 'Custom desc', id: 'Desk' },
           cta: { en: 'Hire Me', id: 'Rekrut Saya' },

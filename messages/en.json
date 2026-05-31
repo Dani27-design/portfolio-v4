@@ -37,8 +37,6 @@
   "projects": {
     "title": "Projects",
     "cta": "View All Projects",
-    "badge": "Production",
-    "viewDetail": "View Detail",
     "archiveTitle": "All Projects",
     "archiveSubtitle": "Technical case studies and system designs",
     "backToHome": "Back to Home",
@@ -47,8 +45,6 @@
     },
     "backToProjects": "Back to Projects",
     "techStack": "Tech Stack",
-    "version": "Version",
-    "status": "Status",
     "visitProject": "Visit Project",
     "overview": "Overview"
   },
@@ -87,13 +83,9 @@
     "fallbackSubject": "Project Inquiry"
   },
   "footer": {
-    "role": "Software Developer",
-    "navigation": "Navigation",
-    "connect": "Connect",
-    "rights": "All rights reserved."
+    "role": "Software Developer"
   },
   "hireBanner": {
-    "badge": "Available for Hire",
     "headline": "Need an Architect to Scale Your Vision?",
     "desc": "Experienced in building web apps, mobile apps, and backend systems that scale. Let me know if you need a developer for your next project.",
     "cta": "Let's Work Together"

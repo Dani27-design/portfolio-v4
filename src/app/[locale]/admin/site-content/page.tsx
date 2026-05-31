@@ -170,7 +170,6 @@ function AboutForm({ about, onSave }: { about: AboutContent | null; onSave: () =
     titleEn: about?.title.en || '', titleId: about?.title.id || '',
     headlineEn: about?.headline.en || '', headlineId: about?.headline.id || '',
     descEn: about?.desc.en || '', descId: about?.desc.id || '',
-    avatarInitials: about?.avatarInitials || '',
     avatarUrl: about?.avatarUrl || '',
     stat1Value: about?.stats.stat1.value || '', stat1LabelEn: about?.stats.stat1.label.en || '', stat1LabelId: about?.stats.stat1.label.id || '',
     stat2Value: about?.stats.stat2.value || '', stat2LabelEn: about?.stats.stat2.label.en || '', stat2LabelId: about?.stats.stat2.label.id || '',
@@ -188,7 +187,6 @@ function AboutForm({ about, onSave }: { about: AboutContent | null; onSave: () =
         title: { en: form.titleEn, id: form.titleId },
         headline: { en: form.headlineEn, id: form.headlineId },
         desc: { en: form.descEn, id: form.descId },
-        avatarInitials: form.avatarInitials,
         avatarUrl: form.avatarUrl || undefined,
         stats: {
           stat1: { value: form.stat1Value, label: { en: form.stat1LabelEn, id: form.stat1LabelId } },
@@ -220,10 +218,6 @@ function AboutForm({ about, onSave }: { about: AboutContent | null; onSave: () =
         onRemove={() => setForm({...form, avatarUrl: ''})}
         label="Avatar Image"
       />
-      <div>
-        <MobileLabel>Avatar Initials (fallback if no image)</MobileLabel>
-        <input value={form.avatarInitials} onChange={e => setForm({...form, avatarInitials: e.target.value})} placeholder="Avatar Initials (e.g. DC)" required className={inputClass + " w-32"} />
-      </div>
       <div>
         <label className="block text-xs font-mono text-slate-400 uppercase tracking-wider mb-1.5">Stats</label>
         <div className="space-y-3">
@@ -357,7 +351,6 @@ function FooterForm({ footer, onSave }: { footer: FooterContent | null; onSave: 
 
 function HireBannerForm({ hireBanner, onSave }: { hireBanner: HireBannerContent | null; onSave: () => void }) {
   const [form, setForm] = useState({
-    badgeEn: hireBanner?.badge.en || '', badgeId: hireBanner?.badge.id || '',
     headlineEn: hireBanner?.headline.en || '', headlineId: hireBanner?.headline.id || '',
     descEn: hireBanner?.desc.en || '', descId: hireBanner?.desc.id || '',
     ctaEn: hireBanner?.cta.en || '', ctaId: hireBanner?.cta.id || '',
@@ -371,7 +364,6 @@ function HireBannerForm({ hireBanner, onSave }: { hireBanner: HireBannerContent 
     setError(''); setSuccess(false); setSaving(true);
     try {
       await updateHireBannerContent({
-        badge: { en: form.badgeEn, id: form.badgeId },
         headline: { en: form.headlineEn, id: form.headlineId },
         desc: { en: form.descEn, id: form.descId },
         cta: { en: form.ctaEn, id: form.ctaId },
@@ -386,8 +378,6 @@ function HireBannerForm({ hireBanner, onSave }: { hireBanner: HireBannerContent 
       {error && <div className="p-3 bg-red-500/10 border border-red-500/20 rounded text-red-400 text-sm">{error}</div>}
       {success && <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded text-emerald-400 text-sm">Hire banner content saved successfully</div>}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div><MobileLabel>Badge (EN)</MobileLabel><input value={form.badgeEn} onChange={e => setForm({...form, badgeEn: e.target.value})} placeholder="Badge (EN)" required className={inputClass} /></div>
-        <div><MobileLabel>Badge (ID)</MobileLabel><input value={form.badgeId} onChange={e => setForm({...form, badgeId: e.target.value})} placeholder="Badge (ID)" required className={inputClass} /></div>
         <div><MobileLabel>Headline (EN)</MobileLabel><input value={form.headlineEn} onChange={e => setForm({...form, headlineEn: e.target.value})} placeholder="Headline (EN)" required className={inputClass} /></div>
         <div><MobileLabel>Headline (ID)</MobileLabel><input value={form.headlineId} onChange={e => setForm({...form, headlineId: e.target.value})} placeholder="Headline (ID)" required className={inputClass} /></div>
         <div><MobileLabel>Description (EN)</MobileLabel><textarea value={form.descEn} onChange={e => setForm({...form, descEn: e.target.value})} placeholder="Description (EN)" rows={2} required className={inputClass} /></div>
@@ -403,7 +393,6 @@ function HireBannerForm({ hireBanner, onSave }: { hireBanner: HireBannerContent 
 function NavbarForm({ navbar, onSave }: { navbar: NavbarContent | null; onSave: () => void }) {
   const [form, setForm] = useState({
     logoUrl: navbar?.logoUrl || '',
-    brandInitials: navbar?.brandInitials || '',
     brandName: navbar?.brandName || '',
     aboutEn: navbar?.labels.about.en || '', aboutId: navbar?.labels.about.id || '',
     stackEn: navbar?.labels.stack.en || '', stackId: navbar?.labels.stack.id || '',
@@ -422,7 +411,6 @@ function NavbarForm({ navbar, onSave }: { navbar: NavbarContent | null; onSave: 
     try {
       await updateNavbarContent({
         logoUrl: form.logoUrl || undefined,
-        brandInitials: form.brandInitials || undefined,
         brandName: form.brandName || undefined,
         labels: {
           about: { en: form.aboutEn, id: form.aboutId }, stack: { en: form.stackEn, id: form.stackId },
@@ -455,9 +443,9 @@ function NavbarForm({ navbar, onSave }: { navbar: NavbarContent | null; onSave: 
         onRemove={() => setForm({...form, logoUrl: ''})}
         label="Brand Logo (used in Navbar & Footer)"
       />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div><MobileLabel>Brand Initials (fallback if no logo)</MobileLabel><input value={form.brandInitials} onChange={e => setForm({...form, brandInitials: e.target.value})} placeholder="Brand Initials (e.g. DC)" className={inputClass} /></div>
-        <div><MobileLabel>Brand Name</MobileLabel><input value={form.brandName} onChange={e => setForm({...form, brandName: e.target.value})} placeholder="Brand Name (e.g. Daniansyah)" className={inputClass} /></div>
+      <div>
+        <MobileLabel>Brand Name</MobileLabel>
+        <input value={form.brandName} onChange={e => setForm({...form, brandName: e.target.value})} placeholder="Brand Name (e.g. Daniansyah)" className={inputClass} />
       </div>
       <label className="block text-xs font-mono text-slate-400 uppercase tracking-wider">Nav Labels</label>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

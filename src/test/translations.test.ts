@@ -158,14 +158,12 @@ describe('Projects Section Translations', () => {
   it('should have EN projects section content', () => {
     expect(en.projects.title).toBe('Projects');
     expect(en.projects.cta).toBe('View All Projects');
-    expect(en.projects.viewDetail).toBe('View Detail');
     expect(en.projects.metadata.access).toBe('View Details');
   });
 
   it('should have ID projects section content', () => {
     expect(id.projects.title).toBe('Proyek');
     expect(id.projects.cta).toBe('Lihat Semua Proyek');
-    expect(id.projects.viewDetail).toBe('Lihat Detail');
     expect(id.projects.metadata.access).toBe('Lihat Detail');
   });
 });
@@ -235,13 +233,11 @@ describe('Footer Translations', () => {
 
 describe('HireBanner Translations', () => {
   it('should have EN hire banner content', () => {
-    expect(en.hireBanner.badge).toBe('Available for Hire');
     expect(en.hireBanner.headline).toBe('Need an Architect to Scale Your Vision?');
     expect(en.hireBanner.cta).toBe("Let's Work Together");
   });
 
   it('should have ID hire banner content', () => {
-    expect(id.hireBanner.badge).toBe('Terbuka untuk Kerja Sama');
     expect(id.hireBanner.headline).toBe('Butuh Developer untuk Mewujudkan Visi Anda?');
     expect(id.hireBanner.cta).toBe('Mari Bekerja Sama');
   });

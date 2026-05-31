@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { AdminToast, type Toast } from '@/components/admin/AdminToast';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
 import { createExperience, updateExperience, deleteExperience } from '@/actions/experience';
 import type { ExperienceItem } from '@/types';
@@ -11,6 +12,8 @@ export default function AdminExperiencePage() {
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [editing, setEditing] = useState<ExperienceItem | null>(null);
   const [creating, setCreating] = useState(false);
+  const [toast, setToast] = useState<Toast | null>(null);
+  const dismissToast = useCallback(() => setToast(null), []);
 
   const fetchItems = async () => {
     setFetchError(null);
@@ -37,6 +40,7 @@ export default function AdminExperiencePage() {
 
   return (
     <div>
+      <AdminToast toast={toast} onDismiss={dismissToast} />
       <div className="flex items-center justify-between mb-6 lg:mb-8">
         <h1 className="text-xl lg:text-2xl font-bold text-white">Experience</h1>
         <button
@@ -58,7 +62,8 @@ export default function AdminExperiencePage() {
         <ExperienceForm
           item={editing}
           onClose={() => { setEditing(null); setCreating(false); }}
-          onSave={() => { setEditing(null); setCreating(false); fetchItems(); }}
+          onSave={(msg) => { setEditing(null); setCreating(false); setToast({ type: 'success', message: msg }); fetchItems(); }}
+          onError={(msg) => setToast({ type: 'error', message: msg })}
         />
       )}
 
@@ -118,7 +123,7 @@ export default function AdminExperiencePage() {
   );
 }
 
-function ExperienceForm({ item, onClose, onSave }: { item: ExperienceItem | null; onClose: () => void; onSave: () => void }) {
+function ExperienceForm({ item, onClose, onSave, onError }: { item: ExperienceItem | null; onClose: () => void; onSave: (msg: string) => void; onError: (msg: string) => void }) {
   const [form, setForm] = useState({
     titleEn: item?.title.en || '',
     titleId: item?.title.id || '',
@@ -131,11 +136,9 @@ function ExperienceForm({ item, onClose, onSave }: { item: ExperienceItem | null
     order: item?.order || 0,
   });
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
     setSaving(true);
     try {
       const data = {
@@ -154,9 +157,9 @@ function ExperienceForm({ item, onClose, onSave }: { item: ExperienceItem | null
       } else {
         await createExperience(data);
       }
-      onSave();
+      onSave(item ? 'Experience updated successfully' : 'Experience created successfully');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save');
+      onError(err instanceof Error ? err.message : 'Failed to save');
     } finally {
       setSaving(false);
     }
@@ -168,7 +171,6 @@ function ExperienceForm({ item, onClose, onSave }: { item: ExperienceItem | null
     <div className="mb-6 lg:mb-8 bg-slate-800 border border-slate-700 rounded-lg p-4 lg:p-6">
       <h2 className="text-lg font-bold text-white mb-4">{item ? 'Edit' : 'Create'} Experience</h2>
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {error && <div className="md:col-span-2 p-3 bg-red-500/10 border border-red-500/20 rounded text-red-400 text-sm">{error}</div>}
         <div>
           <label className="block text-xs text-slate-400 mb-1 lg:hidden">Title (EN)</label>
           <input value={form.titleEn} onChange={e => setForm({...form, titleEn: e.target.value})} placeholder="Title (EN)" required className={inputClass + " w-full"} />

@@ -31,7 +31,6 @@ describe('About', () => {
             stat2: { value: '0%', label: { en: 'Label2', id: 'L2' } },
             stat3: { value: 'TDD', label: { en: 'Label3', id: 'L3' } },
           },
-          avatarInitials: 'DC',
           updatedAt: '2024-01-01',
         },
         locale: 'en',
