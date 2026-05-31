@@ -1,5 +1,3 @@
-'use client';
-
 import dynamic from "next/dynamic";
 import { Reveal } from "@/components/ui/Reveal";
 import { CodeText } from "@/components/ui/CodeText";
@@ -8,7 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
 
 const ServiceClusterGimmick = dynamic(() => import("@/components/gimmicks/ServiceClusterGimmick").then(m => ({ default: m.ServiceClusterGimmick })), { ssr: false });
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import type { Project, Locale } from "@/types";
 
 interface ProjectsProps {
@@ -16,8 +14,8 @@ interface ProjectsProps {
   locale: string;
 }
 
-export const Projects = ({ projects, locale }: ProjectsProps) => {
-  const t = useTranslations('projects');
+export async function Projects({ projects, locale }: ProjectsProps) {
+  const t = await getTranslations('projects');
   const loc = locale as Locale;
 
   if (projects.length === 0) return null;
@@ -80,4 +78,4 @@ export const Projects = ({ projects, locale }: ProjectsProps) => {
       </div>
     </section>
   );
-};
+}

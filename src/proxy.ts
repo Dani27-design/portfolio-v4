@@ -61,7 +61,8 @@ export default async function proxy(request: NextRequest) {
   // Admin routes (except login page): check Firebase auth session
   if (pathname.includes('/admin') && !pathname.includes('/admin/login')) {
     if (!hasCredentials) {
-      return intlMiddleware(request);
+      const locale = pathname.split('/')[1] || routing.defaultLocale;
+      return NextResponse.redirect(new URL(`/${locale}`, request.url));
     }
 
     const locale = pathname.split('/')[1] || routing.defaultLocale;

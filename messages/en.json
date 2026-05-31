@@ -157,6 +157,13 @@
       "desc": "This article could not be loaded. It may have been removed or the data is temporarily unavailable.",
       "retry": "Try Again",
       "back": "Back to Blog"
+    },
+    "project": {
+      "badge": "Error",
+      "title": "Failed to load project",
+      "desc": "This project could not be loaded. It may have been removed or the data is temporarily unavailable.",
+      "retry": "Try Again",
+      "back": "Back to Projects"
     }
   },
   "seo": {

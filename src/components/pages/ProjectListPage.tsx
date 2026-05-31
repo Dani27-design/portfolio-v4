@@ -1,5 +1,3 @@
-'use client';
-
 import dynamic from "next/dynamic";
 import { Reveal } from "@/components/ui/Reveal";
 import { LazyGimmick } from "@/components/ui/LazyGimmick";
@@ -9,7 +7,7 @@ import { Link } from "@/i18n/navigation";
 
 const ServiceClusterGimmick = dynamic(() => import("@/components/gimmicks/ServiceClusterGimmick").then(m => ({ default: m.ServiceClusterGimmick })), { ssr: false });
 import { ArrowLeft } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import type { Project, Locale, HireBannerContent } from "@/types";
 
 interface ProjectListPageProps {
@@ -18,8 +16,8 @@ interface ProjectListPageProps {
   hireBannerContent?: HireBannerContent | null;
 }
 
-export const ProjectListPage = ({ projects, locale, hireBannerContent }: ProjectListPageProps) => {
-  const t = useTranslations('projects');
+export async function ProjectListPage({ projects, locale, hireBannerContent }: ProjectListPageProps) {
+  const t = await getTranslations('projects');
   const loc = locale as Locale;
 
   return (
@@ -78,4 +76,4 @@ export const ProjectListPage = ({ projects, locale, hireBannerContent }: Project
       </div>
     </section>
   );
-};
+}

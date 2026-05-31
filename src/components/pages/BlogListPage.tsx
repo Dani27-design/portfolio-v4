@@ -1,5 +1,3 @@
-'use client';
-
 import dynamic from "next/dynamic";
 import { Reveal } from "@/components/ui/Reveal";
 import { LazyGimmick } from "@/components/ui/LazyGimmick";
@@ -8,7 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { ArrowLeft } from "lucide-react";
 
 const LogStreamGimmick = dynamic(() => import("@/components/gimmicks/LogStreamGimmick").then(m => ({ default: m.LogStreamGimmick })), { ssr: false });
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import type { Blog, Locale, HireBannerContent } from "@/types";
 
 interface BlogListPageProps {
@@ -17,8 +15,8 @@ interface BlogListPageProps {
   hireBannerContent?: HireBannerContent | null;
 }
 
-export const BlogListPage = ({ blogs, locale, hireBannerContent }: BlogListPageProps) => {
-  const t = useTranslations('blog');
+export async function BlogListPage({ blogs, locale, hireBannerContent }: BlogListPageProps) {
+  const t = await getTranslations('blog');
   const loc = locale as Locale;
 
   return (
@@ -81,4 +79,4 @@ export const BlogListPage = ({ blogs, locale, hireBannerContent }: BlogListPageP
       </div>
     </section>
   );
-};
+}

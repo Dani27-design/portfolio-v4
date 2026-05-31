@@ -74,6 +74,12 @@ vi.mock('next-intl', () => ({
   NextIntlClientProvider: ({ children }: { children: unknown }) => children,
 }));
 
+// Mock next-intl/server (for async server components using getTranslations)
+vi.mock('next-intl/server', () => ({
+  getTranslations: async () => (key: string) => key,
+  setRequestLocale: () => {},
+}));
+
 // Mock @/i18n/navigation
 vi.mock('@/i18n/navigation', () => ({
   Link: ({ href, children, ...props }: Record<string, unknown>) => {

@@ -6,8 +6,10 @@ import { Play, RotateCcw, Crosshair, Zap, Shield, Cpu, Share2, Award, User, Chec
 import { useTheme } from "@/context/ThemeProvider";
 import { Reveal } from "@/components/ui/Reveal";
 import { useTranslations } from "next-intl";
-import { db } from "@/lib/firebase";
-import { collection, query, orderBy, limit, onSnapshot } from "firebase/firestore";
+import { app } from "@/lib/firebase";
+import { getFirestore, collection, query, orderBy, limit, onSnapshot } from "firebase/firestore";
+
+const db = getFirestore(app);
 import type { LeaderboardEntry } from "@/types";
 
 interface Particle {
@@ -293,12 +295,16 @@ export const SkyForceGame = () => {
           text: shareText,
           url: window.location.href,
         });
-      } catch (err) {
-        console.log('Share failed:', err);
+      } catch {
+        // User cancelled share dialog — expected, no action needed
       }
     } else {
-      navigator.clipboard.writeText(shareText);
-      alert(t('copiedToClipboard'));
+      try {
+        await navigator.clipboard.writeText(shareText);
+        alert(t('copiedToClipboard'));
+      } catch {
+        // Clipboard API unavailable (non-HTTPS or permission denied)
+      }
     }
   };
 

@@ -20,8 +20,8 @@ export const CustomCursor = () => {
 
   return (
     <>
-      <div id="cursor" ref={cursorRef} className="hidden md:block" />
-      <div id="cursor-follower" ref={followerRef} className="hidden md:block" />
+      <div id="cursor" ref={cursorRef} className="hidden md:block" aria-hidden="true" />
+      <div id="cursor-follower" ref={followerRef} className="hidden md:block" aria-hidden="true" />
     </>
   );
 };

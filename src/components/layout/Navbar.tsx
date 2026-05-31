@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import { X, Sun, Moon, Languages, Terminal, Code2 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useTranslations, useLocale } from "next-intl";
@@ -118,11 +119,13 @@ export const Navbar = ({ navbarContent, locale: localeProp }: NavbarProps = {}) 
         <div className="container-custom h-full flex items-center relative z-10">
           {/* Section 1: Brand (Left) */}
           <Link href="/" className="flex-[1] flex items-center gap-4 group cursor-pointer">
-            {navbarContent?.logoUrl ? (
-              <img src={navbarContent.logoUrl} alt={navbarContent?.brandName ?? 'Daniansyah'} className="w-10 h-10 object-cover rounded-sm group-hover:scale-105 transition-transform shrink-0" />
-            ) : (
-              <div className="w-10 h-10 bg-text-main text-background flex items-center justify-center font-black text-lg select-none group-hover:scale-105 transition-transform shrink-0">{navbarContent?.brandInitials ?? 'DC'}</div>
-            )}
+            <Image
+              src={navbarContent?.logoUrl || '/logo.png'}
+              alt={navbarContent?.brandName ?? 'Daniansyah'}
+              width={40}
+              height={40}
+              className="object-cover rounded-sm group-hover:scale-105 transition-transform shrink-0"
+            />
             <div className="hidden sm:flex flex-col justify-center">
               <span className="font-black tracking-tighter text-lg uppercase leading-none group-hover:text-cyan-400 transition-colors whitespace-nowrap">{navbarContent?.brandName ?? 'Daniansyah'}</span>
             </div>
@@ -257,6 +260,9 @@ export const Navbar = ({ navbarContent, locale: localeProp }: NavbarProps = {}) 
             exit={{ opacity: 0, clipPath: "circle(0% at 100% 0%)" }}
             transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
             className="fixed inset-0 bg-background text-text-main z-[60] flex flex-col p-8 overflow-hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation menu"
             data-menu-overlay
           >
             <MobileMenuGimmick />

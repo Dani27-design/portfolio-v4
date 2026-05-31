@@ -28,6 +28,19 @@ service cloud.firestore {
                    && request.auth.token.email == 'daniansyahchusyaidin@gmail.com';
     }
 
+    match /siteContent/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null
+                   && request.auth.token.email == 'daniansyahchusyaidin@gmail.com';
+    }
+
+    // Leaderboard: public read (enables real-time onSnapshot in game),
+    // deny client writes (all writes go through rate-limited API via admin SDK)
+    match /leaderboard/{entryId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
     // Deny everything else by default
     match /{document=**} {
       allow read, write: if false;

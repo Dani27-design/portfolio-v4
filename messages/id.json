@@ -157,6 +157,13 @@
       "desc": "Artikel ini tidak dapat dimuat. Mungkin telah dihapus atau data sementara tidak tersedia.",
       "retry": "Coba Lagi",
       "back": "Kembali ke Blog"
+    },
+    "project": {
+      "badge": "Error",
+      "title": "Gagal memuat proyek",
+      "desc": "Proyek ini tidak dapat dimuat. Mungkin telah dihapus atau data sementara tidak tersedia.",
+      "retry": "Coba Lagi",
+      "back": "Kembali ke Proyek"
     }
   },
   "seo": {

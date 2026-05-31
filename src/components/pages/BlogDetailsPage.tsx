@@ -1,5 +1,3 @@
-'use client';
-
 import dynamic from "next/dynamic";
 import { Reveal } from "@/components/ui/Reveal";
 import { LazyGimmick } from "@/components/ui/LazyGimmick";
@@ -9,7 +7,8 @@ import { Link } from "@/i18n/navigation";
 
 const LogStreamGimmick = dynamic(() => import("@/components/gimmicks/LogStreamGimmick").then(m => ({ default: m.LogStreamGimmick })), { ssr: false });
 import Markdown from "react-markdown";
-import { useTranslations } from "next-intl";
+import rehypeSanitize from "rehype-sanitize";
+import { getTranslations } from "next-intl/server";
 import type { Blog, Locale, HireBannerContent } from "@/types";
 
 interface BlogDetailsPageProps {
@@ -18,8 +17,8 @@ interface BlogDetailsPageProps {
   hireBannerContent?: HireBannerContent | null;
 }
 
-export const BlogDetailsPage = ({ blog, locale, hireBannerContent }: BlogDetailsPageProps) => {
-  const t = useTranslations('blog');
+export async function BlogDetailsPage({ blog, locale, hireBannerContent }: BlogDetailsPageProps) {
+  const t = await getTranslations('blog');
   const loc = locale as Locale;
   const readMinutes = Math.ceil(blog.content.split(/\s+/).length / 200);
 
@@ -73,7 +72,7 @@ export const BlogDetailsPage = ({ blog, locale, hireBannerContent }: BlogDetails
           <Reveal delay={0.2} width="100%">
             <div className="relative p-5 sm:p-8 md:p-16 bg-surface/70 border border-border/40 rounded-xl overflow-hidden w-full min-w-0">
                <div lang="id" className="markdown-body prose prose-sm md:prose-base prose-invert max-w-none w-full min-w-0 text-text-muted prose-headings:text-text-main prose-headings:tracking-tighter prose-strong:text-cyan-400 prose-code:text-indigo-400 prose-pre:bg-background/80 prose-pre:border prose-pre:border-border/40 prose-pre:overflow-x-auto prose-pre:rounded-lg prose-img:rounded-lg prose-img:max-w-full [&_pre]:overflow-x-auto [&_pre]:max-w-full [&_table]:overflow-x-auto [&_table]:block [&_table]:max-w-full [&_code]:break-words [&_a]:break-all [&_p]:break-words [&_h1]:break-words [&>h1:first-child]:hidden [&_h2]:break-words [&_h3]:break-words [&_li]:break-words">
-                 <Markdown>
+                 <Markdown rehypePlugins={[rehypeSanitize]}>
                    {blog.content}
                  </Markdown>
                </div>
@@ -89,4 +88,4 @@ export const BlogDetailsPage = ({ blog, locale, hireBannerContent }: BlogDetails
       </div>
     </section>
   );
-};
+}

@@ -2,246 +2,176 @@
 
 ---
 
-## ~~GAME-02: Game arena has blank black space and misplaced red defense line on mobile~~ [FIXED]
+## ~~SEC-05: Admin routes accessible when credentials are missing~~ [FIXED]
 
-**Problem**: The game container was set to `h-[85vh]` on mobile but the canvas height was hardcoded to 360px. This left ~330px of blank black empty space below the game content. The red dashed defense line drew at the bottom of the 360px canvas (in the middle of the visible container) instead of at the bottom of the full arena.
+**Problem:** When Firebase credentials are not configured, the proxy middleware falls through to `intlMiddleware(request)` for admin routes, serving admin page HTML and JS bundles without any auth check.
 
-**Root cause**: `SkyForceGame.tsx:312` — `const logicalHeight = logicalWidth < 768 ? 360 : Math.min(540, logicalWidth * 0.54)` ignored the actual container height.
+**Root Cause:** `src/proxy.ts` lines 62-64 — when `!hasCredentials`, admin routes bypass auth entirely and render normally. The client-side `AdminGuard` renders `null` for non-admin users, but the admin layout, sidebar, and JS bundle are still served.
 
-**Fix applied**: Changed to `const logicalHeight = containerRef.current.clientHeight` — canvas now uses the actual rendered container height on all screen sizes. The defense line, enemies, player, and all game elements render relative to the full arena height automatically.
+**Proof:** `src/proxy.ts` line 63: `return intlMiddleware(request);` inside `if (!hasCredentials)` block for admin routes.
 
----
+**Impact:** In development or if credentials are accidentally unset in production, admin page structure (HTML, component code, routing) is exposed. Data is protected by API-level auth, but UI structure leaks.
 
-# Un-translated / Non-bilingual Wording Audit
+**Solution:** When `!hasCredentials`, redirect admin routes to the home page or return a 503 instead of rendering the page.
 
-Audit date: 2026-05-30
-Focus: All user-facing text that is English-only and not translated to Indonesian when the user switches to ID locale.
-
----
-
-## Category A: Translation file values that are still untranslated jargon
-
-### ~~I18N-01: `projects.viewDetail` is "View_Detail" in both EN and ID~~ [FIXED]
-
-**Problem**: The value `View_Detail` has an underscore and is identical in both languages. Not translated.
-
-**Root cause**: `messages/en.json:36` and `messages/id.json:36` both have `"viewDetail": "View_Detail"`.
-
-**Proof**: Same string in both locale files. Indonesian users see English with underscore.
-
-**Impact**: LOW — this key doesn't appear to be actively rendered in any current component (it was for a feature that may have been removed). But it's in the translation file and could be used in the future.
-
-**Solution**: EN: `"View Detail"` (remove underscore). ID: `"Lihat Detail"`.
+**Risk:** Low implementation risk.
 
 ---
 
-### ~~I18N-02: `projects.metadata.checksum` and `projects.metadata.target` are untranslated jargon~~ [FIXED]
+## ~~SEC-06: Rate limiter IP can be spoofed via x-forwarded-for~~ [FIXED]
 
-**Problem**: `"Checksum: Validated"` and `"Target: Prod_Env"` are identical in both EN and ID. These are fake technical jargon that were never translated.
+**Problem:** The rate limiter reads client IP from `x-forwarded-for` header, which can be set by any client to bypass rate limiting.
 
-**Root cause**: `messages/en.json:41-42` and `messages/id.json:41-42`. Leftover from the tactical HUD aesthetic.
+**Root Cause:** `src/app/api/leaderboard/route.ts` lines 50-54 — `getClientIp()` reads `x-forwarded-for` first, which is user-controlled.
 
-**Proof**: Same string in both locale files.
+**Proof:** `request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()` — an attacker can set `X-Forwarded-For: random-value` on each request to get a fresh identity.
 
-**Impact**: LOW — These keys don't appear to be rendered in any current component (removed during gimmick text cleanup). But they're in the translation files.
+**Impact:** The rate limiter is ineffective against determined attackers who rotate the header value.
 
-**Solution**: Remove these keys from both files, or if kept for future use: EN: `"Verified"` / `"Production"`. ID: `"Terverifikasi"` / `"Produksi"`.
+**Solution:** Use `request.ip` (available on `NextRequest` in Vercel serverless) which reads the verified IP. Fall back to `x-forwarded-for` only as last resort.
 
----
-
-### ~~I18N-03: `projects.archiveTitle` and `projects.archiveSubtitle` EN still have jargon~~ [FIXED]
-
-**Problem**: EN: `"System Architecture Archives"` and `"Comprehensive Technical Case Studies & System Designs"` — jargon-heavy. ID versions are already good (`"Arsip Proyek"` / `"Studi kasus teknis dan desain sistem"`).
-
-**Root cause**: `messages/en.json:37-38`. These were missed during the WORD-* fixes — only the homepage section title was updated, not the archive page title.
-
-**Proof**: Rendered in `ProjectListPage.tsx:40` and `:45` as the heading on the `/projects` archive page.
-
-**Impact**: MEDIUM — visible on the projects archive page.
-
-**Solution**: EN: `"All Projects"` and `"Technical case studies and system designs"`.
+**Risk:** Low. `request.ip` may be `undefined` in local dev — needs a fallback chain.
 
 ---
 
-### ~~I18N-04: `blog.archiveTitle` and `blog.archiveSubtitle` EN still have jargon~~ [FIXED]
+## ~~PERF-04: Duplicate getContactContent() fetch on homepage~~ [FIXED]
 
-**Problem**: EN: `"Full Technical Archives"` and `"Comprehensive Technical Documentation & Field Logs"` — jargon. ID versions are already good (`"Semua Catatan Teknis"` / `"Dokumentasi teknis dan catatan pengembangan"`).
+**Problem:** `getContactContent()` is called in both the layout and the homepage, resulting in two Firestore reads for the same document.
 
-**Root cause**: `messages/en.json:49-50`.
+**Root Cause:** `src/app/[locale]/layout.tsx` line 65 fetches `contactContent` for the Footer via PublicShell. `src/app/[locale]/page.tsx` line 62 fetches it again for the Contact section. Firebase admin SDK calls are NOT deduplicated by Next.js (only native `fetch()` is).
 
-**Proof**: Rendered in `BlogListPage.tsx:39` and `:43` as the heading on the `/blog` archive page.
+**Proof:** Both files call `getContactContent()` in their `Promise.all` arrays — layout line 65, page line 62.
 
-**Impact**: MEDIUM — visible on the blog archive page.
+**Impact:** Every homepage render triggers 2 Firestore reads for the same `siteContent/contact` document. Mitigated by ISR cache (`revalidate = 3600`), but initial renders and revalidations are doubled.
 
-**Solution**: EN: `"All Posts"` and `"Technical articles and development notes"`.
+**Solution:** Use React's `cache()` wrapper around `getContactContent()` in `firestore.ts` to deduplicate within the same request.
 
----
-
-## Category B: Hardcoded English strings in components (not in translation files)
-
-### ~~I18N-05: Back navigation links are hardcoded English~~ [FIXED]
-
-**Problem**: `"Back to Home"` (BlogListPage:34, ProjectListPage:35) and `"Back to Blog"` (BlogDetailsPage:36) are hardcoded in JSX. Indonesian users see English navigation.
-
-**Root cause**: These strings were changed from `BACK_TO_ROOT`/`RETURN_TO_ARCHIVES` to human text in WORD-22, but were hardcoded directly instead of being added to translation files.
-
-**Proof**: Hardcoded strings in component JSX, not from `t()` calls.
-
-**Impact**: MEDIUM — navigation text visible on every sub-page.
-
-**Solution**: Add translation keys (e.g., `"backToHome"` and `"backToBlog"`) and use `t()`.
+**Risk:** None — `cache()` is a React built-in for server components.
 
 ---
 
-### ~~I18N-06: Blog detail badges "Technical Article" and "Published" are hardcoded English~~ [FIXED]
+## ~~PERF-05: Missing loading.tsx for project detail route~~ [FIXED]
 
-**Problem**: `"Technical Article"` (BlogDetailsPage:44) and `"Published"` (BlogDetailsPage:47) are hardcoded. Indonesian users see English badges.
+**Problem:** No `loading.tsx` exists at `src/app/[locale]/projects/[slug]/`. Blog detail route has one, but projects do not.
 
-**Root cause**: Changed from `LOG_TYPE :: TECHNICAL_LOG` / `STATUS :: DEPLOYED` in WORD-24, hardcoded instead of using translations.
+**Root Cause:** The project detail route was created later and the loading skeleton was not added.
 
-**Proof**: Hardcoded strings in BlogDetailsPage.tsx JSX.
+**Proof:** `src/app/[locale]/blog/[slug]/loading.tsx` exists. `src/app/[locale]/projects/[slug]/loading.tsx` does not.
 
-**Impact**: LOW — small badges on blog detail page.
+**Impact:** No Suspense skeleton during navigation to project detail pages — users see a blank state while the server renders.
 
-**Solution**: Add translation keys and use `t()`.
+**Solution:** Create a `loading.tsx` matching the blog detail loading pattern.
 
----
-
-### ~~I18N-07: Blog detail author name is hardcoded~~ [KEPT — proper name, same in both languages]
-
-**Problem**: `"Daniansyah Chusyaidin"` (BlogDetailsPage:62) is hardcoded. This is a proper name so it doesn't need translation, but it's not editable via admin.
-
-**Root cause**: Hardcoded string changed from `DANIANSYAH_CORE` in WORD-25.
-
-**Proof**: Hardcoded in JSX.
-
-**Impact**: LOW — proper name, same in both languages. Not a translation issue but an editability issue (should come from Firestore/aboutContent).
-
-**Solution**: No translation needed (proper name). But could be wired to `footerContent.ownerName` or similar for editability.
+**Risk:** None.
 
 ---
 
-### ~~I18N-08: Contact section has multiple hardcoded English labels~~ [FIXED]
+## ~~PERF-06: Missing error.tsx for project detail route~~ [FIXED]
 
-**Problem**: These hardcoded strings in `Contact.tsx` are English-only:
-- Line 80: `"Email:"`
-- Line 93: `'COPIED'` (success feedback)
-- Line 147: `"Sys_Diagnostics"` (still has underscore!)
-- Line 171: `"Response Time:"`
-- Line 172: `"Within 24 hours"`
+**Problem:** No `error.tsx` exists at `src/app/[locale]/projects/[slug]/`. Blog detail route has one, but projects do not.
 
-**Root cause**: These were either hardcoded from the start or changed during WORD-23 but not moved to translation files.
+**Root Cause:** Same as PERF-05 — project detail route was created later.
 
-**Proof**: All hardcoded in Contact.tsx JSX.
+**Proof:** `src/app/[locale]/blog/[slug]/error.tsx` exists. `src/app/[locale]/projects/[slug]/error.tsx` does not.
 
-**Impact**: MEDIUM — `"COPIED"` and `"Response Time: Within 24 hours"` are visible to all users. `"Sys_Diagnostics"` is XL-only but still has underscore. `"Email:"` is a label next to the email address.
+**Impact:** If `getProjectBySlug()` throws, the error bubbles to the parent `[locale]/error.tsx`, replacing the entire page layout instead of being scoped to the content area.
 
-**Solution**: Add all to translation files. `"COPIED"` → EN: `"Copied"` / ID: `"Tersalin"`. `"Sys_Diagnostics"` → remove underscore: `"Sys Diagnostics"` / ID: `"Diagnostik"`. Others need proper ID translations.
+**Solution:** Create an `error.tsx` matching the blog detail error pattern.
+
+**Risk:** None.
 
 ---
 
-### ~~I18N-09: Navbar mobile overlay "NAV_TERMINAL" is hardcoded English with underscore~~ [FIXED]
+## ~~SEO-06: Project detail pages missing hreflang alternates in metadata~~ [FIXED]
 
-**Problem**: `"NAV_TERMINAL"` (Navbar.tsx:268) — hardcoded English with underscore. Shown in the mobile menu overlay header.
+**Problem:** Project content is bilingual, but project detail page metadata only sets `canonical` without `languages` alternates. The sitemap DOES emit bilingual hreflang for projects, creating a contradiction.
 
-**Root cause**: Never moved to translations. Still has underscore from original design.
+**Root Cause:** `src/app/[locale]/projects/[slug]/page.tsx` lines 27-30 — `alternates` object has `canonical` but no `languages` property.
 
-**Proof**: Hardcoded in Navbar.tsx JSX.
+**Proof:** Compare with sitemap.ts lines 50-65 which emit both locales for each project slug. The page metadata says "no alternates" while the sitemap says "alternates exist."
 
-**Impact**: LOW — small decorative label in mobile menu.
+**Impact:** Search engines receive conflicting signals about whether bilingual project pages exist.
 
-**Solution**: Change to `"Navigation"` or `"Menu"` and move to translations. Or remove it entirely (the menu is self-evident).
+**Solution:** Add `languages` alternates to project detail metadata, matching the blog list/project list page pattern.
 
----
-
-### ~~I18N-10: Project card "[01] PRODUCTION" badge is hardcoded English~~ [KEPT — universal tech term]
-
-**Problem**: `[{idx}] PRODUCTION` (Projects.tsx:71, ProjectListPage.tsx:68) — "PRODUCTION" is hardcoded English. Indonesian users see English status text.
-
-**Root cause**: Hardcoded in JSX, not from translations.
-
-**Proof**: Hardcoded in both Projects.tsx and ProjectListPage.tsx.
-
-**Impact**: LOW — small badge on project cards. "PRODUCTION" is widely understood in Indonesian tech context.
-
-**Solution**: Could stay as-is (universal tech term) or add to translations: ID: `"PRODUKSI"`.
+**Risk:** None.
 
 ---
 
-### ~~I18N-11: Error and 404 pages are entirely English-only~~ [FIXED]
+## ~~A11Y-04: Footer text and icons have insufficient contrast~~ [FIXED]
 
-**Problem**: Three error/404 pages have all English text with no i18n:
-- `not-found.tsx`: "404 :: ROUTE_NOT_FOUND", "Page not found", "The page you are looking for...", "Back to Home"
-- `error.tsx`: "ERROR :: PAGE_FAULT", "Something went wrong", "An error occurred...", "Try Again", "Back to Home"
-- `blog/[slug]/error.tsx`: "ERROR :: LOG_CORRUPTED", "Failed to load entry", "This blog entry could not...", "Try Again", "Back to Archives"
+**Problem:** Footer social link icons use `text-text-muted/30` (30% opacity) and copyright text uses `text-text-muted/40` (40% opacity). In dark mode, these produce contrast ratios well below WCAG 2.1 AA minimum of 3:1.
 
-**Root cause**: These are edge-case pages that were built English-only. They don't use `useTranslations()`.
+**Root Cause:** `src/components/layout/Footer.tsx` line 36 (`text-text-muted/40`) and line 47 (`text-text-muted/30`).
 
-**Proof**: All text hardcoded in JSX across 3 files.
+**Proof:** Dark mode `--text-muted-color: #94a3b8` at 30% opacity on `--surface-color: #16181e` background. Calculated effective color is extremely faint.
 
-**Impact**: MEDIUM — Indonesian users see English error messages. Error/404 pages are important for UX trust.
+**Impact:** Fails WCAG 2.1 AA. Users with low vision cannot perceive footer links or text.
 
-**Solution**: Add error/404 translation keys to both message files. Use `useTranslations()` in the components. Note: `not-found.tsx` is a server component — need to use `getTranslations()` instead.
+**Solution:** Increase opacity to at least `/60` for interactive elements and `/50` for text.
 
----
-
-### ~~I18N-12: Game share text is hardcoded English~~ [FIXED]
-
-**Problem**: `SkyForceGame.tsx:283` — `"I just hit a high score of ${score} on SYSTEM_SHOT: DEFENDER! 🚀 Can you beat my record?"` — hardcoded English share message.
-
-**Root cause**: Hardcoded string in component, not from translations.
-
-**Proof**: Line 283 and 288 in SkyForceGame.tsx.
-
-**Impact**: LOW — only triggered when user clicks Share. But Indonesian users share English text.
-
-**Solution**: Move share text template to translations with `{score}` interpolation.
+**Risk:** None — purely visual tweak.
 
 ---
 
-### ~~I18N-13: Skip links and aria-labels are hardcoded English~~ [FIXED]
+## ~~A11Y-05: navigator.clipboard call has no error handling~~ [FIXED]
 
-**Problem**:
-- `PublicShell.tsx:30`: `"Skip to main content"` — hardcoded
-- `HomePage.tsx:35`: `"Skip game section"` — hardcoded
-- `SkyForceGame.tsx:890`: `aria-label="SYSTEM_SHOT: DEFENDER — interactive space shooter game"` — hardcoded
+**Problem:** `navigator.clipboard.writeText()` is called without catching the returned Promise. On non-HTTPS or browsers that deny clipboard permission, this throws an unhandled rejection while the UI shows "Copied" regardless.
 
-**Root cause**: Accessibility strings added as hardcoded English.
+**Root Cause:** `src/components/sections/Contact.tsx` line 86 — `navigator.clipboard.writeText(email)` with no `.catch()` or `try/catch`.
 
-**Proof**: Hardcoded in JSX.
+**Proof:** Line 86-87: `navigator.clipboard.writeText(email); setCopied(true);` — `setCopied(true)` runs synchronously before the async clipboard operation resolves.
 
-**Impact**: LOW — only affects screen reader users on the ID locale. Skip links are `sr-only` (visually hidden).
+**Impact:** On HTTP or restricted browsers, the UI shows "Copied" but nothing was actually copied.
 
-**Solution**: Move to translation files for proper bilingual accessibility.
+**Solution:** Wrap in try/catch with async/await, only set `setCopied(true)` on success.
 
----
-
-### ~~I18N-14: Contact mailto fallback subject is hardcoded English~~ [FIXED]
-
-**Problem**: `Contact.tsx:39` — `title || "Technical Inquiry"` — the fallback email subject is hardcoded English.
-
-**Root cause**: Hardcoded fallback string.
-
-**Proof**: Line 39 in Contact.tsx.
-
-**Impact**: LOW — only triggers if user submits with empty title field.
-
-**Solution**: Move to translations or use a locale-aware fallback.
+**Risk:** None.
 
 ---
 
-## Summary
+## ~~QUAL-05: Tests render async server components without proper mocking~~ [FIXED]
 
-| Category | Count | Files affected |
-|----------|-------|---------------|
-| Translation file values (untranslated/jargon) | 4 | messages/en.json, messages/id.json |
-| Hardcoded English in components | 10 | 9 component files |
-| **Total** | **14** | |
+**Problem:** `About`, `Skills`, `Experience`, `Projects`, and `Blog` are now async server components using `await getTranslations()` from `next-intl/server`. The test setup mocks `next-intl` (client) but NOT `next-intl/server`. Tests pass but may not be rendering actual component output.
 
-### Priority order for fixing:
-1. **I18N-05** (back nav) + **I18N-08** (contact labels) — MEDIUM, visible on every page visit
-2. **I18N-03** + **I18N-04** (archive titles) — MEDIUM, visible on sub-pages
-3. **I18N-11** (error/404 pages) — MEDIUM, important for UX trust
-4. **I18N-06** (blog badges) + **I18N-09** (NAV_TERMINAL) + **I18N-10** (PRODUCTION) — LOW
-5. **I18N-01** + **I18N-02** (unused translation keys) — LOW, cleanup
-6. **I18N-12** (game share) + **I18N-13** (skip links) + **I18N-14** (mailto fallback) — LOW
+**Root Cause:** `src/test/setup.ts` mocks `next-intl` (line 70) but has no mock for `next-intl/server`. `src/test/pages.test.tsx` renders these async components with synchronous `render()`.
+
+**Proof:** `setup.ts` line 70-75 — only `useTranslations`, `useLocale`, `useMessages` are mocked. No `getTranslations` mock exists for `next-intl/server`.
+
+**Impact:** Tests give false confidence — they pass but may not actually verify rendered content of the converted server components.
+
+**Solution:** Add `vi.mock('next-intl/server')` to `setup.ts` with a `getTranslations` mock that returns a translation function. Or restructure tests to properly handle async components.
+
+**Risk:** Medium — requires understanding async component test patterns.
+
+---
+
+## ~~QUAL-07: Rate limiter key doesn't distinguish GET vs POST~~ [FIXED]
+
+**Problem:** Both GET and POST handlers share the same IP key in the rate limiter map. GET requests consume POST budget and vice versa.
+
+**Root Cause:** `src/app/api/leaderboard/route.ts` line 17 — `const key = \`${ip}\`` uses bare IP without method prefix.
+
+**Proof:** GET handler (line 60) and POST handler (line 79) both call `isRateLimited(ip, ...)` with the same `ip` string. The timestamps are stored in the same array.
+
+**Impact:** Low with current identical limits (60/60s for both). Becomes a bug if limits are ever tuned separately.
+
+**Solution:** Prefix key with method: `const key = \`${method}:${ip}\``.
+
+**Risk:** None.
+
+---
+
+## ~~QUAL-08: Video element lacks accessible fallback and preload optimization~~ [FIXED]
+
+**Problem:** The `<video>` element in project detail has no `aria-label`, no `<track>` for captions, and no `preload` attribute — with `autoPlay` it downloads the full video eagerly.
+
+**Root Cause:** `src/components/pages/ProjectDetailsPage.tsx` lines 72-79 — video has `autoPlay loop muted playsInline` but no accessibility or preload attributes.
+
+**Proof:** The `<video>` tag has only `src`, `autoPlay`, `loop`, `muted`, `playsInline`, and `className`. No `aria-label`, no `preload="metadata"`.
+
+**Impact:** Screen reader users get no context about the video. Full video downloads eagerly on mobile even when below viewport.
+
+**Solution:** Add `aria-label={project.name[loc]}` and `preload="metadata"` to the video element.
+
+**Risk:** None.

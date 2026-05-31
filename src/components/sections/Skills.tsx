@@ -1,10 +1,8 @@
-'use client';
-
 import dynamic from "next/dynamic";
 import { Reveal } from "@/components/ui/Reveal";
 import { CodeText } from "@/components/ui/CodeText";
 import { LazyGimmick } from "@/components/ui/LazyGimmick";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 
 const ArchitectureSchematicGimmick = dynamic(() => import("@/components/gimmicks/ArchitectureSchematicGimmick").then(m => ({ default: m.ArchitectureSchematicGimmick })), { ssr: false });
 import type { SkillGroup, Locale } from "@/types";
@@ -14,8 +12,8 @@ interface SkillsProps {
   locale: string;
 }
 
-export const Skills = ({ skills, locale }: SkillsProps) => {
-  const t = useTranslations('skills');
+export async function Skills({ skills, locale }: SkillsProps) {
+  const t = await getTranslations('skills');
   const loc = locale as Locale;
 
   if (skills.length === 0) return null;
@@ -72,4 +70,4 @@ export const Skills = ({ skills, locale }: SkillsProps) => {
       </div>
     </section>
   );
-};
+}

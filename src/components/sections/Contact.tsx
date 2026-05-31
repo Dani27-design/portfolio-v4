@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import { Reveal } from "@/components/ui/Reveal";
 import { LazyGimmick } from "@/components/ui/LazyGimmick";
 import { Github, Linkedin, Instagram, MessageCircle, Send, Copy, Check, Radio, Zap } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 import { useTranslations } from "next-intl";
 import type { ContactContent, Locale } from "@/types";
 
@@ -82,10 +82,14 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
                 </div>
               </div>
               <button
-                onClick={() => {
-                  navigator.clipboard.writeText(email);
-                  setCopied(true);
-                  setTimeout(() => setCopied(false), 2000);
+                onClick={async () => {
+                  try {
+                    await navigator.clipboard.writeText(email);
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                  } catch {
+                    // Clipboard API unavailable (non-HTTPS or permission denied)
+                  }
                 }}
                 className="flex items-center justify-center gap-2 text-xs font-bold text-cyan-500 uppercase tracking-wider hover:text-cyan-300 transition-all bg-cyan-500/10 px-5 py-2.5 border border-cyan-500/20 rounded-lg w-full md:w-auto"
               >

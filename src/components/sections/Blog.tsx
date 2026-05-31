@@ -1,5 +1,3 @@
-'use client';
-
 import dynamic from "next/dynamic";
 import { Reveal } from "@/components/ui/Reveal";
 import { LazyGimmick } from "@/components/ui/LazyGimmick";
@@ -7,7 +5,7 @@ import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
 
 const LogStreamGimmick = dynamic(() => import("@/components/gimmicks/LogStreamGimmick").then(m => ({ default: m.LogStreamGimmick })), { ssr: false });
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import type { Blog as BlogType, Locale } from "@/types";
 
 interface BlogProps {
@@ -15,8 +13,8 @@ interface BlogProps {
   locale: string;
 }
 
-export const Blog = ({ blogs, locale }: BlogProps) => {
-  const t = useTranslations('blog');
+export async function Blog({ blogs, locale }: BlogProps) {
+  const t = await getTranslations('blog');
   const loc = locale as Locale;
 
   if (blogs.length === 0) return null;
@@ -83,4 +81,4 @@ export const Blog = ({ blogs, locale }: BlogProps) => {
       </div>
     </section>
   );
-};
+}

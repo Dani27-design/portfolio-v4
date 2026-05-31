@@ -1,10 +1,8 @@
-'use client';
-
 import dynamic from "next/dynamic";
 import { Reveal } from "@/components/ui/Reveal";
 import { CodeText } from "@/components/ui/CodeText";
 import { LazyGimmick } from "@/components/ui/LazyGimmick";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 
 const TacticalTrajectoryGimmick = dynamic(() => import("@/components/gimmicks/TacticalTrajectoryGimmick").then(m => ({ default: m.TacticalTrajectoryGimmick })), { ssr: false });
 import type { ExperienceItem, Locale } from "@/types";
@@ -14,8 +12,8 @@ interface ExperienceProps {
   locale: string;
 }
 
-export const Experience = ({ experience, locale }: ExperienceProps) => {
-  const t = useTranslations('experience');
+export async function Experience({ experience, locale }: ExperienceProps) {
+  const t = await getTranslations('experience');
   const loc = locale as Locale;
 
   if (experience.length === 0) return null;
@@ -102,4 +100,4 @@ export const Experience = ({ experience, locale }: ExperienceProps) => {
       </div>
     </section>
   );
-};
+}

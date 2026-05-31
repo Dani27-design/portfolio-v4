@@ -1,9 +1,12 @@
 import type { MetadataRoute } from 'next';
-import { getAllBlogSlugsWithUpdatedAt } from '@/lib/firestore';
+import { getAllBlogSlugsWithUpdatedAt, getAllProjectSlugs } from '@/lib/firestore';
 import { routing } from '@/i18n/routing';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const blogs = await getAllBlogSlugsWithUpdatedAt();
+  const [blogs, projectSlugs] = await Promise.all([
+    getAllBlogSlugsWithUpdatedAt(),
+    getAllProjectSlugs(),
+  ]);
   const baseUrl = 'https://dani-chusyaidin.vercel.app';
   const entries: MetadataRoute.Sitemap = [];
 
@@ -41,6 +44,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.6,
     });
+  }
+
+  // Project detail pages — bilingual, emit both locales with hreflang
+  for (const slug of projectSlugs) {
+    for (const locale of routing.locales) {
+      const languages: Record<string, string> = {};
+      for (const alt of routing.locales) {
+        languages[alt] = `${baseUrl}/${alt}/projects/${slug}`;
+      }
+      languages['x-default'] = `${baseUrl}/en/projects/${slug}`;
+
+      entries.push({
+        url: `${baseUrl}/${locale}/projects/${slug}`,
+        lastModified: latestUpdate,
+        changeFrequency: 'monthly',
+        priority: 0.6,
+        alternates: { languages },
+      });
+    }
   }
 
   return entries;

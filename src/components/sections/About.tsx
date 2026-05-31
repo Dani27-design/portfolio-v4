@@ -1,10 +1,9 @@
-'use client';
-
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import { Reveal } from "@/components/ui/Reveal";
 import { CodeText } from "@/components/ui/CodeText";
 import { LazyGimmick } from "@/components/ui/LazyGimmick";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import type { AboutContent, Locale } from "@/types";
 
 const NetworkTopologyGimmick = dynamic(() => import("@/components/gimmicks/NetworkTopologyGimmick").then(m => ({ default: m.NetworkTopologyGimmick })), { ssr: false });
@@ -14,14 +13,13 @@ interface AboutProps {
   locale?: string;
 }
 
-export const About = ({ aboutContent, locale }: AboutProps = {}) => {
-  const t = useTranslations('about');
+export async function About({ aboutContent, locale }: AboutProps) {
+  const t = await getTranslations('about');
   const loc = (locale || 'en') as Locale;
 
   const title = aboutContent?.title[loc] ?? t('title');
   const headline = aboutContent?.headline[loc] ?? t('headline');
   const desc = aboutContent?.desc[loc] ?? t('desc');
-  const avatarInitials = aboutContent?.avatarInitials ?? 'DC';
   const stat1Value = aboutContent?.stats.stat1.value ?? 'E2E';
   const stat1Label = aboutContent?.stats.stat1.label[loc] ?? t('stats.e2e');
   const stat2Value = aboutContent?.stats.stat2.value ?? '0%';
@@ -37,15 +35,14 @@ export const About = ({ aboutContent, locale }: AboutProps = {}) => {
         <div className="w-full md:w-5/12">
           <Reveal>
             <div className="relative group mx-auto md:mx-0 max-w-fit">
-              <div className="w-48 h-48 md:w-80 md:h-80 bg-surface border border-border flex items-center justify-center text-5xl md:text-6xl font-bold text-text-muted/10 tracking-tighter relative z-10 select-none overflow-hidden">
-                {aboutContent?.avatarUrl ? (
-                  <img src={aboutContent.avatarUrl} alt={avatarInitials} className="absolute inset-0 w-full h-full object-cover" />
-                ) : (
-                  <>
-                    <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/5 to-indigo-500/5" />
-                    <CodeText type="logic">{avatarInitials}</CodeText>
-                  </>
-                )}
+              <div className="w-48 h-48 md:w-80 md:h-80 bg-surface border border-border relative z-10 select-none overflow-hidden">
+                <Image
+                  src={aboutContent?.avatarUrl || '/logo.png'}
+                  alt={aboutContent?.avatarUrl ? 'Photo of Daniansyah Chusyaidin' : 'Daniansyah Chusyaidin logo'}
+                  fill
+                  sizes="(max-width: 768px) 192px, 320px"
+                  className="object-cover"
+                />
                 <div className="absolute top-0 left-0 w-full h-[1px] bg-primary/10 -translate-y-4 group-hover:translate-y-4 transition-transform duration-700" />
                 <div className="absolute bottom-0 right-0 w-full h-[1px] bg-primary/10 translate-y-4 group-hover:-translate-y-4 transition-transform duration-700" />
               </div>
@@ -93,4 +90,4 @@ export const About = ({ aboutContent, locale }: AboutProps = {}) => {
       </div>
     </section>
   );
-};
+}

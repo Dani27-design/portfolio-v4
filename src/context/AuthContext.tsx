@@ -1,9 +1,10 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { onAuthStateChanged, signInWithEmailAndPassword, signOut, User } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
-import { ADMIN_EMAIL } from '@/lib/constants';
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, User } from 'firebase/auth';
+import { app } from '@/lib/firebase';
+
+const auth = getAuth(app);
 
 interface AuthContextType {
   user: User | null;
@@ -21,24 +22,37 @@ const AuthContext = createContext<AuthContextType>({
   logout: async () => {},
 });
 
+async function fetchAdminStatus(): Promise<boolean> {
+  try {
+    const res = await fetch('/api/admin/me');
+    if (!res.ok) return false;
+    const data = await res.json();
+    return data.isAdmin === true;
+  } catch {
+    return false;
+  }
+}
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    return onAuthStateChanged(auth, (u) => {
+    return onAuthStateChanged(auth, async (u) => {
       setUser(u);
+      if (u) {
+        const admin = await fetchAdminStatus();
+        setIsAdmin(admin);
+      } else {
+        setIsAdmin(false);
+      }
       setLoading(false);
     });
   }, []);
 
-  const isAdmin = user?.email === ADMIN_EMAIL;
-
   const login = async (email: string, password: string) => {
     try {
-      if (email !== ADMIN_EMAIL) {
-        return { success: false, error: 'Unauthorized: Access restricted.' };
-      }
       const credential = await signInWithEmailAndPassword(auth, email, password);
 
       // Set server-side auth cookie via middleware
@@ -48,6 +62,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         headers: { Authorization: `Bearer ${idToken}` },
       });
 
+      // Check admin status from server (email check happens server-side only)
+      const admin = await fetchAdminStatus();
+      setIsAdmin(admin);
+
+      if (!admin) {
+        // Not an admin — sign out and reject
+        await fetch('/api/logout', { method: 'POST' });
+        await signOut(auth);
+        return { success: false, error: 'Unauthorized: Access restricted.' };
+      }
+
       return { success: true };
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Login failed';
@@ -56,9 +81,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const logout = async () => {
-    // Clear server-side auth cookie via middleware
     await fetch('/api/logout', { method: 'POST' });
     await signOut(auth);
+    setIsAdmin(false);
   };
 
   return (

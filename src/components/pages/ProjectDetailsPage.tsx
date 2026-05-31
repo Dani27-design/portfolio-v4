@@ -1,6 +1,5 @@
-'use client';
-
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import { Reveal } from "@/components/ui/Reveal";
 import { LazyGimmick } from "@/components/ui/LazyGimmick";
 import { HireMeBanner } from "@/components/ui/HireMeBanner";
@@ -10,7 +9,8 @@ import { Link } from "@/i18n/navigation";
 
 const ServiceClusterGimmick = dynamic(() => import("@/components/gimmicks/ServiceClusterGimmick").then(m => ({ default: m.ServiceClusterGimmick })), { ssr: false });
 import Markdown from "react-markdown";
-import { useTranslations } from "next-intl";
+import rehypeSanitize from "rehype-sanitize";
+import { getTranslations } from "next-intl/server";
 import type { Project, Locale, HireBannerContent } from "@/types";
 
 interface ProjectDetailsPageProps {
@@ -19,8 +19,8 @@ interface ProjectDetailsPageProps {
   hireBannerContent?: HireBannerContent | null;
 }
 
-export const ProjectDetailsPage = ({ project, locale, hireBannerContent }: ProjectDetailsPageProps) => {
-  const t = useTranslations('projects');
+export async function ProjectDetailsPage({ project, locale, hireBannerContent }: ProjectDetailsPageProps) {
+  const t = await getTranslations('projects');
   const loc = locale as Locale;
 
   return (
@@ -67,7 +67,7 @@ export const ProjectDetailsPage = ({ project, locale, hireBannerContent }: Proje
         {/* Media: image or autoplay video */}
         {(project.image || project.videoUrl) && (
           <Reveal delay={0.1} width="100%">
-            <div className="mb-8 md:mb-12 rounded-xl overflow-hidden border border-border/40 bg-background">
+            <div className="mb-8 md:mb-12 rounded-xl overflow-hidden border border-border/40 bg-background relative aspect-video">
               {project.videoUrl ? (
                 <video
                   src={project.videoUrl}
@@ -75,13 +75,18 @@ export const ProjectDetailsPage = ({ project, locale, hireBannerContent }: Proje
                   loop
                   muted
                   playsInline
-                  className="w-full aspect-video object-cover"
+                  preload="metadata"
+                  aria-label={project.name[loc]}
+                  className="w-full h-full object-cover"
                 />
               ) : project.image ? (
-                <img
+                <Image
                   src={project.image}
                   alt={project.name[loc]}
-                  className="w-full aspect-video object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 100vw, 1280px"
+                  className="object-cover"
+                  priority
                 />
               ) : null}
             </div>
@@ -113,7 +118,7 @@ export const ProjectDetailsPage = ({ project, locale, hireBannerContent }: Proje
             <div className="relative p-5 sm:p-8 md:p-12 bg-background/70 border border-border/40 rounded-xl overflow-hidden w-full min-w-0">
               <h2 className="text-xs font-bold text-text-muted uppercase tracking-wider mb-6">{t('overview')}</h2>
               <div className="markdown-body prose prose-sm md:prose-base prose-invert max-w-none w-full min-w-0 text-text-muted prose-headings:text-text-main prose-headings:tracking-tighter prose-strong:text-cyan-400 prose-code:text-indigo-400 prose-pre:bg-background/80 prose-pre:border prose-pre:border-border/40 prose-pre:overflow-x-auto prose-pre:rounded-lg prose-img:rounded-lg prose-img:max-w-full [&_pre]:overflow-x-auto [&_pre]:max-w-full [&_code]:break-words [&_a]:break-all [&_p]:break-words [&>h1:first-child]:hidden">
-                <Markdown>
+                <Markdown rehypePlugins={[rehypeSanitize]}>
                   {project.content[loc]}
                 </Markdown>
               </div>
@@ -125,4 +130,4 @@ export const ProjectDetailsPage = ({ project, locale, hireBannerContent }: Proje
       </div>
     </section>
   );
-};
+}

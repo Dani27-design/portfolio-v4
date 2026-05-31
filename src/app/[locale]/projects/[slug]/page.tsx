@@ -2,6 +2,7 @@ import { setRequestLocale } from 'next-intl/server';
 import { getProjectBySlug, getAllProjectSlugs, getHireBannerContent } from '@/lib/firestore';
 import { ProjectDetailsPage } from '@/components/pages/ProjectDetailsPage';
 import { notFound } from 'next/navigation';
+import { routing } from '@/i18n/routing';
 import type { Locale } from '@/types';
 
 export const revalidate = 3600;
@@ -22,11 +23,18 @@ export async function generateMetadata({ params }: Props) {
 
   const loc = locale as Locale;
 
+  const languages: Record<string, string> = {};
+  for (const alt of routing.locales) {
+    languages[alt] = `https://dani-chusyaidin.vercel.app/${alt}/projects/${slug}`;
+  }
+  languages['x-default'] = `https://dani-chusyaidin.vercel.app/en/projects/${slug}`;
+
   return {
     title: project.name[loc],
     description: project.desc[loc],
     alternates: {
       canonical: `https://dani-chusyaidin.vercel.app/${locale}/projects/${slug}`,
+      languages,
     },
     openGraph: {
       title: project.name[loc],

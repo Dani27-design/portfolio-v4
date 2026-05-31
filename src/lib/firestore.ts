@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { adminDb } from './firebase-admin';
 import type { Project, Blog, ExperienceItem, SkillGroup, HeroContent, AboutContent, ContactContent, FooterContent, HireBannerContent, NavbarContent, LeaderboardEntry } from '@/types';
 
@@ -157,7 +158,7 @@ export async function getAboutContent(): Promise<AboutContent | null> {
   }
 }
 
-export async function getContactContent(): Promise<ContactContent | null> {
+export const getContactContent = cache(async (): Promise<ContactContent | null> => {
   if (!adminDb) return null;
   try {
     const doc = await adminDb.collection('siteContent').doc('contact').get();
@@ -167,7 +168,7 @@ export async function getContactContent(): Promise<ContactContent | null> {
     console.error('Failed to fetch contact content:', err);
     return null;
   }
-}
+});
 
 export async function getFooterContent(): Promise<FooterContent | null> {
   if (!adminDb) return null;

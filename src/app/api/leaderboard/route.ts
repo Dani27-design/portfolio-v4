@@ -6,7 +6,63 @@ import { getLeaderboard } from '@/lib/firestore';
 const NAME_REGEX = /^[A-Z0-9_]{1,12}$/;
 const MAX_SCORE = 99999;
 
-export async function GET() {
+// --- In-memory IP rate limiter (resets on cold start, effective within warm instance) ---
+const RATE_LIMIT_POST = { max: 60, windowMs: 60_000 };   // 60 POST per 60s
+const RATE_LIMIT_GET  = { max: 60, windowMs: 60_000 };   // 60 GET per 60s
+
+const ipHits = new Map<string, number[]>();
+
+function isRateLimited(ip: string, method: string, limit: { max: number; windowMs: number }): boolean {
+  const now = Date.now();
+  const key = `${method}:${ip}`;
+  const timestamps = ipHits.get(key) ?? [];
+
+  // Remove expired entries
+  const valid = timestamps.filter(t => now - t < limit.windowMs);
+
+  if (valid.length >= limit.max) {
+    ipHits.set(key, valid);
+    return true;
+  }
+
+  valid.push(now);
+  ipHits.set(key, valid);
+  return false;
+}
+
+// Cleanup stale IPs every 5 minutes to prevent memory leak
+let lastCleanup = Date.now();
+function cleanupStaleEntries() {
+  const now = Date.now();
+  if (now - lastCleanup < 300_000) return;
+  lastCleanup = now;
+  const maxWindow = Math.max(RATE_LIMIT_POST.windowMs, RATE_LIMIT_GET.windowMs);
+  for (const [key, timestamps] of ipHits) {
+    const valid = timestamps.filter(t => now - t < maxWindow);
+    if (valid.length === 0) {
+      ipHits.delete(key);
+    } else {
+      ipHits.set(key, valid);
+    }
+  }
+}
+
+function getClientIp(request: NextRequest): string {
+  // x-real-ip is set by Vercel and is NOT user-spoofable
+  // x-forwarded-for is user-controlled (leftmost value) — fallback only
+  return request.headers.get('x-real-ip')
+    ?? request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+    ?? 'unknown';
+}
+
+export async function GET(request: NextRequest) {
+  cleanupStaleEntries();
+
+  const ip = getClientIp(request);
+  if (isRateLimited(ip, 'GET', RATE_LIMIT_GET)) {
+    return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+  }
+
   if (!adminDb) return NextResponse.json([]);
 
   const [entries, countSnapshot] = await Promise.all([
@@ -19,6 +75,13 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  cleanupStaleEntries();
+
+  const ip = getClientIp(request);
+  if (isRateLimited(ip, 'POST', RATE_LIMIT_POST)) {
+    return NextResponse.json({ error: 'Too many requests. Try again later.' }, { status: 429 });
+  }
+
   if (!adminDb) {
     return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
   }
