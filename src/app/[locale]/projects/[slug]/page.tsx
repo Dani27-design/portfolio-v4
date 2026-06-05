@@ -41,7 +41,10 @@ export async function generateMetadata({ params }: Props) {
       description: project.desc[loc],
       url: `https://dani-chusyaidin.vercel.app/${locale}/projects/${slug}`,
       locale: locale === 'id' ? 'id_ID' : 'en_US',
-      ...(project.image && { images: [{ url: project.image }] }),
+      ...(() => {
+        const ogImage = project.media?.find(m => m.type === 'image')?.url || project.image;
+        return ogImage ? { images: [{ url: ogImage }] } : {};
+      })(),
     },
   };
 }

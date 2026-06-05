@@ -4,7 +4,8 @@ import { useEffect, useState, useCallback } from 'react';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
 import { createProject, updateProject, deleteProject } from '@/actions/projects';
 import { AdminToast, type Toast } from '@/components/admin/AdminToast';
-import type { Project } from '@/types';
+import { MediaUpload } from '@/components/admin/MediaUpload';
+import type { Project, MediaItem } from '@/types';
 
 export default function AdminProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -105,7 +106,7 @@ export default function AdminProjectsPage() {
             <div className="flex justify-between items-start">
               <div className="flex-1 min-w-0 mr-3">
                 <div className="text-white font-medium text-sm truncate">{p.name.en}</div>
-                <div className="text-slate-400 text-xs mt-1 font-mono">{p.status}</div>
+                <div className="text-slate-400 text-xs mt-1 truncate">{p.status} &middot; #{p.order}</div>
               </div>
               <div className="flex items-center gap-1 shrink-0">
                 <button onClick={() => setEditing(p)} className="p-2 text-slate-400 hover:text-cyan-400" aria-label="Edit"><Pencil className="w-4 h-4" /></button>
@@ -122,6 +123,15 @@ export default function AdminProjectsPage() {
   );
 }
 
+function buildInitialMedia(project: Project | null): MediaItem[] {
+  if (project?.media && project.media.length > 0) return project.media;
+  // Backward compat: migrate legacy image/videoUrl to media array
+  const items: MediaItem[] = [];
+  if (project?.image) items.push({ url: project.image, type: 'image', order: 0 });
+  if (project?.videoUrl) items.push({ url: project.videoUrl, type: 'video', order: items.length });
+  return items;
+}
+
 function ProjectForm({ project, onClose, onSave, onError }: { project: Project | null; onClose: () => void; onSave: (msg: string) => void; onError: (msg: string) => void }) {
   const [form, setForm] = useState({
     slug: project?.slug || '',
@@ -133,11 +143,10 @@ function ProjectForm({ project, onClose, onSave, onError }: { project: Project |
     contentId: project?.content?.id || '',
     tech: project?.tech.join(', ') || '',
     status: project?.status || 'PRODUCTION',
-    image: project?.image || '',
-    videoUrl: project?.videoUrl || '',
     url: project?.url || '',
     order: project?.order || 0,
   });
+  const [media, setMedia] = useState<MediaItem[]>(buildInitialMedia(project));
   const [saving, setSaving] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -153,8 +162,7 @@ function ProjectForm({ project, onClose, onSave, onError }: { project: Project |
         status: form.status,
         order: form.order,
         ...(form.contentEn || form.contentId ? { content: { en: form.contentEn, id: form.contentId } } : {}),
-        ...(form.image ? { image: form.image } : {}),
-        ...(form.videoUrl ? { videoUrl: form.videoUrl } : {}),
+        media: media.map((m, i) => ({ ...m, order: i })),
         ...(form.url ? { url: form.url } : {}),
       } as Omit<Project, 'id' | 'createdAt' | 'updatedAt'>;
       if (project) {
@@ -170,7 +178,7 @@ function ProjectForm({ project, onClose, onSave, onError }: { project: Project |
     }
   };
 
-  const inputClass = "bg-slate-900 border border-slate-600 rounded px-3 py-2.5 lg:py-2 text-sm text-white outline-none focus:border-cyan-500";
+  const inputClass = "bg-slate-900 border border-slate-600 rounded px-3 py-2.5 lg:py-2 text-sm text-white outline-none focus:border-cyan-500 w-full";
 
   return (
     <div className="mb-6 lg:mb-8 bg-slate-800 border border-slate-700 rounded-lg p-4 lg:p-6">
@@ -178,55 +186,55 @@ function ProjectForm({ project, onClose, onSave, onError }: { project: Project |
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="md:col-span-2">
           <label className="block text-xs text-slate-400 mb-1">Slug (auto-generated if empty)</label>
-          <input value={form.slug} onChange={e => setForm({...form, slug: e.target.value})} placeholder="my-project-slug" className={inputClass + " w-full"} />
+          <input value={form.slug} onChange={e => setForm({...form, slug: e.target.value})} placeholder="my-project-slug" className={inputClass} />
         </div>
         <div>
           <label className="block text-xs text-slate-400 mb-1">Name (EN)</label>
-          <input value={form.nameEn} onChange={e => setForm({...form, nameEn: e.target.value})} placeholder="Name (EN)" required className={inputClass + " w-full"} />
+          <input value={form.nameEn} onChange={e => setForm({...form, nameEn: e.target.value})} placeholder="Name (EN)" required className={inputClass} />
         </div>
         <div>
           <label className="block text-xs text-slate-400 mb-1">Name (ID)</label>
-          <input value={form.nameId} onChange={e => setForm({...form, nameId: e.target.value})} placeholder="Name (ID)" required className={inputClass + " w-full"} />
+          <input value={form.nameId} onChange={e => setForm({...form, nameId: e.target.value})} placeholder="Name (ID)" required className={inputClass} />
         </div>
         <div>
           <label className="block text-xs text-slate-400 mb-1">Description (EN)</label>
-          <textarea value={form.descEn} onChange={e => setForm({...form, descEn: e.target.value})} placeholder="Description (EN)" rows={3} required className={inputClass + " w-full"} />
+          <textarea value={form.descEn} onChange={e => setForm({...form, descEn: e.target.value})} placeholder="Description (EN)" rows={3} required className={inputClass} />
         </div>
         <div>
           <label className="block text-xs text-slate-400 mb-1">Description (ID)</label>
-          <textarea value={form.descId} onChange={e => setForm({...form, descId: e.target.value})} placeholder="Description (ID)" rows={3} required className={inputClass + " w-full"} />
+          <textarea value={form.descId} onChange={e => setForm({...form, descId: e.target.value})} placeholder="Description (ID)" rows={3} required className={inputClass} />
         </div>
         <div>
           <label className="block text-xs text-slate-400 mb-1">Content / Overview (EN) — Markdown</label>
-          <textarea value={form.contentEn} onChange={e => setForm({...form, contentEn: e.target.value})} placeholder="Detailed overview in Markdown (EN)" rows={5} className={inputClass + " w-full"} />
+          <textarea value={form.contentEn} onChange={e => setForm({...form, contentEn: e.target.value})} placeholder="Detailed overview in Markdown (EN)" rows={5} className={inputClass} />
         </div>
         <div>
           <label className="block text-xs text-slate-400 mb-1">Content / Overview (ID) — Markdown</label>
-          <textarea value={form.contentId} onChange={e => setForm({...form, contentId: e.target.value})} placeholder="Detailed overview in Markdown (ID)" rows={5} className={inputClass + " w-full"} />
+          <textarea value={form.contentId} onChange={e => setForm({...form, contentId: e.target.value})} placeholder="Detailed overview in Markdown (ID)" rows={5} className={inputClass} />
         </div>
         <div>
           <label className="block text-xs text-slate-400 mb-1">Tech (comma-separated)</label>
-          <input value={form.tech} onChange={e => setForm({...form, tech: e.target.value})} placeholder="React, Node.js, PostgreSQL" className={inputClass + " w-full"} />
+          <input value={form.tech} onChange={e => setForm({...form, tech: e.target.value})} placeholder="React, Node.js, PostgreSQL" className={inputClass} />
         </div>
         <div>
           <label className="block text-xs text-slate-400 mb-1">Status</label>
-          <input value={form.status} onChange={e => setForm({...form, status: e.target.value})} placeholder="PRODUCTION" className={inputClass + " w-full"} />
+          <input value={form.status} onChange={e => setForm({...form, status: e.target.value})} placeholder="PRODUCTION" className={inputClass} />
         </div>
         <div>
           <label className="block text-xs text-slate-400 mb-1">Order</label>
-          <input type="number" value={form.order} onChange={e => setForm({...form, order: parseInt(e.target.value) || 0})} placeholder="1" className={inputClass + " w-full"} />
+          <input type="number" value={form.order} onChange={e => setForm({...form, order: parseInt(e.target.value) || 0})} placeholder="1" className={inputClass} />
         </div>
-        <div>
-          <label className="block text-xs text-slate-400 mb-1">Image URL (optional)</label>
-          <input value={form.image} onChange={e => setForm({...form, image: e.target.value})} placeholder="https://..." className={inputClass + " w-full"} />
-        </div>
-        <div>
-          <label className="block text-xs text-slate-400 mb-1">Video URL (optional, autoplay)</label>
-          <input value={form.videoUrl} onChange={e => setForm({...form, videoUrl: e.target.value})} placeholder="https://..." className={inputClass + " w-full"} />
+        <div className="md:col-span-2">
+          <MediaUpload
+            items={media}
+            storagePath={`projects/${form.slug || 'new'}/media`}
+            onChange={setMedia}
+            label="Media (images & videos)"
+          />
         </div>
         <div className="md:col-span-2">
           <label className="block text-xs text-slate-400 mb-1">Project URL (optional, live demo / repo)</label>
-          <input value={form.url} onChange={e => setForm({...form, url: e.target.value})} placeholder="https://..." className={inputClass + " w-full"} />
+          <input value={form.url} onChange={e => setForm({...form, url: e.target.value})} placeholder="https://..." className={inputClass} />
         </div>
         <div className="md:col-span-2 flex flex-col sm:flex-row gap-3">
           <button type="submit" disabled={saving} className="w-full sm:w-auto px-6 py-2.5 lg:py-2 bg-cyan-600 hover:bg-cyan-500 disabled:bg-slate-700 text-white text-sm font-bold rounded">{saving ? 'Saving...' : 'Save'}</button>

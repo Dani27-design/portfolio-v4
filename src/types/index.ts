@@ -2,6 +2,13 @@ export type Locale = 'en' | 'id';
 export type Bilingual = Record<Locale, string>;
 export type BilingualArray = Record<Locale, string[]>;
 
+export interface MediaItem {
+  url: string;
+  type: 'image' | 'video';
+  storagePath?: string;
+  order: number;
+}
+
 export interface Project {
   id: string;
   slug: string;
@@ -10,8 +17,11 @@ export interface Project {
   content?: Bilingual;
   tech: string[];
   status: string;
+  /** @deprecated Use media[] instead */
   image?: string;
+  /** @deprecated Use media[] instead */
   videoUrl?: string;
+  media?: MediaItem[];
   url?: string;
   order: number;
   createdAt: string;

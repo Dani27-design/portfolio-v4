@@ -2,6 +2,29 @@
 
 ---
 
+## ~~UI-01: Admin panel forms have inconsistent UI design~~ [FIXED]
+
+**Problem:** Multiple UI inconsistencies across admin panel pages: labels hidden on desktop in some forms but visible in others, Blog form uses different layout structure (`space-y-4` + nested grid) vs direct grid, Site Content forms use inline success/error divs while CRUD pages use AdminToast, mobile card meta separators differ (pipe vs middot vs none vs line-clamp), Footer form uses `grid-cols-3` while all others use `grid-cols-2`, Contact email uses `md:w-1/2` instead of grid, save button text inconsistent ("Save Hero" vs "Save").
+
+**Root Cause:** Forms were built incrementally by different patterns without a shared design standard.
+
+**Solution:**
+- **Labels**: Removed `lg:hidden` from all form labels across Blogs, Experience, Skills, and Site Content — labels now always visible, matching Projects form pattern
+- **Form layout**: Blog form changed from `space-y-4` wrapper + nested grid to direct `grid grid-cols-1 md:grid-cols-2 gap-4` on `<form>`, matching all other CRUD pages. All Site Content forms also converted to direct grid layout
+- **Feedback**: Replaced inline success/error `<div>` messages in all 6 Site Content forms (Hero, About, Contact, Footer, HireBanner, Navbar) with AdminToast, matching CRUD pages. Lifted toast state to parent `AdminSiteContentPage`
+- **Mobile cards**: Standardized meta text to use `truncate` class and middot separator across all CRUD pages (Projects, Blogs, Experience, Skills)
+- **Grid**: Footer form changed from `grid-cols-3` to `grid-cols-2` with full-span owner name. Contact email changed from `md:w-1/2` to full-width inside `md:col-span-2`
+- **Save buttons**: Standardized all Site Content save buttons to generic "Save" text, matching CRUD pages
+- **Section labels**: Renamed `MobileLabel` to `FieldLabel` and unified label styling to `block text-xs text-slate-400 mb-1`
+- **inputClass**: Standardized `w-full` into the `inputClass` definition across all 5 admin form files, removing repetitive `+ " w-full"` concatenation on every input
+- **Skills label**: Changed special `font-mono uppercase tracking-wider mb-1.5` label on Skills textarea to standard `text-xs text-slate-400 mb-1`
+- **Checkbox**: Wrapped Experience "Current position" checkbox in a `<div>` with a field label for consistent field structure
+- **Dashboard error**: Replaced icon + flex wrapper error div with standard `<span>{error}</span>` pattern matching all other pages, removed unused `AlertCircle` import, removed extra `transition-colors` from retry button
+
+**Risk:** None — purely visual consistency changes, no logic changes.
+
+---
+
 ## ~~SEC-05: Admin routes accessible when credentials are missing~~ [FIXED]
 
 **Problem:** When Firebase credentials are not configured, the proxy middleware falls through to `intlMiddleware(request)` for admin routes, serving admin page HTML and JS bundles without any auth check.
@@ -159,6 +182,27 @@
 **Solution:** Prefix key with method: `const key = \`${method}:${ip}\``.
 
 **Risk:** None.
+
+---
+
+## ~~QUAL-09: Admin project form uses URL text inputs for media instead of file upload~~ [FIXED]
+
+**Problem:** The admin project form uses plain text `<input>` fields for "Image URL" and "Video URL", requiring manual URL entry. Media should be uploaded as files, supporting multiple images and videos.
+
+**Root Cause:** `src/app/[locale]/admin/projects/page.tsx` lines 219-226 — two `<input>` fields with `placeholder="https://..."` for `image` and `videoUrl`, while an `ImageUpload` component already existed in the codebase for file uploads.
+
+**Impact:** Poor admin UX — requires manually hosting media elsewhere and pasting URLs. Cannot upload multiple media items per project.
+
+**Solution:**
+- Added `MediaItem` type (`url`, `type`, `storagePath`, `order`) to `src/types/index.ts`
+- Extended `src/lib/upload.ts` with `uploadMedia()`, `validateMediaFile()`, and `getMediaType()` supporting images (PNG/JPEG/WebP, 2MB) and videos (MP4/WebM, 50MB)
+- Created `src/components/admin/MediaUpload.tsx` — multi-file uploader with preview grid, drag-to-reorder, and per-item removal
+- Updated `ProjectForm` to use `MediaUpload` instead of URL text inputs, storing `media: MediaItem[]`
+- Updated `ProjectDetailsPage` to render a media gallery (grid layout for multiple items, full-width for single)
+- Backward compatible: existing projects with legacy `image`/`videoUrl` fields render correctly via fallback logic
+- Updated OG metadata to prefer `media[]` first image, falling back to legacy `image` field
+
+**Risk:** Low — backward compatible with existing Firestore data.
 
 ---
 

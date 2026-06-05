@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { FolderKanban, FileText, Briefcase, Cpu, AlertCircle } from 'lucide-react';
+import { FolderKanban, FileText, Briefcase, Cpu } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -47,13 +47,8 @@ export default function AdminDashboard() {
 
       {error && (
         <div className="flex items-center justify-between p-3 mb-6 bg-red-500/10 border border-red-500/20 rounded text-red-400 text-sm">
-          <div className="flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 shrink-0" />
-            {error}
-          </div>
-          <button onClick={fetchCounts} className="text-xs font-bold uppercase tracking-wider hover:text-red-300 transition-colors">
-            Retry
-          </button>
+          <span>{error}</span>
+          <button onClick={fetchCounts} className="text-xs font-bold uppercase tracking-wider hover:text-red-300">Retry</button>
         </div>
       )}
 

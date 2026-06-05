@@ -107,11 +107,7 @@ export default function AdminBlogsPage() {
             <div className="flex justify-between items-start">
               <div className="flex-1 min-w-0 mr-3">
                 <div className="text-white font-medium text-sm truncate">{b.title.en}</div>
-                <div className="text-slate-400 text-xs mt-1 flex items-center gap-2">
-                  <span className="font-mono truncate">{b.slug}</span>
-                  <span className="text-slate-600">|</span>
-                  <span>{b.date}</span>
-                </div>
+                <div className="text-slate-400 text-xs mt-1 truncate">{b.slug} &middot; {b.date}</div>
               </div>
               <div className="flex items-center gap-1 shrink-0">
                 <button onClick={() => setEditing(b)} className="p-2 text-slate-400 hover:text-cyan-400" aria-label="Edit"><Pencil className="w-4 h-4" /></button>
@@ -166,49 +162,45 @@ function BlogForm({ blog, onClose, onSave, onError }: { blog: Blog | null; onClo
     }
   };
 
-  const inputClass = "bg-slate-900 border border-slate-600 rounded px-3 py-2.5 lg:py-2 text-sm text-white outline-none focus:border-cyan-500";
+  const inputClass = "bg-slate-900 border border-slate-600 rounded px-3 py-2.5 lg:py-2 text-sm text-white outline-none focus:border-cyan-500 w-full";
 
   return (
     <div className="mb-6 lg:mb-8 bg-slate-800 border border-slate-700 rounded-lg p-4 lg:p-6">
       <h2 className="text-lg font-bold text-white mb-4">{blog ? 'Edit' : 'Create'} Blog</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-xs text-slate-400 mb-1 lg:hidden">Slug</label>
-            <input value={form.slug} onChange={e => setForm({...form, slug: e.target.value})} placeholder="Slug (url-safe)" required className={inputClass + " w-full"} />
-          </div>
-          <div>
-            <label className="block text-xs text-slate-400 mb-1 lg:hidden">Date</label>
-            <input value={form.date} onChange={e => setForm({...form, date: e.target.value})} type="date" className={inputClass + " w-full"} />
-          </div>
-          <div>
-            <label className="block text-xs text-slate-400 mb-1 lg:hidden">Title (EN)</label>
-            <input value={form.titleEn} onChange={e => setForm({...form, titleEn: e.target.value})} placeholder="Title (EN)" required className={inputClass + " w-full"} />
-          </div>
-          <div>
-            <label className="block text-xs text-slate-400 mb-1 lg:hidden">Title (ID)</label>
-            <input value={form.titleId} onChange={e => setForm({...form, titleId: e.target.value})} placeholder="Title (ID)" required className={inputClass + " w-full"} />
-          </div>
-          <div>
-            <label className="block text-xs text-slate-400 mb-1 lg:hidden">Excerpt (EN)</label>
-            <textarea value={form.excerptEn} onChange={e => setForm({...form, excerptEn: e.target.value})} placeholder="Excerpt (EN)" rows={2} required className={inputClass + " w-full"} />
-          </div>
-          <div>
-            <label className="block text-xs text-slate-400 mb-1 lg:hidden">Excerpt (ID)</label>
-            <textarea value={form.excerptId} onChange={e => setForm({...form, excerptId: e.target.value})} placeholder="Excerpt (ID)" rows={2} required className={inputClass + " w-full"} />
-          </div>
-          <div>
-            <label className="block text-xs text-slate-400 mb-1 lg:hidden">Order</label>
-            <input type="number" value={form.order} onChange={e => setForm({...form, order: parseInt(e.target.value) || 0})} placeholder="Order" className={inputClass + " w-full"} />
-          </div>
-        </div>
-
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-xs font-mono text-slate-400 uppercase tracking-wider mb-2">Content (Markdown)</label>
+          <label className="block text-xs text-slate-400 mb-1">Slug</label>
+          <input value={form.slug} onChange={e => setForm({...form, slug: e.target.value})} placeholder="Slug (url-safe)" required className={inputClass} />
+        </div>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1">Date</label>
+          <input value={form.date} onChange={e => setForm({...form, date: e.target.value})} type="date" className={inputClass} />
+        </div>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1">Title (EN)</label>
+          <input value={form.titleEn} onChange={e => setForm({...form, titleEn: e.target.value})} placeholder="Title (EN)" required className={inputClass} />
+        </div>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1">Title (ID)</label>
+          <input value={form.titleId} onChange={e => setForm({...form, titleId: e.target.value})} placeholder="Title (ID)" required className={inputClass} />
+        </div>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1">Excerpt (EN)</label>
+          <textarea value={form.excerptEn} onChange={e => setForm({...form, excerptEn: e.target.value})} placeholder="Excerpt (EN)" rows={2} required className={inputClass} />
+        </div>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1">Excerpt (ID)</label>
+          <textarea value={form.excerptId} onChange={e => setForm({...form, excerptId: e.target.value})} placeholder="Excerpt (ID)" rows={2} required className={inputClass} />
+        </div>
+        <div>
+          <label className="block text-xs text-slate-400 mb-1">Order</label>
+          <input type="number" value={form.order} onChange={e => setForm({...form, order: parseInt(e.target.value) || 0})} placeholder="Order" className={inputClass} />
+        </div>
+        <div className="md:col-span-2">
+          <label className="block text-xs text-slate-400 mb-1">Content (Markdown)</label>
           <MarkdownEditor value={form.content} onChange={(v) => setForm({...form, content: v})} />
         </div>
-
-        <div className="flex flex-col sm:flex-row gap-3">
+        <div className="md:col-span-2 flex flex-col sm:flex-row gap-3">
           <button type="submit" disabled={saving} className="w-full sm:w-auto px-6 py-2.5 lg:py-2 bg-cyan-600 hover:bg-cyan-500 disabled:bg-slate-700 text-white text-sm font-bold rounded">{saving ? 'Saving...' : 'Save'}</button>
           <button type="button" onClick={onClose} className="w-full sm:w-auto px-6 py-2.5 lg:py-2 bg-slate-700 hover:bg-slate-600 text-slate-300 text-sm font-bold rounded">Cancel</button>
         </div>

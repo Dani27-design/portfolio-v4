@@ -41,6 +41,26 @@ describe('ProjectDetailsPage', () => {
     expect(container.textContent).toContain('PostgreSQL');
   });
 
+  it('renders media items when provided', async () => {
+    const projectWithMedia = {
+      ...mockProject,
+      media: [
+        { url: 'https://example.com/img.png', type: 'image' as const, order: 0 },
+        { url: 'https://example.com/vid.mp4', type: 'video' as const, order: 1 },
+      ],
+    };
+    const { container } = await renderAsync(ProjectDetailsPage({ project: projectWithMedia, locale: 'en' }));
+    // Next.js Image uses srcset, check for img element
+    expect(container.querySelector('img')).toBeTruthy();
+    expect(container.querySelector('video[src="https://example.com/vid.mp4"]')).toBeTruthy();
+  });
+
+  it('renders legacy image field as media fallback', async () => {
+    const projectWithImage = { ...mockProject, image: 'https://example.com/legacy.png' };
+    const { container } = await renderAsync(ProjectDetailsPage({ project: projectWithImage, locale: 'en' }));
+    expect(container.querySelector('img')).toBeTruthy();
+  });
+
   it('renders visit button when url is provided', async () => {
     const projectWithUrl = { ...mockProject, url: 'https://example.com' };
     const { container } = await renderAsync(ProjectDetailsPage({ project: projectWithUrl, locale: 'en' }));

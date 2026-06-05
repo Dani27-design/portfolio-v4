@@ -8,7 +8,7 @@ import { Link } from "@/i18n/navigation";
 import Markdown from "react-markdown";
 import rehypeSanitize from "rehype-sanitize";
 import { getTranslations } from "next-intl/server";
-import type { Project, Locale, HireBannerContent } from "@/types";
+import type { Project, Locale, HireBannerContent, MediaItem } from "@/types";
 
 interface ProjectDetailsPageProps {
   project: Project;
@@ -61,34 +61,58 @@ export async function ProjectDetailsPage({ project, locale, hireBannerContent }:
           </div>
         </Reveal>
 
-        {/* Media: image or autoplay video */}
-        {(project.image || project.videoUrl) && (
-          <Reveal delay={0.1} width="100%">
-            <div className="mb-8 md:mb-12 rounded-xl overflow-hidden border border-border/40 bg-background relative aspect-video">
-              {project.videoUrl ? (
-                <video
-                  src={project.videoUrl}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  preload="metadata"
-                  aria-label={project.name[loc]}
-                  className="w-full h-full object-cover"
-                />
-              ) : project.image ? (
-                <Image
-                  src={project.image}
-                  alt={project.name[loc]}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 100vw, 1280px"
-                  className="object-cover"
-                  priority
-                />
-              ) : null}
-            </div>
-          </Reveal>
-        )}
+        {/* Media gallery */}
+        {(() => {
+          // Build media list: prefer media[] array, fall back to legacy image/videoUrl
+          const mediaItems: MediaItem[] =
+            project.media && project.media.length > 0
+              ? [...project.media].sort((a, b) => a.order - b.order)
+              : [
+                  ...(project.image ? [{ url: project.image, type: 'image' as const, order: 0 }] : []),
+                  ...(project.videoUrl ? [{ url: project.videoUrl, type: 'video' as const, order: 1 }] : []),
+                ];
+
+          if (mediaItems.length === 0) return null;
+
+          return (
+            <Reveal delay={0.1} width="100%">
+              <div className={`mb-8 md:mb-12 ${mediaItems.length === 1 ? '' : 'grid grid-cols-1 md:grid-cols-2 gap-4'}`}>
+                {mediaItems.map((item, idx) => (
+                  <div
+                    key={`${item.url}-${idx}`}
+                    className={`rounded-xl overflow-hidden border border-border/40 bg-background relative aspect-video ${
+                      mediaItems.length === 1 ? '' : idx === 0 && mediaItems.length > 2 ? 'md:col-span-2' : ''
+                    }`}
+                  >
+                    {item.type === 'video' ? (
+                      <video
+                        src={item.url}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        preload="metadata"
+                        aria-label={`${project.name[loc]} - ${t('media')} ${idx + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <Image
+                        src={item.url}
+                        alt={`${project.name[loc]} - ${idx + 1}`}
+                        fill
+                        sizes={mediaItems.length === 1
+                          ? '(max-width: 768px) 100vw, (max-width: 1280px) 100vw, 1280px'
+                          : '(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 640px'}
+                        className="object-cover"
+                        priority={idx === 0}
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+          );
+        })()}
 
         {/* Tech stack */}
         {project.tech.length > 0 && (
