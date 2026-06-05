@@ -1,12 +1,13 @@
-import Image from "next/image";
 import { Reveal } from "@/components/ui/Reveal";
 import { ClientGimmick } from "@/components/ui/ClientGimmick";
 import { HireMeBanner } from "@/components/ui/HireMeBanner";
+import { ProjectMediaGallery } from "@/components/ui/ProjectMediaGallery";
 import { CodeText } from "@/components/ui/CodeText";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import Markdown from "react-markdown";
 import rehypeSanitize from "rehype-sanitize";
+import remarkBreaks from "remark-breaks";
 import { getTranslations } from "next-intl/server";
 import type { Project, Locale, HireBannerContent, MediaItem } from "@/types";
 
@@ -63,7 +64,6 @@ export async function ProjectDetailsPage({ project, locale, hireBannerContent }:
 
         {/* Media gallery */}
         {(() => {
-          // Build media list: prefer media[] array, fall back to legacy image/videoUrl
           const mediaItems: MediaItem[] =
             project.media && project.media.length > 0
               ? [...project.media].sort((a, b) => a.order - b.order)
@@ -76,40 +76,7 @@ export async function ProjectDetailsPage({ project, locale, hireBannerContent }:
 
           return (
             <Reveal delay={0.1} width="100%">
-              <div className={`mb-8 md:mb-12 ${mediaItems.length === 1 ? '' : 'grid grid-cols-1 md:grid-cols-2 gap-4'}`}>
-                {mediaItems.map((item, idx) => (
-                  <div
-                    key={`${item.url}-${idx}`}
-                    className={`rounded-xl overflow-hidden border border-border/40 bg-background relative aspect-video ${
-                      mediaItems.length === 1 ? '' : idx === 0 && mediaItems.length > 2 ? 'md:col-span-2' : ''
-                    }`}
-                  >
-                    {item.type === 'video' ? (
-                      <video
-                        src={item.url}
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        preload="metadata"
-                        aria-label={`${project.name[loc]} - ${t('media')} ${idx + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <Image
-                        src={item.url}
-                        alt={`${project.name[loc]} - ${idx + 1}`}
-                        fill
-                        sizes={mediaItems.length === 1
-                          ? '(max-width: 768px) 100vw, (max-width: 1280px) 100vw, 1280px'
-                          : '(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 640px'}
-                        className="object-cover"
-                        priority={idx === 0}
-                      />
-                    )}
-                  </div>
-                ))}
-              </div>
+              <ProjectMediaGallery items={mediaItems} projectName={project.name[loc]} />
             </Reveal>
           );
         })()}
@@ -138,8 +105,8 @@ export async function ProjectDetailsPage({ project, locale, hireBannerContent }:
           <Reveal delay={0.2} width="100%">
             <div className="relative p-5 sm:p-8 md:p-12 bg-background/70 border border-border/40 rounded-xl overflow-hidden w-full min-w-0">
               <h2 className="text-xs font-bold text-text-muted uppercase tracking-wider mb-6">{t('overview')}</h2>
-              <div className="markdown-body prose prose-sm md:prose-base prose-invert max-w-none w-full min-w-0 text-text-muted prose-headings:text-text-main prose-headings:tracking-tighter prose-strong:text-cyan-400 prose-code:text-indigo-400 prose-pre:bg-background/80 prose-pre:border prose-pre:border-border/40 prose-pre:overflow-x-auto prose-pre:rounded-lg prose-img:rounded-lg prose-img:max-w-full [&_pre]:overflow-x-auto [&_pre]:max-w-full [&_code]:break-words [&_a]:break-all [&_p]:break-words [&>h1:first-child]:hidden">
-                <Markdown rehypePlugins={[rehypeSanitize]}>
+              <div className="markdown-body prose prose-sm md:prose-base prose-invert max-w-none w-full min-w-0 text-text-muted prose-headings:text-text-main prose-headings:tracking-tighter prose-strong:text-cyan-400 prose-code:text-indigo-400 prose-pre:bg-background/80 prose-pre:border prose-pre:border-border/40 prose-pre:overflow-x-auto prose-pre:rounded-lg prose-img:rounded-lg prose-img:max-w-full [&_pre]:overflow-x-auto [&_pre]:max-w-full [&_:not(pre)>code]:break-words [&_pre]:whitespace-pre [&_pre_code]:break-normal [&_a]:break-all [&_p]:break-words [&>h1:first-child]:hidden">
+                <Markdown remarkPlugins={[remarkBreaks]} rehypePlugins={[rehypeSanitize]}>
                   {project.content[loc]}
                 </Markdown>
               </div>

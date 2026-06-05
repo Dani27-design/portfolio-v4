@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter, usePathname } from 'next/navigation';
 import { Lock, Mail, AlertCircle, Eye, EyeOff } from 'lucide-react';
@@ -17,10 +17,13 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   // Redirect if already logged in
-  if (user && isAdmin) {
-    router.replace(`/${locale}/admin`);
-    return null;
-  }
+  useEffect(() => {
+    if (user && isAdmin) {
+      router.replace(`/${locale}/admin`);
+    }
+  }, [user, isAdmin, router, locale]);
+
+  if (user && isAdmin) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

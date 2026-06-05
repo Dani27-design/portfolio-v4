@@ -5,6 +5,7 @@ import { AdminToast, type Toast } from '@/components/admin/AdminToast';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
 import { createBlog, updateBlog, deleteBlog } from '@/actions/blogs';
 import { MarkdownEditor } from '@/components/admin/MarkdownEditor';
+import { ImageUpload } from '@/components/admin/ImageUpload';
 import type { Blog } from '@/types';
 
 export default function AdminBlogsPage() {
@@ -132,6 +133,7 @@ function BlogForm({ blog, onClose, onSave, onError }: { blog: Blog | null; onClo
     excerptEn: blog?.excerpt.en || '',
     excerptId: blog?.excerpt.id || '',
     content: blog?.content || '',
+    coverImage: blog?.coverImage || '',
     date: blog?.date || new Date().toISOString().split('T')[0],
     order: blog?.order || 0,
   });
@@ -146,6 +148,7 @@ function BlogForm({ blog, onClose, onSave, onError }: { blog: Blog | null; onClo
         title: { en: form.titleEn, id: form.titleId },
         excerpt: { en: form.excerptEn, id: form.excerptId },
         content: form.content,
+        ...(form.coverImage ? { coverImage: form.coverImage } : {}),
         date: form.date,
         order: form.order,
       };
@@ -197,8 +200,17 @@ function BlogForm({ blog, onClose, onSave, onError }: { blog: Blog | null; onClo
           <input type="number" value={form.order} onChange={e => setForm({...form, order: parseInt(e.target.value) || 0})} placeholder="Order" className={inputClass} />
         </div>
         <div className="md:col-span-2">
+          <ImageUpload
+            currentUrl={form.coverImage}
+            storagePath={`blogs/${form.slug || 'new'}/cover`}
+            onUpload={(url) => setForm({...form, coverImage: url})}
+            onRemove={() => setForm({...form, coverImage: ''})}
+            label="Cover Image (optional)"
+          />
+        </div>
+        <div className="md:col-span-2">
           <label className="block text-xs text-slate-400 mb-1">Content (Markdown)</label>
-          <MarkdownEditor value={form.content} onChange={(v) => setForm({...form, content: v})} />
+          <MarkdownEditor value={form.content} onChange={(v) => setForm({...form, content: v})} imageStoragePath={`blogs/${form.slug || 'new'}/content`} />
         </div>
         <div className="md:col-span-2 flex flex-col sm:flex-row gap-3">
           <button type="submit" disabled={saving} className="w-full sm:w-auto px-6 py-2.5 lg:py-2 bg-cyan-600 hover:bg-cyan-500 disabled:bg-slate-700 text-white text-sm font-bold rounded">{saving ? 'Saving...' : 'Save'}</button>

@@ -35,6 +35,7 @@ export async function generateMetadata({ params }: Props) {
       description: blog.excerpt[loc],
       url: `https://dani-chusyaidin.vercel.app/id/blog/${slug}`,
       locale: 'id_ID',
+      ...(blog.coverImage ? { images: [{ url: blog.coverImage }] } : {}),
     },
   };
 }

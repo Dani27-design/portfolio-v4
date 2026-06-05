@@ -2,6 +2,36 @@
 
 ---
 
+## ~~FEAT-01: Project detail media needs zoom/modal viewer~~ [FIXED]
+
+**Problem:** Clicking images/videos on the project detail page does nothing — users cannot view media fullscreen or zoom in to see detail.
+
+**Solution:**
+- Created `MediaModal` component (`src/components/ui/MediaModal.tsx`) — fullscreen overlay with keyboard navigation (Escape to close, Left/Right arrows), backdrop click to close, body scroll lock, counter indicator, `aria-modal` + `aria-label` for accessibility
+- Created `ProjectMediaGallery` client component (`src/components/ui/ProjectMediaGallery.tsx`) — wraps media grid with click-to-zoom behavior and modal state. Uses `cursor-zoom-in` and subtle hover scale animation
+- Images render with `object-contain` in modal (not cropped). Videos render with player controls
+- Updated `ProjectDetailsPage` to use `ProjectMediaGallery` instead of inline rendering
+
+**Risk:** None — backward compatible, new client component boundary.
+
+---
+
+## ~~FEAT-02: Blog posts need cover image and inline image upload~~ [FIXED]
+
+**Problem:** Blog posts have no way to add images — no cover/featured image field, and no way to upload images into markdown content.
+
+**Solution:**
+- Added `coverImage?: string` and `coverStoragePath?: string` to `Blog` type
+- Added `ImageUpload` component to admin `BlogForm` for cover image upload (stored in Firebase Storage at `blogs/{slug}/cover`)
+- Updated `BlogDetailsPage` to render cover image above content using `next/image` with `aspect-video` container, matching project detail media style
+- Added OG image metadata for blog detail pages (`blog.coverImage` in OpenGraph)
+- Added inline image upload button to `MarkdownEditor` — new `imageStoragePath` prop, toolbar button (ImagePlus icon) that opens file picker, uploads to Firebase Storage, and inserts `![alt](url)` markdown at cursor position
+- Upload shows pulse animation while in progress, validates file type/size before upload
+
+**Risk:** Low — backward compatible. Existing blogs without cover images render as before. `imageStoragePath` prop is optional.
+
+---
+
 ## ~~UI-01: Admin panel forms have inconsistent UI design~~ [FIXED]
 
 **Problem:** Multiple UI inconsistencies across admin panel pages: labels hidden on desktop in some forms but visible in others, Blog form uses different layout structure (`space-y-4` + nested grid) vs direct grid, Site Content forms use inline success/error divs while CRUD pages use AdminToast, mobile card meta separators differ (pipe vs middot vs none vs line-clamp), Footer form uses `grid-cols-3` while all others use `grid-cols-2`, Contact email uses `md:w-1/2` instead of grid, save button text inconsistent ("Save Hero" vs "Save").

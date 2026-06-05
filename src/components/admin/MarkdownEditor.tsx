@@ -1,17 +1,22 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Markdown from 'react-markdown';
-import { Bold, Italic, Heading1, Heading2, Code, List, Link2, Eye, Edit3 } from 'lucide-react';
+import remarkBreaks from 'remark-breaks';
+import { Bold, Italic, Heading1, Heading2, Code, List, Link2, ImagePlus, Eye, Edit3, Upload } from 'lucide-react';
+import { uploadMedia, validateMediaFile } from '@/lib/upload';
 
 interface MarkdownEditorProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
+  imageStoragePath?: string;
 }
 
-export function MarkdownEditor({ value, onChange, placeholder }: MarkdownEditorProps) {
+export function MarkdownEditor({ value, onChange, placeholder, imageStoragePath }: MarkdownEditorProps) {
   const [mode, setMode] = useState<'edit' | 'preview' | 'split'>('edit');
+  const [uploading, setUploading] = useState(false);
+  const imageInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (window.innerWidth >= 1024) setMode('split');
@@ -32,6 +37,44 @@ export function MarkdownEditor({ value, onChange, placeholder }: MarkdownEditorP
       textarea.focus();
       textarea.setSelectionRange(start + before.length, start + before.length + (selected || 'text').length);
     }, 0);
+  };
+
+  const insertAtCursor = (text: string) => {
+    const textarea = document.querySelector<HTMLTextAreaElement>('[data-md-editor]');
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const newValue = value.substring(0, start) + text + value.substring(start);
+    onChange(newValue);
+
+    setTimeout(() => {
+      textarea.focus();
+      const newPos = start + text.length;
+      textarea.setSelectionRange(newPos, newPos);
+    }, 0);
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !imageStoragePath) return;
+
+    const error = validateMediaFile(file);
+    if (error) {
+      alert(error);
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const { url } = await uploadMedia(file, imageStoragePath);
+      const alt = file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
+      insertAtCursor(`\n![${alt}](${url})\n`);
+    } catch {
+      alert('Image upload failed. Please try again.');
+    } finally {
+      setUploading(false);
+      if (imageInputRef.current) imageInputRef.current.value = '';
+    }
   };
 
   const toolbarButtons = [
@@ -60,6 +103,27 @@ export function MarkdownEditor({ value, onChange, placeholder }: MarkdownEditorP
               <btn.icon className="w-4 h-4" />
             </button>
           ))}
+          {imageStoragePath && (
+            <>
+              <input
+                ref={imageInputRef}
+                type="file"
+                accept="image/png,image/jpeg,image/webp"
+                onChange={handleImageUpload}
+                className="hidden"
+                aria-label="Upload image"
+              />
+              <button
+                type="button"
+                onClick={() => imageInputRef.current?.click()}
+                disabled={uploading}
+                title="Upload Image"
+                className="p-2 lg:p-1.5 rounded text-slate-400 hover:text-white hover:bg-slate-700 transition-colors disabled:opacity-50"
+              >
+                {uploading ? <Upload className="w-4 h-4 animate-pulse" /> : <ImagePlus className="w-4 h-4" />}
+              </button>
+            </>
+          )}
         </div>
         <div className="flex items-center gap-1">
           <button
@@ -100,7 +164,7 @@ export function MarkdownEditor({ value, onChange, placeholder }: MarkdownEditorP
         {(mode === 'preview' || mode === 'split') && (
           <div className="min-h-[400px] p-4 overflow-auto">
             <div className="prose prose-invert prose-sm max-w-none text-slate-300 prose-headings:text-white prose-strong:text-cyan-400 prose-code:text-indigo-400 prose-pre:bg-slate-900 prose-pre:border prose-pre:border-slate-700">
-              {value ? <Markdown>{value}</Markdown> : <p className="text-slate-600 italic">Preview will appear here...</p>}
+              {value ? <Markdown remarkPlugins={[remarkBreaks]}>{value}</Markdown> : <p className="text-slate-600 italic">Preview will appear here...</p>}
             </div>
           </div>
         )}

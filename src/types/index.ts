@@ -34,6 +34,8 @@ export interface Blog {
   title: Bilingual;
   excerpt: Bilingual;
   content: string;
+  coverImage?: string;
+  coverStoragePath?: string;
   date: string;
   order: number;
   createdAt: string;

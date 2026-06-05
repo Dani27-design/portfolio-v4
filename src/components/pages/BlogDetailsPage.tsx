@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Reveal } from "@/components/ui/Reveal";
 import { ClientGimmick } from "@/components/ui/ClientGimmick";
 import { HireMeBanner } from "@/components/ui/HireMeBanner";
@@ -5,6 +6,7 @@ import { ArrowLeft, Calendar, User, Clock } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import Markdown from "react-markdown";
 import rehypeSanitize from "rehype-sanitize";
+import remarkBreaks from "remark-breaks";
 import { getTranslations } from "next-intl/server";
 import type { Blog, Locale, HireBannerContent } from "@/types";
 
@@ -66,10 +68,25 @@ export async function BlogDetailsPage({ blog, locale, hireBannerContent }: BlogD
             </div>
           </Reveal>
 
-          <Reveal delay={0.2} width="100%">
+          {blog.coverImage && (
+            <Reveal delay={0.1} width="100%">
+              <div className="mb-8 md:mb-12 rounded-xl overflow-hidden border border-border/40 bg-surface relative aspect-video">
+                <Image
+                  src={blog.coverImage}
+                  alt={blog.title[loc]}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 100vw, 1280px"
+                  className="object-cover"
+                  priority
+                />
+              </div>
+            </Reveal>
+          )}
+
+          <Reveal delay={blog.coverImage ? 0.2 : 0.1} width="100%">
             <div className="relative p-5 sm:p-8 md:p-16 bg-surface/70 border border-border/40 rounded-xl overflow-hidden w-full min-w-0">
-               <div lang="id" className="markdown-body prose prose-sm md:prose-base prose-invert max-w-none w-full min-w-0 text-text-muted prose-headings:text-text-main prose-headings:tracking-tighter prose-strong:text-cyan-400 prose-code:text-indigo-400 prose-pre:bg-background/80 prose-pre:border prose-pre:border-border/40 prose-pre:overflow-x-auto prose-pre:rounded-lg prose-img:rounded-lg prose-img:max-w-full [&_pre]:overflow-x-auto [&_pre]:max-w-full [&_table]:overflow-x-auto [&_table]:block [&_table]:max-w-full [&_code]:break-words [&_a]:break-all [&_p]:break-words [&_h1]:break-words [&>h1:first-child]:hidden [&_h2]:break-words [&_h3]:break-words [&_li]:break-words">
-                 <Markdown rehypePlugins={[rehypeSanitize]}>
+               <div lang="id" className="markdown-body prose prose-sm md:prose-base prose-invert max-w-none w-full min-w-0 text-text-muted prose-headings:text-text-main prose-headings:tracking-tighter prose-strong:text-cyan-400 prose-code:text-indigo-400 prose-pre:bg-background/80 prose-pre:border prose-pre:border-border/40 prose-pre:overflow-x-auto prose-pre:rounded-lg prose-img:rounded-lg prose-img:max-w-full [&_pre]:overflow-x-auto [&_pre]:max-w-full [&_table]:overflow-x-auto [&_table]:block [&_table]:max-w-full [&_:not(pre)>code]:break-words [&_pre]:whitespace-pre [&_pre_code]:break-normal [&_a]:break-all [&_p]:break-words [&_h1]:break-words [&>h1:first-child]:hidden [&_h2]:break-words [&_h3]:break-words [&_li]:break-words">
+                 <Markdown remarkPlugins={[remarkBreaks]} rehypePlugins={[rehypeSanitize]}>
                    {blog.content}
                  </Markdown>
                </div>
