@@ -110,15 +110,15 @@ export const Navbar = ({ navbarContent, locale: localeProp }: NavbarProps = {}) 
       <nav
         className={`fixed top-0 left-0 w-full z-50 transition-[height,border-color,background-color,box-shadow] duration-500 border-b overflow-hidden ${
           isScrolled
-            ? "h-16 border-border/80 bg-background/98 shadow-[0_4px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
-            : "h-20 border-border/20 bg-background/30"
+            ? "h-16 border-border/60 bg-background/95 shadow-[0_4px_30px_rgba(0,0,0,0.06)] dark:border-border/80 dark:bg-background/98 dark:shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
+            : "h-20 border-border/10 bg-background/60 dark:border-border/20 dark:bg-background/30"
         }`}
       >
         <QuantumSyncGimmick isScrolled={isScrolled} />
 
         <div className="container-custom h-full flex items-center relative z-10">
           {/* Section 1: Brand (Left) */}
-          <Link href="/" className="flex-[1] flex items-center gap-4 group cursor-pointer">
+          <Link href="/" className="flex-[1] flex items-center gap-2 xl:gap-4 group cursor-pointer">
             <Image
               src={navbarContent?.logoUrl || '/logo.png'}
               alt={navbarContent?.brandName ?? 'Daniansyah'}
@@ -127,13 +127,13 @@ export const Navbar = ({ navbarContent, locale: localeProp }: NavbarProps = {}) 
               className="object-cover rounded-sm group-hover:scale-105 transition-transform shrink-0"
             />
             <div className="hidden sm:flex flex-col justify-center">
-              <span className="font-black tracking-tighter text-lg uppercase leading-none group-hover:text-cyan-400 transition-colors whitespace-nowrap">{navbarContent?.brandName ?? 'Daniansyah'}</span>
+              <span className="font-black tracking-tighter text-base xl:text-lg uppercase leading-none group-hover:text-cyan-400 transition-colors whitespace-nowrap">{navbarContent?.brandName ?? 'Daniansyah'}</span>
             </div>
           </Link>
 
           {/* Section 2: Core Navigation (Center) */}
           <div className="hidden lg:flex flex-[2] justify-center">
-            <div className="flex items-center space-x-10 text-[10px] font-mono font-black tracking-[0.2em] text-text-muted uppercase">
+            <div className="flex items-center space-x-3 xl:space-x-6 2xl:space-x-10 text-[9px] xl:text-[10px] font-mono font-black tracking-[0.1em] xl:tracking-[0.2em] text-text-muted uppercase">
               {navLinks.map((link) => {
                 const isHomePage = pathname === '/';
                 const hash = link.href.replace('/', '');
@@ -179,7 +179,7 @@ export const Navbar = ({ navbarContent, locale: localeProp }: NavbarProps = {}) 
 
           {/* Section 3: Operations Module (Right) */}
           <div className="flex-[1] flex justify-end items-center gap-4">
-            <div className="hidden md:flex items-center gap-3 pr-4 border-r border-border/40">
+            <div className="hidden lg:flex items-center gap-2 xl:gap-3 pr-3 xl:pr-4 border-r border-border/40">
               <button
                 onClick={toggleCodeMode}
                 className={`p-2 rounded-full transition-all duration-300 flex items-center gap-1.5 ${
@@ -188,7 +188,7 @@ export const Navbar = ({ navbarContent, locale: localeProp }: NavbarProps = {}) 
                 aria-label="Toggle code mode"
               >
                 <Code2 className="w-3.5 h-3.5" />
-                <span className="text-[8px] font-mono font-black uppercase">CODE</span>
+                <span className="hidden xl:inline text-[8px] font-mono font-black uppercase">CODE</span>
               </button>
 
               <button
@@ -197,7 +197,7 @@ export const Navbar = ({ navbarContent, locale: localeProp }: NavbarProps = {}) 
                 aria-label="Toggle theme"
               >
                 {theme === "light" ? <Moon className="w-3.5 h-3.5" /> : <Sun className="w-3.5 h-3.5" />}
-                <span className="text-[8px] font-mono font-black uppercase">{theme.toUpperCase()}</span>
+                <span className="hidden xl:inline text-[8px] font-mono font-black uppercase">{theme.toUpperCase()}</span>
               </button>
 
               <button
@@ -206,12 +206,12 @@ export const Navbar = ({ navbarContent, locale: localeProp }: NavbarProps = {}) 
                 aria-label="Switch language"
               >
                 <Languages className="w-3.5 h-3.5" />
-                <span className="text-[8px] font-mono font-black">{locale.toUpperCase()}</span>
+                <span className="hidden xl:inline text-[8px] font-mono font-black">{locale.toUpperCase()}</span>
               </button>
             </div>
 
             <div className="flex items-center gap-6">
-              <div className="md:hidden flex items-center gap-2">
+              <div className="lg:hidden flex items-center gap-2">
                 <button
                   onClick={toggleCodeMode}
                   className={`p-2 transition-colors flex items-center gap-1.5 ${
@@ -238,7 +238,7 @@ export const Navbar = ({ navbarContent, locale: localeProp }: NavbarProps = {}) 
               </div>
 
               <button
-                className="p-2 text-text-main hover:bg-border/10 transition-colors border border-border/40 md:hidden flex flex-col gap-1 items-end overflow-hidden group"
+                className="p-2 text-text-main hover:bg-border/10 transition-colors border border-border/40 lg:hidden flex flex-col gap-1 items-end overflow-hidden group"
                 onClick={() => setIsMenuOpen(true)}
                 aria-label="Open menu"
               >

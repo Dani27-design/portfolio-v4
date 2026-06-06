@@ -45,9 +45,8 @@ describe('BlogDetailsPage', () => {
     expect(container.querySelector('a[href*="blog"]')).toBeTruthy();
   });
 
-  it('calculates read time', async () => {
+  it('renders author name', async () => {
     const { container } = await renderAsync(BlogDetailsPage({ blog: mockBlog, locale: 'en' }));
-    // readTime translation key should be present
-    expect(container.textContent).toContain('readTime');
+    expect(container.textContent).toContain('Daniansyah Chusyaidin');
   });
 });

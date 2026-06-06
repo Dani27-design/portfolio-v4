@@ -45,12 +45,12 @@ export async function Blog({ blogs, locale }: BlogProps) {
                     {blog.title[loc]}
                   </h3>
 
-                  <p className="text-xs md:text-sm text-text-muted/70 line-clamp-3 leading-relaxed mt-2 md:mt-3 flex-grow group-hover:text-text-muted transition-colors">
+                  <p className="text-xs md:text-sm text-text-muted line-clamp-3 leading-relaxed mt-2 md:mt-3 flex-grow group-hover:text-text-muted transition-colors">
                     {blog.excerpt[loc]}
                   </p>
 
                   <div className="mt-auto pt-3 md:pt-5 border-t border-border/20 flex justify-between items-center">
-                    <span className="text-xs font-semibold uppercase tracking-widest text-cyan-500 group-hover:translate-x-1 transition-transform duration-300">
+                    <span className="text-xs font-semibold uppercase tracking-widest text-cyan-700 dark:text-cyan-500 group-hover:translate-x-1 transition-transform duration-300">
                       {t('readEntry')}
                     </span>
                     <div className="w-6 h-[2px] bg-cyan-500/40 group-hover:w-10 group-hover:bg-cyan-500 transition-all duration-300 rounded-full" />
@@ -71,7 +71,7 @@ export async function Blog({ blogs, locale }: BlogProps) {
               <span className="font-mono text-xs text-cyan-600 dark:text-cyan-400 font-bold uppercase tracking-wider relative z-10">
                 {t('cta')}
               </span>
-              <ArrowRight className="w-4 h-4 text-cyan-500 group-hover:translate-x-1 transition-transform relative z-10" />
+              <ArrowRight className="w-4 h-4 text-cyan-700 dark:text-cyan-500 group-hover:translate-x-1 transition-transform relative z-10" />
             </Link>
           </div>
         </Reveal>

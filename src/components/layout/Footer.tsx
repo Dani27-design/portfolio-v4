@@ -33,7 +33,7 @@ export function Footer({ footerContent, contactContent, locale }: FooterProps) {
       <KernelSubstrateGimmick />
 
       <div className="container-custom py-4 relative z-10 flex items-center justify-between">
-        <span className="text-xs text-text-muted/60">
+        <span className="text-xs text-text-muted">
           &copy; {currentYear} {ownerName} · {role}
         </span>
         <div className="flex items-center gap-1">
@@ -44,7 +44,7 @@ export function Footer({ footerContent, contactContent, locale }: FooterProps) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={social.name}
-              className="w-7 h-7 rounded flex items-center justify-center text-text-muted/50 hover:text-cyan-500 transition-colors"
+              className="w-7 h-7 rounded flex items-center justify-center text-text-muted hover:text-cyan-500 transition-colors"
             >
               {social.icon}
             </a>

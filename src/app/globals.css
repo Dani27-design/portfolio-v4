@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
@@ -16,12 +17,12 @@
 
 :root {
   --primary-color: #2563eb;
-  --bg-color: #ffffff;
-  --surface-color: #f8fafc;
-  --surface-hover-color: #f1f5f9;
+  --bg-color: #f9fafb;
+  --surface-color: #f1f5f9;
+  --surface-hover-color: #e2e8f0;
   --text-color: #0f172a;
   --text-muted-color: #334155;
-  --border-color: #e2e8f0;
+  --border-color: #1e293b;
 }
 
 .dark {
@@ -119,6 +120,11 @@
 
 @keyframes blink {
   50% { opacity: 0; }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 
 .typewriter::after {

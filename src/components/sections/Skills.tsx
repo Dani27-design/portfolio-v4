@@ -43,7 +43,7 @@ export async function Skills({ skills, locale }: SkillsProps) {
                       {group.title[loc]}
                     </h3>
                   </div>
-                  <p className="text-xs leading-relaxed text-text-muted/70 pl-6 border-l border-border/50 group-hover/row:border-cyan-500 transition-all">
+                  <p className="text-xs leading-relaxed text-text-muted pl-6 border-l border-border/50 group-hover/row:border-cyan-500 transition-all">
                     <CodeText type="css">{group.context[loc]}</CodeText>
                   </p>
                 </div>
@@ -55,7 +55,7 @@ export async function Skills({ skills, locale }: SkillsProps) {
                     >
                       <span className="px-3 md:px-5 py-1.5 md:py-2.5 bg-background/70 border border-border/60 text-xs font-semibold text-text-main flex items-center gap-2 md:gap-3 group-hover:border-cyan-500 group-hover:-translate-y-1 transition-all duration-300 rounded-lg">
                         {skill.name}
-                        <span className="text-[10px] font-mono text-indigo-600 dark:text-indigo-400 opacity-40 group-hover:opacity-100 transition-opacity uppercase tracking-tight">{skill.tag}</span>
+                        <span className="text-[10px] font-mono text-indigo-600 dark:text-indigo-400 opacity-70 dark:opacity-40 group-hover:opacity-100 transition-opacity uppercase tracking-tight">{skill.tag}</span>
                       </span>
                     </div>
                   ))}

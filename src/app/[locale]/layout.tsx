@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import Script from 'next/script';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
@@ -73,21 +74,11 @@ export default async function LocaleLayout({ children, params }: Props) {
       className={`${inter.variable} ${jetbrainsMono.variable}`}
     >
       <head>
-        <script
+        <Script
+          id="theme-init"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                var theme = localStorage.getItem('theme');
-                var isCode = localStorage.getItem('isCodeMode') === 'true';
-                if (!theme) {
-                  theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-                }
-                document.documentElement.classList.add(theme);
-                if (isCode) document.documentElement.classList.add('code');
-                if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-                window.scrollTo(0, 0);
-              })();
-            `,
+            __html: `(function(){var t=localStorage.getItem('theme');var c=localStorage.getItem('isCodeMode')==='true';if(!t){t=window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'}document.documentElement.classList.add(t);if(c)document.documentElement.classList.add('code');if('scrollRestoration' in history)history.scrollRestoration='manual';window.scrollTo(0,0)})()`,
           }}
         />
       </head>

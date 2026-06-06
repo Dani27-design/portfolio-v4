@@ -2,6 +2,67 @@
 
 ---
 
+## ~~PERF-07: Images load slowly with no loading feedback + unoptimized media uploads~~ [FIXED]
+
+**Problem:** Images in the project gallery, modal viewer, and blog cover show no loading state — users see an empty container until the image fully loads, making the page feel broken/slow. Additionally, uploaded media files (images and videos) are stored at their original resolution and size, causing slow loading on the public site.
+
+**Solution:**
+
+**Loading states:**
+- Created `LoadingImage` client component (`src/components/ui/LoadingImage.tsx`) — wraps `next/image` with a shimmer skeleton placeholder that fades out when the image loads via `onLoad` callback
+- `ProjectMediaGallery` — added per-item load tracking with `Set<number>` state; each thumbnail shows a shimmer skeleton until its `onLoad`/`onLoadedData` fires, then fades in with `transition-opacity duration-300`
+- `MediaModal` — added `Loader2` spinning icon centered on the backdrop while image/video loads; resets `loaded` state on navigation between items
+- `BlogDetailsPage` — cover image uses `LoadingImage` component for shimmer placeholder
+- Added `@keyframes shimmer` to `globals.css` for the animated gradient effect
+
+**Client-side media compression (before upload):**
+- **Images**: Resized to max 1920×1080 using Canvas API, converted to WebP at 0.82 quality. Skips compression if already small (<500KB) and within dimensions. Falls back to original if compressed size is larger
+- **Videos**: Scaled to max 1080p, re-encoded to WebM at 1.5Mbps using Canvas + MediaRecorder API. Falls back to original if MediaRecorder unavailable or compression doesn't reduce size
+- Applied automatically in both `uploadImage()` and `uploadMedia()` — all existing upload flows (project media, blog cover, inline markdown images, site content) benefit without any changes to calling code
+- Upload size limits raised (images: 10MB, videos: 100MB pre-compression) since compression handles the reduction
+
+**Risk:** Low — compression uses only browser-native APIs (Canvas, MediaRecorder), falls back gracefully to original file if anything fails.
+
+---
+
+## ~~BUG-01: Media modal cannot be closed + slow image rendering~~ [FIXED]
+
+**Problem:** Clicking the backdrop of the project media modal does nothing — the modal cannot be closed by clicking outside the image. Only Escape key works. Additionally, gallery images feel slow to load.
+
+**Root Cause (modal):** The `handleBackdropClick` checked `e.target === overlayRef.current`, but the overlay's child `<div className="w-full h-full">` (media content wrapper) filled the entire overlay area. All clicks landed on this inner div, never matching the overlay ref. The close button at `z-10` was also partially obscured by the full-size image wrapper.
+
+**Root Cause (perf):** Gallery thumbnail `sizes` were slightly oversized (`100vw` at all breakpoints), causing Next.js to serve larger srcset variants than needed.
+
+**Solution:**
+- **Modal architecture**: Separated backdrop into its own `<div>` with `onClick={onClose}` — guaranteed to receive clicks. Media content wrapper uses `pointer-events-none` with `pointer-events-auto` on the media element itself, so clicks pass through empty space to the backdrop
+- **Button z-index**: All control buttons (close, prev, next, counter) raised to `z-20`, backdrop at default z, content at `z-10`
+- **Nav buttons**: Prev/Next centered vertically with `top-1/2 -translate-y-1/2`
+- **Image sizes**: Tightened gallery thumbnail `sizes` from `100vw/1280px` to `95vw/80vw/1200px` (single) and `95vw/45vw/600px` (grid). Modal image `sizes` from `100vw` to `90vw/1200px`. Blog cover image similarly tightened
+- **Quality**: Added explicit `quality={80}` to gallery thumbnails and blog cover image
+
+**Risk:** None.
+
+---
+
+## ~~UI-02: Navbar responsive overflow at lg-xl breakpoints~~ [FIXED]
+
+**Problem:** Navbar items overflow horizontally at viewports between ~1024px and ~1440px. The 6 nav links with `space-x-10` (40px) spacing, bracket decorators, and right-side controls with text labels ("CODE", "DARK", "EN") exceed the available container width. The `overflow-hidden` on `<nav>` clips the theme toggle and language switcher off-screen.
+
+**Root Cause:** At `lg:` (1024px), usable container width is ~992px. The center nav section alone needs ~680-800px with `space-x-10` spacing, leaving only ~200px for both brand and controls — far too little. The desktop controls (`hidden md:flex`) also showed at `md:` (768px) where no nav links exist, creating a breakpoint mismatch.
+
+**Solution:**
+- **Nav link spacing**: `space-x-10` → `space-x-3 xl:space-x-6 2xl:space-x-10` (responsive scaling)
+- **Nav link font**: `text-[10px] tracking-[0.2em]` → `text-[9px] xl:text-[10px] tracking-[0.1em] xl:tracking-[0.2em]` (tighter at lg:)
+- **Right controls text labels**: Hidden at `lg:` (icons only), shown at `xl:` with `hidden xl:inline`
+- **Right controls visibility**: Changed from `md:flex` to `lg:flex` so desktop controls only appear alongside nav links
+- **Mobile controls/hamburger**: Changed from `md:hidden` to `lg:hidden` to match
+- **Right controls gaps**: `gap-3 pr-4` → `gap-2 xl:gap-3 pr-3 xl:pr-4` (tighter at lg:)
+- **Brand**: `gap-4 text-lg` → `gap-2 xl:gap-4 text-base xl:text-lg` (compact at lg:)
+
+**Risk:** None — purely responsive CSS changes, no logic changes. Mobile menu overlay unaffected.
+
+---
+
 ## ~~FEAT-01: Project detail media needs zoom/modal viewer~~ [FIXED]
 
 **Problem:** Clicking images/videos on the project detail page does nothing — users cannot view media fullscreen or zoom in to see detail.

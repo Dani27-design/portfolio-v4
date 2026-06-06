@@ -42,12 +42,12 @@ export async function Projects({ projects, locale }: ProjectsProps) {
                   <CodeText tag="h3">{project.name[loc]}</CodeText>
                 </h3>
 
-                <p className="text-xs md:text-sm text-text-muted/70 line-clamp-3 leading-relaxed mt-2 md:mt-3 flex-grow group-hover:text-text-muted transition-colors">
+                <p className="text-xs md:text-sm text-text-muted line-clamp-3 leading-relaxed mt-2 md:mt-3 flex-grow group-hover:text-text-muted transition-colors">
                   <CodeText type="js">{project.desc[loc]}</CodeText>
                 </p>
 
                 <div className="mt-auto pt-3 md:pt-5 border-t border-border/20 flex justify-between items-center">
-                  <span className="text-xs font-semibold uppercase tracking-widest text-cyan-500 group-hover:translate-x-1 transition-transform duration-300">
+                  <span className="text-xs font-semibold uppercase tracking-widest text-cyan-700 dark:text-cyan-500 group-hover:translate-x-1 transition-transform duration-300">
                     {t('metadata.access')}
                   </span>
                   <div className="w-6 h-[2px] bg-cyan-500/40 group-hover:w-10 group-hover:bg-cyan-500 transition-all duration-300 rounded-full" />

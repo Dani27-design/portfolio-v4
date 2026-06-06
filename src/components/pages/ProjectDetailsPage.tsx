@@ -103,9 +103,9 @@ export async function ProjectDetailsPage({ project, locale, hireBannerContent }:
         {/* Content (bilingual markdown) */}
         {project.content?.[loc] && (
           <Reveal delay={0.2} width="100%">
-            <div className="relative p-5 sm:p-8 md:p-12 bg-background/70 border border-border/40 rounded-xl overflow-hidden w-full min-w-0">
+            <div className="relative p-5 sm:p-8 md:p-12 bg-surface border border-border/40 rounded-xl overflow-hidden w-full min-w-0">
               <h2 className="text-xs font-bold text-text-muted uppercase tracking-wider mb-6">{t('overview')}</h2>
-              <div className="markdown-body prose prose-sm md:prose-base prose-invert max-w-none w-full min-w-0 text-text-muted prose-headings:text-text-main prose-headings:tracking-tighter prose-strong:text-cyan-400 prose-code:text-indigo-400 prose-pre:bg-background/80 prose-pre:border prose-pre:border-border/40 prose-pre:overflow-x-auto prose-pre:rounded-lg prose-img:rounded-lg prose-img:max-w-full [&_pre]:overflow-x-auto [&_pre]:max-w-full [&_:not(pre)>code]:break-words [&_pre]:whitespace-pre [&_pre_code]:break-normal [&_a]:break-all [&_p]:break-words [&>h1:first-child]:hidden">
+              <div className="markdown-body prose prose-sm md:prose-base dark:prose-invert max-w-none w-full min-w-0 text-text-muted prose-headings:text-text-main prose-headings:tracking-tighter prose-strong:text-cyan-700 dark:prose-strong:text-cyan-400 prose-code:text-indigo-600 dark:prose-code:text-indigo-400 prose-pre:bg-surface-hover dark:prose-pre:bg-background/80 prose-pre:border prose-pre:border-border/40 prose-pre:overflow-x-auto prose-pre:rounded-lg prose-img:rounded-lg prose-img:max-w-full [&_pre]:overflow-x-auto [&_pre]:max-w-full [&_:not(pre)>code]:break-words [&_pre]:whitespace-pre [&_pre_code]:break-normal [&_a]:break-all [&_p]:break-words [&>h1:first-child]:hidden">
                 <Markdown remarkPlugins={[remarkBreaks]} rehypePlugins={[rehypeSanitize]}>
                   {project.content[loc]}
                 </Markdown>

@@ -32,7 +32,7 @@ export async function BlogListPage({ blogs, locale, hireBannerContent }: BlogLis
               <span className="font-mono text-xs uppercase tracking-wider">{t('backToHome')}</span>
             </Link>
             <h1 className="text-3xl font-bold tracking-tighter text-text-main md:text-5xl lg:text-6xl">{t('archiveTitle')}</h1>
-            <p className="text-text-muted/70 mt-3 md:mt-4 text-sm md:text-base">
+            <p className="text-text-muted mt-3 md:mt-4 text-sm md:text-base">
               {t('archiveSubtitle')}
             </p>
             <div className="h-1 w-16 bg-gradient-to-r from-cyan-500 to-indigo-500 mt-5 md:mt-6 rounded-full" />
@@ -56,12 +56,12 @@ export async function BlogListPage({ blogs, locale, hireBannerContent }: BlogLis
                     {blog.title[loc]}
                   </h3>
 
-                  <p className="text-sm text-text-muted/70 line-clamp-3 leading-relaxed mt-3 flex-grow group-hover:text-text-muted transition-colors">
+                  <p className="text-sm text-text-muted line-clamp-3 leading-relaxed mt-3 flex-grow group-hover:text-text-muted transition-colors">
                     {blog.excerpt[loc]}
                   </p>
 
                   <div className="mt-auto pt-5 border-t border-border/20 flex justify-between items-center">
-                    <span className="text-xs font-semibold uppercase tracking-widest text-cyan-500 group-hover:translate-x-1 transition-transform duration-300">
+                    <span className="text-xs font-semibold uppercase tracking-widest text-cyan-700 dark:text-cyan-500 group-hover:translate-x-1 transition-transform duration-300">
                       {t('readEntry')}
                     </span>
                     <div className="w-6 h-[2px] bg-cyan-500/40 group-hover:w-10 group-hover:bg-cyan-500 transition-all duration-300 rounded-full" />

@@ -63,7 +63,7 @@ export async function Experience({ experience, locale }: ExperienceProps) {
                   <div className="space-y-3 md:space-y-8">
                     <div className="space-y-2 md:space-y-3 relative">
                       <div className="flex items-center gap-4 flex-wrap">
-                        <h3 className="text-lg md:text-3xl font-bold text-text-main tracking-tight group-hover/experience:text-cyan-700 dark:group-hover/experience:text-cyan-50 transition-colors">
+                        <h3 className="text-lg md:text-3xl font-bold text-text-main tracking-tight group-hover/experience:text-cyan-700 dark:group-hover/experience:text-white transition-colors">
                           <CodeText tag="h3">{job.title[loc]}</CodeText>
                         </h3>
                       </div>
@@ -77,7 +77,7 @@ export async function Experience({ experience, locale }: ExperienceProps) {
                       {job.points[loc].slice(0, 3).map((point, pIdx) => (
                         <li key={`job-point-${pIdx}`} className="flex gap-3 md:gap-6 group/point relative">
                           <div className="flex flex-col items-center">
-                             <span className="text-cyan-500 font-mono text-xs mt-1.5 font-semibold group-hover/point:text-cyan-300 transition-colors">
+                             <span className="text-cyan-700 dark:text-cyan-500 font-mono text-xs mt-1.5 font-semibold group-hover/point:text-cyan-500 dark:group-hover/point:text-cyan-300 transition-colors">
                                0{pIdx + 1}
                              </span>
                              <div className="w-px h-full bg-border/20 mt-2" />

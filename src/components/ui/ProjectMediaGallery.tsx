@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import Image from 'next/image';
 import { MediaModal } from './MediaModal';
 import type { MediaItem } from '@/types';
@@ -10,8 +10,25 @@ interface ProjectMediaGalleryProps {
   projectName: string;
 }
 
+function MediaSkeleton() {
+  return (
+    <div className="absolute inset-0 bg-surface animate-pulse">
+      <div className="w-full h-full bg-gradient-to-r from-transparent via-border/20 to-transparent animate-[shimmer_1.5s_infinite]" />
+    </div>
+  );
+}
+
 export function ProjectMediaGallery({ items, projectName }: ProjectMediaGalleryProps) {
   const [modalIndex, setModalIndex] = useState<number | null>(null);
+  const [loadedSet, setLoadedSet] = useState<Set<number>>(new Set());
+
+  const markLoaded = useCallback((idx: number) => {
+    setLoadedSet(prev => {
+      const next = new Set(prev);
+      next.add(idx);
+      return next;
+    });
+  }, []);
 
   if (items.length === 0) return null;
 
@@ -28,6 +45,7 @@ export function ProjectMediaGallery({ items, projectName }: ProjectMediaGalleryP
             }`}
             aria-label={`View ${item.type === 'video' ? 'video' : 'image'} ${idx + 1} fullscreen`}
           >
+            {!loadedSet.has(idx) && <MediaSkeleton />}
             {item.type === 'video' ? (
               <video
                 src={item.url}
@@ -36,7 +54,8 @@ export function ProjectMediaGallery({ items, projectName }: ProjectMediaGalleryP
                 muted
                 playsInline
                 preload="metadata"
-                className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
+                onLoadedData={() => markLoaded(idx)}
+                className={`w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300 ${loadedSet.has(idx) ? '' : 'opacity-0'}`}
               />
             ) : (
               <Image
@@ -44,9 +63,11 @@ export function ProjectMediaGallery({ items, projectName }: ProjectMediaGalleryP
                 alt={`${projectName} - ${idx + 1}`}
                 fill
                 sizes={items.length === 1
-                  ? '(max-width: 768px) 100vw, (max-width: 1280px) 100vw, 1280px'
-                  : '(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 640px'}
-                className="object-cover group-hover:scale-[1.02] transition-transform duration-300"
+                  ? '(max-width: 768px) 95vw, (max-width: 1280px) 80vw, 1200px'
+                  : '(max-width: 768px) 95vw, (max-width: 1280px) 45vw, 600px'}
+                quality={80}
+                onLoad={() => markLoaded(idx)}
+                className={`object-cover group-hover:scale-[1.02] transition-[transform,opacity] duration-300 ${loadedSet.has(idx) ? 'opacity-100' : 'opacity-0'}`}
                 priority={idx === 0}
               />
             )}

@@ -15,32 +15,36 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [theme, setThemeState] = useState<BaseTheme>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('theme') as BaseTheme;
-      if (saved && ['light', 'dark'].includes(saved)) return saved;
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    }
-    return 'dark';
-  });
+  // Default to 'dark' on both server and client to avoid hydration mismatch.
+  // The beforeInteractive script already sets the correct class on <html>,
+  // so there's no flash. We sync state from localStorage in useEffect.
+  const [theme, setThemeState] = useState<BaseTheme>('dark');
+  const [isCodeMode, setIsCodeMode] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  const [isCodeMode, setIsCodeMode] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('isCodeMode') === 'true';
-    }
-    return false;
-  });
-
+  // Sync from localStorage after mount (client only)
   useEffect(() => {
-    const root = window.document.documentElement;
+    const saved = localStorage.getItem('theme') as BaseTheme;
+    if (saved && ['light', 'dark'].includes(saved)) {
+      setThemeState(saved);
+    } else {
+      const preferred = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      setThemeState(preferred);
+    }
+    setIsCodeMode(localStorage.getItem('isCodeMode') === 'true');
+    setMounted(true);
+  }, []);
+
+  // Apply theme/code classes and persist to localStorage
+  useEffect(() => {
+    if (!mounted) return;
+    const root = document.documentElement;
     root.classList.remove('light', 'dark', 'code');
     root.classList.add(theme);
-    if (isCodeMode) {
-      root.classList.add('code');
-    }
+    if (isCodeMode) root.classList.add('code');
     localStorage.setItem('theme', theme);
     localStorage.setItem('isCodeMode', String(isCodeMode));
-  }, [theme, isCodeMode]);
+  }, [theme, isCodeMode, mounted]);
 
   const toggleCodeMode = () => setIsCodeMode((prev) => !prev);
 
