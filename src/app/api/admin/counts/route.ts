@@ -12,17 +12,22 @@ export async function GET() {
     return NextResponse.json({ projects: 0, blogs: 0, experience: 0, skills: 0 });
   }
 
-  const [projects, blogs, experience, skills] = await Promise.all([
-    adminDb.collection('projects').count().get(),
-    adminDb.collection('blogs').count().get(),
-    adminDb.collection('experience').count().get(),
-    adminDb.collection('skills').count().get(),
-  ]);
+  try {
+    const [projects, blogs, experience, skills] = await Promise.all([
+      adminDb.collection('projects').count().get(),
+      adminDb.collection('blogs').count().get(),
+      adminDb.collection('experience').count().get(),
+      adminDb.collection('skills').count().get(),
+    ]);
 
-  return NextResponse.json({
-    projects: projects.data().count,
-    blogs: blogs.data().count,
-    experience: experience.data().count,
-    skills: skills.data().count,
-  });
+    return NextResponse.json({
+      projects: projects.data().count,
+      blogs: blogs.data().count,
+      experience: experience.data().count,
+      skills: skills.data().count,
+    });
+  } catch (err) {
+    console.error('Failed to fetch counts:', err);
+    return NextResponse.json({ error: 'Failed to fetch data' }, { status: 500 });
+  }
 }

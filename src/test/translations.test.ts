@@ -134,7 +134,7 @@ describe('About Section Translations', () => {
   });
 
   it('should have ID about content', () => {
-    expect(id.about.title).toBe('Software Developer');
+    expect(id.about.title).toBe('Tentang Saya');
     expect(id.about.headline).toBe('Saya membangun sistem yang mengutamakan keandalan.');
     expect(id.about.stats.e2e).toBe('End-to-End Ownership');
     expect(id.about.stats.zero).toBe('Zero Tolerance for Fluff');

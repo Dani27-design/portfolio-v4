@@ -33,12 +33,34 @@ export function MediaModal({ items, currentIndex, onClose, onNavigate, projectNa
     onNavigate((currentIndex + 1) % items.length);
   }, [currentIndex, items.length, onNavigate]);
 
-  // Keyboard navigation
+  // Keyboard navigation + focus trapping
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
       if (hasMultiple && e.key === 'ArrowLeft') goPrev();
       if (hasMultiple && e.key === 'ArrowRight') goNext();
+
+      if (e.key === 'Tab') {
+        const modal = overlayRef.current;
+        if (!modal) return;
+        const focusable = modal.querySelectorAll<HTMLElement>(
+          'button, [href], input, [tabindex]:not([tabindex="-1"]), video[controls]'
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first || document.activeElement === modal) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      }
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);

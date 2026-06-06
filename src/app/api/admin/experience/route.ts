@@ -8,6 +8,11 @@ export async function GET() {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const experience = await getExperience();
-  return NextResponse.json(experience);
+  try {
+    const experience = await getExperience();
+    return NextResponse.json(experience);
+  } catch (err) {
+    console.error('Failed to fetch experience:', err);
+    return NextResponse.json({ error: 'Failed to fetch data' }, { status: 500 });
+  }
 }

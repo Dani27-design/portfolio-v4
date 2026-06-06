@@ -20,6 +20,10 @@ export const Reveal = ({ children, delay = 0, width = "fit-content", className }
     const el = ref.current;
     if (!el) return;
 
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return; // Content stays visible, no animation
+    }
+
     const rect = el.getBoundingClientRect();
     const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
 

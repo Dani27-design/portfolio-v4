@@ -3,57 +3,62 @@
 import { adminDb } from '@/lib/firebase-admin';
 import { revalidatePath } from 'next/cache';
 import { verifyAdmin } from '@/lib/auth';
-import type { HeroContent, AboutContent, ContactContent, FooterContent, HireBannerContent, NavbarContent } from '@/types';
+import { validate, heroContentSchema, aboutContentSchema, contactContentSchema, footerContentSchema, hireBannerContentSchema, navbarContentSchema } from '@/lib/validation';
 
-export async function updateHeroContent(data: Omit<HeroContent, 'id' | 'updatedAt'>) {
+export async function updateHeroContent(data: unknown) {
   if (!(await verifyAdmin())) throw new Error('Unauthorized');
   if (!adminDb) throw new Error('Firebase not initialized');
+  const validated = validate(heroContentSchema, data);
   await adminDb.collection('siteContent').doc('hero').set({
-    ...data,
+    ...validated,
     updatedAt: new Date().toISOString(),
   }, { merge: true });
   revalidatePath('/en');
   revalidatePath('/id');
 }
 
-export async function updateAboutContent(data: Omit<AboutContent, 'id' | 'updatedAt'>) {
+export async function updateAboutContent(data: unknown) {
   if (!(await verifyAdmin())) throw new Error('Unauthorized');
   if (!adminDb) throw new Error('Firebase not initialized');
+  const validated = validate(aboutContentSchema, data);
   await adminDb.collection('siteContent').doc('about').set({
-    ...data,
+    ...validated,
     updatedAt: new Date().toISOString(),
   }, { merge: true });
   revalidatePath('/en');
   revalidatePath('/id');
 }
 
-export async function updateContactContent(data: Omit<ContactContent, 'id' | 'updatedAt'>) {
+export async function updateContactContent(data: unknown) {
   if (!(await verifyAdmin())) throw new Error('Unauthorized');
   if (!adminDb) throw new Error('Firebase not initialized');
+  const validated = validate(contactContentSchema, data);
   await adminDb.collection('siteContent').doc('contact').set({
-    ...data,
+    ...validated,
     updatedAt: new Date().toISOString(),
   }, { merge: true });
   revalidatePath('/en');
   revalidatePath('/id');
 }
 
-export async function updateFooterContent(data: Omit<FooterContent, 'id' | 'updatedAt'>) {
+export async function updateFooterContent(data: unknown) {
   if (!(await verifyAdmin())) throw new Error('Unauthorized');
   if (!adminDb) throw new Error('Firebase not initialized');
+  const validated = validate(footerContentSchema, data);
   await adminDb.collection('siteContent').doc('footer').set({
-    ...data,
+    ...validated,
     updatedAt: new Date().toISOString(),
   }, { merge: true });
   revalidatePath('/en');
   revalidatePath('/id');
 }
 
-export async function updateHireBannerContent(data: Omit<HireBannerContent, 'id' | 'updatedAt'>) {
+export async function updateHireBannerContent(data: unknown) {
   if (!(await verifyAdmin())) throw new Error('Unauthorized');
   if (!adminDb) throw new Error('Firebase not initialized');
+  const validated = validate(hireBannerContentSchema, data);
   await adminDb.collection('siteContent').doc('hireBanner').set({
-    ...data,
+    ...validated,
     updatedAt: new Date().toISOString(),
   }, { merge: true });
   revalidatePath('/en');
@@ -64,11 +69,12 @@ export async function updateHireBannerContent(data: Omit<HireBannerContent, 'id'
   revalidatePath('/id/projects');
 }
 
-export async function updateNavbarContent(data: Omit<NavbarContent, 'id' | 'updatedAt'>) {
+export async function updateNavbarContent(data: unknown) {
   if (!(await verifyAdmin())) throw new Error('Unauthorized');
   if (!adminDb) throw new Error('Firebase not initialized');
+  const validated = validate(navbarContentSchema, data);
   await adminDb.collection('siteContent').doc('navbar').set({
-    ...data,
+    ...validated,
     updatedAt: new Date().toISOString(),
   }, { merge: true });
   revalidatePath('/en');

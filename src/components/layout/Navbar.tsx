@@ -124,6 +124,7 @@ export const Navbar = ({ navbarContent, locale: localeProp }: NavbarProps = {}) 
               alt={navbarContent?.brandName ?? 'Daniansyah'}
               width={40}
               height={40}
+              priority
               className="object-cover rounded-sm group-hover:scale-105 transition-transform shrink-0"
             />
             <div className="hidden sm:flex flex-col justify-center">

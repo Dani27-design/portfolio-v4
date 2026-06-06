@@ -19,7 +19,7 @@
     "ctaContact": "Hubungi Saya"
   },
   "about": {
-    "title": "Software Developer",
+    "title": "Tentang Saya",
     "headline": "Saya membangun sistem yang mengutamakan keandalan.",
     "desc": "Saya menangani seluruh proses pengembangan. Dari perencanaan dan desain sistem sampai menulis kode dan deploy ke production. Saya suka menyelesaikan masalah yang kompleks dan membangun software yang andal dan mudah di-maintain jangka panjang.",
     "stats": {
@@ -81,7 +81,11 @@
     "diagnostics": "Diagnostik",
     "responseTimeLabel": "Waktu Respons",
     "responseTimeValue": "Dalam 24 jam",
-    "fallbackSubject": "Permintaan Proyek"
+    "fallbackSubject": "Permintaan Proyek",
+    "sending": "Mengirim...",
+    "sent": "Pesan berhasil dikirim!",
+    "sendError": "Gagal mengirim. Coba lagi atau gunakan email langsung.",
+    "rateLimited": "Terlalu banyak percobaan. Tunggu sebentar."
   },
   "footer": {
     "role": "Software Developer"

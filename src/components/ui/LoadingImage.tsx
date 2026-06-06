@@ -31,6 +31,7 @@ export function LoadingImage({ src, alt, fill, sizes, quality, priority, classNa
         quality={quality}
         priority={priority}
         onLoad={() => setLoaded(true)}
+        onError={() => setLoaded(true)}
         className={`${className || ''} transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'}`}
       />
     </>

@@ -74,7 +74,7 @@ export async function Experience({ experience, locale }: ExperienceProps) {
                     </div>
 
                     <ul className="space-y-3 md:space-y-6 max-w-2xl relative">
-                      {job.points[loc].slice(0, 3).map((point, pIdx) => (
+                      {job.points[loc].map((point, pIdx) => (
                         <li key={`job-point-${pIdx}`} className="flex gap-3 md:gap-6 group/point relative">
                           <div className="flex flex-col items-center">
                              <span className="text-cyan-700 dark:text-cyan-500 font-mono text-xs mt-1.5 font-semibold group-hover/point:text-cyan-500 dark:group-hover/point:text-cyan-300 transition-colors">

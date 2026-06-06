@@ -188,10 +188,19 @@ export function getMediaType(file: File): 'image' | 'video' {
   return VIDEO_TYPES.includes(file.type) ? 'video' : 'image';
 }
 
+function sanitizePath(path: string): string {
+  return path
+    .replace(/\.\./g, '')          // Remove path traversal
+    .replace(/[^a-zA-Z0-9/_\-\.]/g, '') // Keep only safe characters
+    .replace(/\/+/g, '/')         // Collapse consecutive slashes
+    .replace(/^\/|\/$/g, '');     // Strip leading/trailing slashes
+}
+
 export async function uploadImage(file: File, path: string): Promise<string> {
   const optimized = await compressImage(file);
   const ext = optimized.name.split('.').pop() || 'webp';
-  const storageRef = ref(storage, `${path}.${ext}`);
+  const safePath = sanitizePath(path);
+  const storageRef = ref(storage, `${safePath}.${ext}`);
   const snapshot = await uploadBytes(storageRef, optimized);
   return getDownloadURL(snapshot.ref);
 }
@@ -200,7 +209,8 @@ export async function uploadMedia(file: File, basePath: string): Promise<{ url: 
   const optimized = await optimizeFile(file);
   const ext = optimized.name.split('.').pop() || 'bin';
   const uniqueId = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-  const storagePath = `${basePath}/${uniqueId}.${ext}`;
+  const safeBase = sanitizePath(basePath);
+  const storagePath = `${safeBase}/${uniqueId}.${ext}`;
   const storageRef = ref(storage, storagePath);
   const snapshot = await uploadBytes(storageRef, optimized);
   const url = await getDownloadURL(snapshot.ref);
@@ -209,7 +219,8 @@ export async function uploadMedia(file: File, basePath: string): Promise<{ url: 
 
 export async function deleteImage(path: string): Promise<void> {
   try {
-    const storageRef = ref(storage, path);
+    const safePath = sanitizePath(path);
+    const storageRef = ref(storage, safePath);
     await deleteObject(storageRef);
   } catch {
     // Silently ignore — file may not exist

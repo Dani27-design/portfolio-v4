@@ -34,18 +34,51 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
   const [message, setMessage] = useState("");
   const [activeMode, setActiveMode] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sendStatus, setSendStatus] = useState<'idle' | 'sent' | 'error' | 'rateLimited'>('idle');
 
-  const handleSend = () => {
-    const subject = encodeURIComponent(title || t('fallbackSubject'));
-    const body = encodeURIComponent(message);
-    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+  const handleSend = async () => {
+    const subject = title || t('fallbackSubject');
+    const body = message;
+    if (!body.trim()) return;
+
+    setSending(true);
+    setSendStatus('idle');
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ subject, message: body }),
+      });
+
+      if (res.status === 429) {
+        setSendStatus('rateLimited');
+      } else if (!res.ok) {
+        setSendStatus('error');
+      } else {
+        setSendStatus('sent');
+        setTitle("");
+        setMessage("");
+        setTimeout(() => setSendStatus('idle'), 5000);
+      }
+    } catch {
+      // Network error — fall back to mailto
+      if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        window.location.href = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      } else {
+        setSendStatus('error');
+      }
+    } finally {
+      setSending(false);
+    }
   };
 
   const socials = [
     { name: "GitHub", icon: <Github className="w-4 h-4" />, href: contactContent?.socials.github ?? "https://github.com/Dani27-design" },
     { name: "LinkedIn", icon: <Linkedin className="w-4 h-4" />, href: contactContent?.socials.linkedin ?? "https://www.linkedin.com/in/daniansyahchusyaidin/" },
     { name: "Instagram", icon: <Instagram className="w-4 h-4" />, href: contactContent?.socials.instagram ?? "https://www.instagram.com/danichusyaidin" },
-    { name: "WhatsApp", icon: <MessageCircle className="w-4 h-4" />, href: contactContent?.socials.whatsapp ?? "https://wa.me/6285790428078" },
+    { name: "WhatsApp", icon: <MessageCircle className="w-4 h-4" />, href: contactContent?.socials.whatsapp ?? "#" },
   ];
 
   return (
@@ -135,12 +168,20 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
 
                 <button
                   onClick={handleSend}
-                  className="w-full py-4 md:py-5 bg-text-main text-background rounded-lg flex items-center justify-center gap-4 text-xs font-bold uppercase tracking-wider hover:bg-cyan-500 transition-all group/btn active:scale-[0.98] relative overflow-hidden mt-4 lg:mt-0"
+                  disabled={sending}
+                  className="w-full py-4 md:py-5 bg-text-main text-background rounded-lg flex items-center justify-center gap-4 text-xs font-bold uppercase tracking-wider hover:bg-cyan-500 disabled:opacity-60 disabled:cursor-not-allowed transition-all group/btn active:scale-[0.98] relative overflow-hidden mt-4 lg:mt-0"
                 >
                   <Send className="w-5 h-5 md:w-6 md:h-6 group-hover/btn:translate-x-3 group-hover/btn:-translate-y-3 transition-transform duration-500 relative z-10" />
-                  <span className="relative z-10">{buttonTransmit}</span>
+                  <span className="relative z-10">{sending ? t('sending') : buttonTransmit}</span>
                   <div className="absolute inset-x-0 h-full w-[200%] bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:animate-sweep pointer-events-none" />
                 </button>
+                {sendStatus !== 'idle' && (
+                  <div className={`text-center text-xs font-mono mt-3 ${sendStatus === 'sent' ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500 dark:text-red-400'}`}>
+                    {sendStatus === 'sent' && t('sent')}
+                    {sendStatus === 'error' && t('sendError')}
+                    {sendStatus === 'rateLimited' && t('rateLimited')}
+                  </div>
+                )}
               </div>
 
               {/* Side Monitor Panel */}

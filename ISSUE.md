@@ -108,7 +108,7 @@ After deployment, verify headers with `curl -I https://dani-chusyaidin.vercel.ap
 
 ---
 
-# ISSUE-003
+# ISSUE-003 [DONE]
 
 ## Problem
 The `/api/admin/me` endpoint exposes admin authentication status to any unauthenticated caller. It returns `{ isAdmin: true }` or `{ isAdmin: false }` without returning a 401 for unauthenticated requests, allowing attackers to probe whether auth cookies are valid.
@@ -162,7 +162,7 @@ Call `GET /api/admin/me` without auth cookies — should return 401 status code,
 
 ---
 
-# ISSUE-004
+# ISSUE-004 [DONE]
 
 ## Problem
 Server actions (`createBlog`, `updateBlog`, `createProject`, etc.) accept typed data at compile time but perform no runtime validation of field contents, lengths, or structure. An admin user (or attacker with admin cookies) can inject arbitrarily long strings, malformed data, or unexpected field types.
@@ -230,7 +230,7 @@ Attempt to call a server action with oversized data (e.g., 10MB string in a fiel
 
 ---
 
-# ISSUE-005
+# ISSUE-005 [DONE]
 
 ## Problem
 The logo image at `public/logo.png` is a 6.7MB, 2048x2048 pixel PNG file. It is used in the Navbar at 40x40px display size and in the About section as a fill image. This dramatically impacts page load performance, server-side image optimization latency, and memory usage.
@@ -282,7 +282,7 @@ Verify `public/logo.png` is under 100KB. Run Lighthouse and confirm LCP improvem
 
 ---
 
-# ISSUE-006
+# ISSUE-006 [DONE]
 
 ## Problem
 The Navbar logo `<Image>` component is above the fold on every page but lacks the `priority` prop. Next.js lazy-loads images by default, causing the logo to load after other resources and potentially delaying LCP.
@@ -340,7 +340,7 @@ Inspect the generated HTML — the image should have `fetchpriority="high"` and 
 
 ---
 
-# ISSUE-007
+# ISSUE-007 [DONE]
 
 ## Problem
 The Firebase client SDK (`firebase/firestore`) is imported directly in `SkyForceGame.tsx` for real-time leaderboard updates via `onSnapshot`. This bundles the Firestore client SDK into the home page's JavaScript bundle, significantly increasing bundle size for all users regardless of whether they play the game.
@@ -390,7 +390,7 @@ After removing the `firebase/firestore` import, verify the home page JS bundle s
 
 ---
 
-# ISSUE-008
+# ISSUE-008 [DONE]
 
 ## Problem
 Only `getContactContent` uses React's `cache()` wrapper in `src/lib/firestore.ts`. All other Firestore query functions lack `cache()`, meaning duplicate calls within the same server request hit Firestore separately. The home page calls `getContactContent()` in both the layout and page, which is correctly deduplicated. But `getNavbarContent()`, `getFooterContent()`, etc., would not be deduplicated if called from multiple components in the same render.
@@ -445,7 +445,7 @@ Add logging to Firestore functions and verify each is called exactly once per re
 
 ---
 
-# ISSUE-009
+# ISSUE-009 [DONE]
 
 ## Problem
 The admin layout renders `<meta name="robots" content="noindex, nofollow" />` as a JSX child element inside the `AdminLayout` component. In Next.js App Router, metadata should be exported via the `metadata` or `generateMetadata` API, not rendered as JSX — JSX `<meta>` tags inside components are not guaranteed to be placed in `<head>`.
@@ -503,7 +503,7 @@ Inspect the rendered HTML of an admin page. Confirm the `<meta name="robots">` t
 
 ---
 
-# ISSUE-010
+# ISSUE-010 [DONE]
 
 ## Problem
 Blog content is only in Indonesian, but blog URLs under `/en/blog/[slug]` are accessible and serve the same Indonesian-language content. While the canonical URL correctly points to `/id/blog/${slug}`, serving identical non-English content under the English locale is semantically misleading and could be considered cloaking by search engines.
@@ -556,7 +556,7 @@ Navigate to `/en/blog/[any-slug]` — should either redirect to `/id/blog/[slug]
 
 ---
 
-# ISSUE-011
+# ISSUE-011 [DONE]
 
 ## Problem
 The SkyForceGame canvas is completely inaccessible to keyboard-only users and screen reader users. The game relies entirely on pointer (mouse/touch) input and provides no keyboard controls, no screen reader announcements, and no alternative content beyond a static `aria-label`.
@@ -610,7 +610,7 @@ Tab to the game section — the game container should receive focus. Use arrow k
 
 ---
 
-# ISSUE-012
+# ISSUE-012 [DONE]
 
 ## Problem
 The `TypewriterText` component in `Hero.tsx` dynamically changes text via rapid state updates, but the text changes are not announced to screen readers. There is no `aria-live` region wrapping the typewriter output.
@@ -664,7 +664,7 @@ Enable a screen reader (VoiceOver/NVDA). Navigate to the hero section and verify
 
 ---
 
-# ISSUE-013
+# ISSUE-013 [DONE]
 
 ## Problem
 The contact form uses a `mailto:` link to open the user's default email client instead of submitting to a server-side endpoint. Users without a configured email client (common in web-only environments, Chromebooks, or mobile browsers without email apps) experience a broken or confusing interaction.
@@ -711,7 +711,7 @@ Submit a test message through the contact form without an email client configure
 
 ---
 
-# ISSUE-014
+# ISSUE-014 [DONE]
 
 ## Problem
 Admin API routes (`/api/admin/experience`, `/api/admin/blogs`, `/api/admin/projects`, `/api/admin/skills`, `/api/admin/site-content`, `/api/admin/counts`) have no error handling around Firestore operations. If Firestore is temporarily unavailable or returns an error, the routes crash with an unhandled exception, returning a generic 500 error.
@@ -781,10 +781,12 @@ Temporarily misconfigure Firebase credentials and verify the admin API routes re
 
 ---
 
-# ISSUE-015
+# ISSUE-015 [WONTFIX]
 
 ## Problem
-The game leaderboard score is tracked entirely client-side via `scoreRef`. There is no server-side score validation. A user can submit any score (up to MAX_SCORE of 99999) by calling the `/api/leaderboard` endpoint directly, without playing the game.
+The game leaderboard score is tracked entirely client-side via `scoreRef`.
+
+> **Resolution:** Accepted limitation. Client-side score validation is fundamentally impossible for browser games. Existing defenses (rate limiting 60/min, name regex, integer 1-99999) are sufficient for a portfolio game. Fake entries can be manually removed from Firestore if needed. There is no server-side score validation. A user can submit any score (up to MAX_SCORE of 99999) by calling the `/api/leaderboard` endpoint directly, without playing the game.
 
 ## Severity
 Medium
@@ -840,7 +842,7 @@ Submit a score without playing the game via DevTools. If mitigations are added, 
 
 ---
 
-# ISSUE-016
+# ISSUE-016 [DONE]
 
 ## Problem
 The old Vite build output directory (`dist/`) is still present in the project root, containing stale `index.html`, `robots.txt`, `sitemap.xml`, and assets from the previous build system. This is dead weight and could cause confusion.
@@ -882,7 +884,7 @@ Verify `dist/` directory no longer exists. Verify `next build` still works corre
 
 ---
 
-# ISSUE-017
+# ISSUE-017 [DONE]
 
 ## Problem
 The `.env` file exists in the project root alongside `.env.local`, and both contain credentials (16 lines each with values). Having two separate credential files increases the risk of confusion and potential accidental exposure.
@@ -926,10 +928,12 @@ Delete `.env` and verify the application still runs correctly with `.env.local` 
 
 ---
 
-# ISSUE-018
+# ISSUE-018 [WONTFIX]
 
 ## Problem
-The `PublicShell` component wraps all public pages as a client component (`'use client'`), including the Navbar, Footer, CustomCursor, ScrollToTop, and ScrollProgress. This makes the entire page shell a client component, preventing server-side rendering of the navigation and footer. All shell components (and their dependencies) are included in the client bundle.
+The `PublicShell` component wraps all public pages as a client component (`'use client'`)
+
+> **Resolution:** The stated impact is incorrect. Verified via `curl` that `<nav>`, all navigation links, and `<footer>` ARE present in the server-rendered HTML. Next.js SSR renders client components on the server — `'use client'` does not mean client-only. The fix (layout restructuring) carries significant risk for near-zero benefit., including the Navbar, Footer, CustomCursor, ScrollToTop, and ScrollProgress. This makes the entire page shell a client component, preventing server-side rendering of the navigation and footer. All shell components (and their dependencies) are included in the client bundle.
 
 ## Severity
 Medium
@@ -976,7 +980,7 @@ View page source of the home page. Verify navigation links are present in the se
 
 ---
 
-# ISSUE-019
+# ISSUE-019 [DONE]
 
 ## Problem
 The `SkyForceGame` component creates `AudioContext` instances that are never properly closed. Multiple game restarts accumulate audio contexts, leading to memory leaks and potential browser audio resource exhaustion.
@@ -1023,7 +1027,7 @@ Play the game 10+ times in a row. Verify in DevTools (Performance tab) that Audi
 
 ---
 
-# ISSUE-020
+# ISSUE-020 [DONE]
 
 ## Problem
 The Experience section artificially truncates job responsibilities to 3 bullet points via `.slice(0, 3)`, regardless of how many points are stored in Firestore. Important achievements or responsibilities beyond the first 3 are hidden.
@@ -1066,7 +1070,7 @@ Add an experience entry with 5+ bullet points in Firestore. Verify all points ar
 
 ---
 
-# ISSUE-021
+# ISSUE-021 [DONE]
 
 ## Problem
 The contact form's `handleSend` function uses `mailto:` which constructs the email URL from user input. While `encodeURIComponent` is used, the `email` variable comes from Firestore content and is not validated. If the Firestore `contact.email` field is modified to contain malicious content, it could be injected into the URL.
@@ -1121,10 +1125,12 @@ Set an invalid email in Firestore contact content. Verify the contact form grace
 
 ---
 
-# ISSUE-022
+# ISSUE-022 [DEFERRED]
 
 ## Problem
-No error monitoring or logging service is configured. All error handling uses `console.error`, which is lost in production on Vercel. There is no way to detect, track, or debug production errors.
+No error monitoring or logging service is configured.
+
+> **Resolution:** Deferred. Requires Sentry account setup and DSN. Can be implemented when ready — install `@sentry/nextjs`, add config files, wrap `next.config.ts` with `withSentryConfig()`, and set `SENTRY_DSN` env var. All error handling uses `console.error`, which is lost in production on Vercel. There is no way to detect, track, or debug production errors.
 
 ## Severity
 High
@@ -1173,7 +1179,7 @@ Trigger an error in production. Verify the error appears in the monitoring dashb
 
 ---
 
-# ISSUE-023
+# ISSUE-023 [DONE]
 
 ## Problem
 Personal WhatsApp phone number (`6285790428078`) is hardcoded as a fallback in both the Contact section and Footer. This exposes a personal phone number in the source code even when Firestore data is unavailable.
@@ -1215,7 +1221,7 @@ View the page source. Verify the phone number is only present when explicitly se
 
 ---
 
-# ISSUE-024
+# ISSUE-024 [DONE]
 
 ## Problem
 Missing OpenGraph image for project detail pages. Blog detail pages have a dynamic `opengraph-image.tsx` that generates custom OG images per blog post, but project detail pages use only the default OG image from the locale layout. When sharing a project link on social media, the generic portfolio OG image appears instead of a project-specific image.
@@ -1261,7 +1267,7 @@ Share a project URL on a social media platform or use an OG preview tool. Verify
 
 ---
 
-# ISSUE-025
+# ISSUE-025 [DONE]
 
 ## Problem
 The `Script` component with `strategy="beforeInteractive"` is placed inside `<head>` in the locale layout. In Next.js App Router, `beforeInteractive` scripts should be placed in the root layout, not nested layouts. The theme initialization script may not execute at the optimal time.
@@ -1311,7 +1317,7 @@ Hard-refresh the page in dark mode. Verify no flash of light theme before dark t
 
 ---
 
-# ISSUE-026
+# ISSUE-026 [DONE]
 
 ## Problem
 The `about.title` translation value is semantically different between locales: English has `"About Me"` while Indonesian has `"Software Developer"`. These are not translations of each other — they convey different meanings.
@@ -1357,10 +1363,12 @@ Switch between EN and ID locales. Verify the About section title is a proper tra
 
 ---
 
-# ISSUE-027
+# ISSUE-027 [INVALID]
 
 ## Problem
 The admin panel pages fetch data from API routes using `fetch` with relative URLs (e.g., `/api/admin/experience`) without handling the case where the user's network connection is lost or the API is unreachable. Failed fetches show error messages but provide no retry mechanism beyond page refresh.
+
+> **Resolution:** This issue is invalid. All 6 admin pages already have Retry buttons in their error UI (`experience/page.tsx:57`, `blogs/page.tsx:59`, `projects/page.tsx:59`, `skills/page.tsx:57`, `site-content/page.tsx:88`, `page.tsx:51`).
 
 ## Severity
 Low
@@ -1411,7 +1419,7 @@ Simulate a network error in the admin panel. Verify a "Retry" button appears tha
 
 ---
 
-# ISSUE-028
+# ISSUE-028 [DONE]
 
 ## Problem
 The `MediaModal` component lacks proper focus trapping. When the modal is open, users can Tab outside the modal to interact with background content. Only Escape and arrow key handlers are implemented.
@@ -1465,7 +1473,7 @@ Open the media modal. Tab through focusable elements — focus should cycle with
 
 ---
 
-# ISSUE-029
+# ISSUE-029 [DONE]
 
 ## Problem
 The upload path for media files is constructed using user-provided input (blog slug, project data) without server-side path sanitization. The `storagePath` parameter in `uploadImage` and `uploadMedia` functions comes from client-side code and could potentially contain path traversal characters.
@@ -1519,7 +1527,7 @@ Attempt to upload a file with a path containing `../` — verify the path is san
 
 ---
 
-# ISSUE-030
+# ISSUE-030 [DONE]
 
 ## Problem
 The `global-error.tsx` displays "An unexpected error occurred. This has been logged for investigation." (line 22), but no actual logging or error reporting service is configured. This message is misleading to users.
@@ -1565,7 +1573,7 @@ Read the error page text. Verify it accurately reflects the error handling infra
 
 ---
 
-# ISSUE-031
+# ISSUE-031 [DONE]
 
 ## Problem
 The `SkyForceGame` component uses `alert()` as a fallback when the Web Share API is unavailable and clipboard copy succeeds. Native `alert()` dialogs are blocking, visually jarring, and cannot be styled to match the application design.
@@ -1615,10 +1623,12 @@ Share a game score on a device without Web Share API. Verify a styled notificati
 
 ---
 
-# ISSUE-032
+# ISSUE-032 [INVALID]
 
 ## Problem
-The `ProjectDetailsPage` component sorts media items on every render without memoization. The `.sort()` call creates a new array reference each time, potentially causing unnecessary re-renders of the `ProjectMediaGallery` child component.
+The `ProjectDetailsPage` component sorts media items on every render without memoization.
+
+> **Resolution:** This issue is invalid. `ProjectDetailsPage` is a server component (no `'use client'` directive). The IIFE runs exactly once per server request. No memoization needed. The `.sort()` call creates a new array reference each time, potentially causing unnecessary re-renders of the `ProjectMediaGallery` child component.
 
 ## Severity
 Low
@@ -1663,7 +1673,7 @@ This is a server component — verify it doesn't have `'use client'` directive.
 
 ---
 
-# ISSUE-033
+# ISSUE-033 [DONE]
 
 ## Problem
 The light mode `--border-color` CSS variable is set to `#1e293b` (very dark blue-gray), which is inconsistent with typical light mode borders. Combined with `border-border/10` opacity modifiers used extensively, borders may be nearly invisible in light mode, reducing visual structure and readability.
@@ -1712,10 +1722,12 @@ Switch to light mode. Verify borders and separators are clearly visible througho
 
 ---
 
-# ISSUE-034
+# ISSUE-034 [DEFERRED]
 
 ## Problem
-The `SkyForceGame` runs `requestAnimationFrame` without any frame rate cap. On high refresh rate displays (120Hz, 144Hz), the game loop runs at the monitor's refresh rate, consuming more CPU and battery than necessary. The game logic may also run faster on higher refresh rate displays if not using delta-time based updates.
+The `SkyForceGame` runs `requestAnimationFrame` without any frame rate cap.
+
+> **Resolution:** Deferred. All game physics are frame-count based (not time-based). A simple frame cap (~5 lines) would fix gameplay speed consistency, but proper delta-time normalization requires rewriting every physics calculation. Recommend implementing the simple frame cap when game loop is next modified. On high refresh rate displays (120Hz, 144Hz), the game loop runs at the monitor's refresh rate, consuming more CPU and battery than necessary. The game logic may also run faster on higher refresh rate displays if not using delta-time based updates.
 
 ## Severity
 Low
@@ -1766,7 +1778,7 @@ Run the game on a 144Hz display. Monitor CPU usage before and after the fix. Ver
 
 ---
 
-# ISSUE-035
+# ISSUE-035 [DONE]
 
 ## Problem
 The `about.stats` section in the About component renders stat values like "E2E", "0%", and "TDD" without contextual labels for screen readers. These abbreviations are meaningless without their accompanying label text, and the visual layout (large value above small label) is not conveyed to assistive technology.
@@ -1816,7 +1828,7 @@ Use a screen reader. Navigate to the About section stats. Verify each stat is an
 
 ---
 
-# ISSUE-036
+# ISSUE-036 [DONE]
 
 ## Problem
 The `Reveal` animation component does not respect `prefers-reduced-motion`. Elements below the fold are hidden (`opacity: 0, y: 30, scale: 0.98`) and only revealed via scroll-triggered animation. Users who have enabled reduced motion in their OS settings still see all scroll-triggered animations, and more critically, if animations fail to trigger, content remains invisible.
@@ -1881,7 +1893,7 @@ Enable "Reduce motion" in OS accessibility settings. Reload the page and scroll.
 
 ---
 
-# ISSUE-037
+# ISSUE-037 [DONE]
 
 ## Problem
 The admin panel's `MarkdownEditor` component renders markdown preview without `rehype-sanitize`, while the public-facing `BlogDetailsPage` and `ProjectDetailsPage` both use it. This means the admin preview could render malicious HTML/scripts that would be stripped on the public site, creating an inconsistent and potentially dangerous preview experience.
@@ -1938,7 +1950,7 @@ Enter `<script>alert('xss')</script>` in the markdown editor preview. Verify the
 
 ---
 
-# ISSUE-038
+# ISSUE-038 [DONE]
 
 ## Problem
 The `LoadingImage` component has no `onError` handler. If an image URL is broken or returns a 404, the component remains in its loading state forever — showing the shimmer/pulse animation indefinitely with the actual image at `opacity: 0`.
@@ -2000,7 +2012,7 @@ Set a blog cover image URL to an invalid/broken URL. Verify the loading shimmer 
 
 ---
 
-# ISSUE-039
+# ISSUE-039 [DONE]
 
 ## Problem
 The Hero section CTA buttons (`<a href="#mini-game">` and `<a href="#contact">`) lack `aria-label` attributes. Screen readers will announce the visible text, but the fragment links themselves provide no additional context about what happens when activated.

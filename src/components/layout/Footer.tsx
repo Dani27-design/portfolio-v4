@@ -25,7 +25,7 @@ export function Footer({ footerContent, contactContent, locale }: FooterProps) {
     { name: "GitHub", icon: <Github className="w-3.5 h-3.5" />, href: contactContent?.socials.github ?? "https://github.com/Dani27-design" },
     { name: "LinkedIn", icon: <Linkedin className="w-3.5 h-3.5" />, href: contactContent?.socials.linkedin ?? "https://www.linkedin.com/in/daniansyahchusyaidin/" },
     { name: "Instagram", icon: <Instagram className="w-3.5 h-3.5" />, href: contactContent?.socials.instagram ?? "https://www.instagram.com/danichusyaidin" },
-    { name: "WhatsApp", icon: <MessageCircle className="w-3.5 h-3.5" />, href: contactContent?.socials.whatsapp ?? "https://wa.me/6285790428078" },
+    { name: "WhatsApp", icon: <MessageCircle className="w-3.5 h-3.5" />, href: contactContent?.socials.whatsapp ?? "#" },
   ];
 
   return (

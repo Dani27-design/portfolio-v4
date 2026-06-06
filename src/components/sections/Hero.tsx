@@ -44,12 +44,17 @@ const TypewriterText = ({ phrases }: { phrases: string[] }) => {
     return () => clearTimeout(timeout);
   }, [text, isDeleting, phraseIndex, typingSpeed, phrases]);
 
+  const currentPhrase = phrases[phraseIndex % phrases.length];
+
   return (
-    <span className="text-base md:text-3xl font-mono text-primary typewriter">
-      <CodeText type="js">
-        {text}
-      </CodeText>
-    </span>
+    <>
+      <span aria-hidden="true" className="text-base md:text-3xl font-mono text-primary typewriter">
+        <CodeText type="js">
+          {text}
+        </CodeText>
+      </span>
+      <span className="sr-only" role="status">{currentPhrase}</span>
+    </>
   );
 };
 
@@ -114,12 +119,14 @@ export const Hero = ({ heroContent, locale }: HeroProps = {}) => {
           <div className="mt-8 md:mt-12 flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
             <a
               href="#mini-game"
+              role="button"
               className="px-8 md:px-10 py-3 md:py-4 bg-text-main text-background text-xs font-bold uppercase tracking-wider rounded-lg hover:bg-primary transition-all duration-300 min-w-[180px] md:min-w-[200px] flex items-center justify-center text-center"
             >
               {ctaGame}
             </a>
             <a
               href="#contact"
+              role="button"
               className="px-8 md:px-10 py-3 md:py-4 border border-border text-text-main text-xs font-bold uppercase tracking-wider rounded-lg hover:bg-surface-hover transition-all duration-300 min-w-[180px] md:min-w-[200px] flex items-center justify-center text-center"
             >
               {ctaContact}

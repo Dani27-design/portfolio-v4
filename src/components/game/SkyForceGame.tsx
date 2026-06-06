@@ -6,10 +6,6 @@ import { Play, RotateCcw, Crosshair, Zap, Shield, Cpu, Share2, Award, User, Chec
 import { useTheme } from "@/context/ThemeProvider";
 import { Reveal } from "@/components/ui/Reveal";
 import { useTranslations } from "next-intl";
-import { app } from "@/lib/firebase";
-import { getFirestore, collection, query, orderBy, limit, onSnapshot } from "firebase/firestore";
-
-const db = getFirestore(app);
 import type { LeaderboardEntry } from "@/types";
 
 interface Particle {
@@ -54,6 +50,7 @@ export const SkyForceGame = () => {
   const [hasStartedAuto, setHasStartedAuto] = useState(false);
   const [countdown, setCountdown] = useState<number | null>(null);
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
+  const [showCopied, setShowCopied] = useState(false);
 
   // Game state refs (to avoid re-renders)
   const gameState = useRef({
@@ -69,8 +66,16 @@ export const SkyForceGame = () => {
     entranceFrame: 0,
   });
   const canvasSize = useRef({ width: 0, height: 0 });
+  const keysPressed = useRef(new Set<string>());
+  const [announcedScore, setAnnouncedScore] = useState(0);
+  const announcedScoreRef = useRef(0);
 
   const audioCtxRef = useRef<AudioContext | null>(null);
+
+  // Close AudioContext on unmount to prevent memory leak
+  useEffect(() => {
+    return () => { audioCtxRef.current?.close(); };
+  }, []);
 
   const initAudio = () => {
     if (!audioCtxRef.current) {
@@ -142,6 +147,8 @@ export const SkyForceGame = () => {
     setGameOver(false);
     setScore(0);
     scoreRef.current = 0;
+    announcedScoreRef.current = 0;
+    setAnnouncedScore(0);
     setTempPlayerName("");
     setHasSubmittedName(false);
     
@@ -247,37 +254,15 @@ export const SkyForceGame = () => {
     } catch { /* silent */ }
   };
 
-  // Real-time leaderboard via Firestore onSnapshot, REST fallback
+  // Leaderboard polling via REST API
   useEffect(() => {
-    let unsubscribe: (() => void) | null = null;
-
-    try {
-      const q = query(
-        collection(db, 'leaderboard'),
-        orderBy('score', 'desc'),
-        limit(10)
-      );
-
-      unsubscribe = onSnapshot(q, (snapshot) => {
-        const entries: LeaderboardEntry[] = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-        } as LeaderboardEntry));
-        updateLeaderboardState(entries);
-      }, () => {
-        // onSnapshot failed (security rules / index missing) — fall back to REST
-        fetchLeaderboardREST();
-      });
-    } catch {
-      // Firestore client init failed — fall back to REST
-      fetchLeaderboardREST();
-    }
-
-    return () => { if (unsubscribe) unsubscribe(); };
+    fetchLeaderboardREST();
+    const interval = setInterval(fetchLeaderboardREST, 30_000);
+    return () => clearInterval(interval);
   }, []);
 
   const saveHighScore = (newScore: number, name: string) => {
-    // Submit to global leaderboard — onSnapshot/REST will refresh leaderTop automatically
+    // Submit to global leaderboard — polling will refresh leaderTop automatically
     fetch('/api/leaderboard', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -301,7 +286,8 @@ export const SkyForceGame = () => {
     } else {
       try {
         await navigator.clipboard.writeText(shareText);
-        alert(t('copiedToClipboard'));
+        setShowCopied(true);
+        setTimeout(() => setShowCopied(false), 2000);
       } catch {
         // Clipboard API unavailable (non-HTTPS or permission denied)
       }
@@ -408,6 +394,14 @@ export const SkyForceGame = () => {
 
       g.frame++;
 
+      // Keyboard movement — shift target position each frame while keys held
+      const kStep = 8;
+      const keys = keysPressed.current;
+      if (keys.has('ArrowLeft') || keys.has('a')) g.player.targetX = Math.max(g.player.radius, g.player.targetX - kStep);
+      if (keys.has('ArrowRight') || keys.has('d')) g.player.targetX = Math.min(canvasSize.current.width - g.player.radius, g.player.targetX + kStep);
+      if (keys.has('ArrowUp') || keys.has('w')) g.player.targetY = Math.max(g.player.radius, g.player.targetY - kStep);
+      if (keys.has('ArrowDown') || keys.has('s')) g.player.targetY = Math.min(canvasSize.current.height - g.player.radius, g.player.targetY + kStep);
+
       // Player Movement Lerp (Snappier for better flexibility)
       g.player.x += (g.player.targetX - g.player.x) * 0.25;
       g.player.y += (g.player.targetY - g.player.y) * 0.25;
@@ -493,6 +487,12 @@ export const SkyForceGame = () => {
               const points = (e.type === 'rocket' ? 300 : e.type === 'meteor' ? 150 : 50);
               scoreRef.current += points;
               setScore(scoreRef.current);
+              // Announce score at 500-point milestones for screen readers
+              const milestone = Math.floor(scoreRef.current / 500) * 500;
+              if (milestone > 0 && milestone > announcedScoreRef.current) {
+                announcedScoreRef.current = milestone;
+                setAnnouncedScore(milestone);
+              }
               g.shake = e.type === 'rocket' ? 10 : 5;
               createExplosion(e.x, e.y, e.type === 'rocket' ? "#f59e0b" : "#94a3b8");
               playExplosionSound(false);
@@ -892,13 +892,26 @@ export const SkyForceGame = () => {
           </div>
         </Reveal>
 
-        <div 
+        <div
           ref={containerRef}
-          className="relative w-full max-w-[1728px] h-[85vh] md:h-[540px] lg:h-[630px] bg-[#0b0d10] border border-white/10 rounded-2xl overflow-hidden cursor-crosshair group select-none touch-none"
+          tabIndex={0}
+          className="relative w-full max-w-[1728px] h-[85vh] md:h-[540px] lg:h-[630px] bg-[#0b0d10] border border-white/10 rounded-2xl overflow-hidden cursor-crosshair group select-none touch-none outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
+          onKeyDown={(e) => {
+            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)) {
+              e.preventDefault();
+            }
+            keysPressed.current.add(e.key);
+          }}
+          onKeyUp={(e) => { keysPressed.current.delete(e.key); }}
+          onBlur={() => { keysPressed.current.clear(); }}
         >
-          <canvas ref={canvasRef} className="w-full h-full" role="img" aria-label={t('ariaLabel')} />
+          <canvas ref={canvasRef} className="w-full h-full" role="application" aria-label={t('ariaLabel')} />
+          {/* Screen reader score announcements */}
+          <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+            {announcedScore > 0 && `${t('hud.sessionScore')}: ${announcedScore}`}
+          </div>
 
           {/* HUD Layer */}
           <div className="absolute top-3 left-3 right-3 md:top-4 md:left-4 md:right-4 flex justify-between items-start pointer-events-none z-20">
@@ -1093,6 +1106,12 @@ export const SkyForceGame = () => {
                       <Share2 className="w-4 h-4" />
                     </button>
                   </div>
+
+                  {showCopied && (
+                    <div className="font-mono text-[10px] text-cyan-400 text-center animate-pulse">
+                      {t('copiedToClipboard')}
+                    </div>
+                  )}
 
                   {/* Leaderboard */}
                   {leaderboard.length > 0 && (

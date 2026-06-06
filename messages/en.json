@@ -81,7 +81,11 @@
     "diagnostics": "Diagnostics",
     "responseTimeLabel": "Response Time",
     "responseTimeValue": "Within 24 hours",
-    "fallbackSubject": "Project Inquiry"
+    "fallbackSubject": "Project Inquiry",
+    "sending": "Sending...",
+    "sent": "Message sent successfully!",
+    "sendError": "Failed to send. Try again or use email directly.",
+    "rateLimited": "Too many attempts. Please wait a moment."
   },
   "footer": {
     "role": "Software Developer"

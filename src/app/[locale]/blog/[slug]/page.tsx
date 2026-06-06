@@ -1,7 +1,7 @@
 import { setRequestLocale } from 'next-intl/server';
 import { getBlogBySlug, getAllBlogSlugs, getHireBannerContent } from '@/lib/firestore';
 import { BlogDetailsPage } from '@/components/pages/BlogDetailsPage';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import type { Locale } from '@/types';
 
 export const revalidate = 3600;
@@ -42,6 +42,12 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function Page({ params }: Props) {
   const { locale, slug } = await params;
+
+  // Blog content is Indonesian only — redirect non-id locales
+  if (locale !== 'id') {
+    redirect(`/id/blog/${slug}`);
+  }
+
   setRequestLocale(locale);
 
   const [blog, hireBannerContent] = await Promise.all([

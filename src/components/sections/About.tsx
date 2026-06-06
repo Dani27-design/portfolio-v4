@@ -69,15 +69,15 @@ export async function About({ aboutContent, locale }: AboutProps) {
 
           <Reveal delay={0.4}>
             <div className="grid grid-cols-3 gap-4 md:gap-8 pt-6 md:pt-12 border-t border-border">
-              <div className="space-y-1">
+              <div className="space-y-1" aria-label={`${stat1Value} — ${stat1Label}`}>
                 <div className="text-xl md:text-3xl font-bold text-text-main">{stat1Value}</div>
                 <div className="text-xs uppercase tracking-wider text-text-muted font-semibold">{stat1Label}</div>
               </div>
-              <div className="space-y-1">
+              <div className="space-y-1" aria-label={`${stat2Value} — ${stat2Label}`}>
                 <div className="text-xl md:text-3xl font-bold text-text-main">{stat2Value}</div>
                 <div className="text-xs uppercase tracking-wider text-text-muted font-semibold">{stat2Label}</div>
               </div>
-              <div className="space-y-1">
+              <div className="space-y-1" aria-label={`${stat3Value} — ${stat3Label}`}>
                 <div className="text-xl md:text-3xl font-bold text-text-main">{stat3Value}</div>
                 <div className="text-xs uppercase tracking-wider text-text-muted font-semibold">{stat3Label}</div>
               </div>

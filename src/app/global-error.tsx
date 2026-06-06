@@ -18,7 +18,7 @@ export default function GlobalError({
             Something went wrong
           </h1>
           <p style={{ fontSize: '0.875rem', color: '#94a3b8', maxWidth: '400px', lineHeight: 1.6, marginBottom: '2rem' }}>
-            An unexpected error occurred. This has been logged for investigation.
+            An unexpected error occurred. Please try again later.
           </p>
           <button
             onClick={reset}

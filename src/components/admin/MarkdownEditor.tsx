@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Markdown from 'react-markdown';
+import rehypeSanitize from 'rehype-sanitize';
 import remarkBreaks from 'remark-breaks';
 import { Bold, Italic, Heading1, Heading2, Code, List, Link2, ImagePlus, Eye, Edit3, Upload } from 'lucide-react';
 import { uploadMedia, validateMediaFile } from '@/lib/upload';
@@ -164,7 +165,7 @@ export function MarkdownEditor({ value, onChange, placeholder, imageStoragePath 
         {(mode === 'preview' || mode === 'split') && (
           <div className="min-h-[400px] p-4 overflow-auto">
             <div className="prose prose-invert prose-sm max-w-none text-slate-300 prose-headings:text-white prose-strong:text-cyan-400 prose-code:text-indigo-400 prose-pre:bg-slate-900 prose-pre:border prose-pre:border-slate-700">
-              {value ? <Markdown remarkPlugins={[remarkBreaks]}>{value}</Markdown> : <p className="text-slate-600 italic">Preview will appear here...</p>}
+              {value ? <Markdown remarkPlugins={[remarkBreaks]} rehypePlugins={[rehypeSanitize]}>{value}</Markdown> : <p className="text-slate-600 italic">Preview will appear here...</p>}
             </div>
           </div>
         )}

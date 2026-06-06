@@ -2,7 +2,7 @@ import { cache } from 'react';
 import { adminDb } from './firebase-admin';
 import type { Project, Blog, ExperienceItem, SkillGroup, HeroContent, AboutContent, ContactContent, FooterContent, HireBannerContent, NavbarContent, LeaderboardEntry } from '@/types';
 
-export async function getProjects(): Promise<Project[]> {
+export const getProjects = cache(async (): Promise<Project[]> => {
   if (!adminDb) return [];
   try {
     const snapshot = await adminDb
@@ -14,9 +14,9 @@ export async function getProjects(): Promise<Project[]> {
     console.error('Failed to fetch projects:', err);
     return [];
   }
-}
+});
 
-export async function getProjectBySlug(slug: string): Promise<Project | null> {
+export const getProjectBySlug = cache(async (slug: string): Promise<Project | null> => {
   if (!adminDb) return null;
   try {
     const snapshot = await adminDb
@@ -31,9 +31,9 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
     console.error('Failed to fetch project by slug:', err);
     return null;
   }
-}
+});
 
-export async function getAllProjectSlugs(): Promise<string[]> {
+export const getAllProjectSlugs = cache(async (): Promise<string[]> => {
   if (!adminDb) return [];
   try {
     const snapshot = await adminDb.collection('projects').select('slug').get();
@@ -44,9 +44,9 @@ export async function getAllProjectSlugs(): Promise<string[]> {
     console.error('Failed to fetch project slugs:', err);
     return [];
   }
-}
+});
 
-export async function getBlogs(): Promise<Blog[]> {
+export const getBlogs = cache(async (): Promise<Blog[]> => {
   if (!adminDb) return [];
   try {
     const snapshot = await adminDb
@@ -58,9 +58,9 @@ export async function getBlogs(): Promise<Blog[]> {
     console.error('Failed to fetch blogs:', err);
     return [];
   }
-}
+});
 
-export async function getBlogBySlug(slug: string): Promise<Blog | null> {
+export const getBlogBySlug = cache(async (slug: string): Promise<Blog | null> => {
   if (!adminDb) return null;
   try {
     const snapshot = await adminDb
@@ -75,9 +75,9 @@ export async function getBlogBySlug(slug: string): Promise<Blog | null> {
     console.error('Failed to fetch blog by slug:', err);
     return null;
   }
-}
+});
 
-export async function getAllBlogSlugs(): Promise<string[]> {
+export const getAllBlogSlugs = cache(async (): Promise<string[]> => {
   if (!adminDb) return [];
   try {
     const snapshot = await adminDb.collection('blogs').select('slug').get();
@@ -86,9 +86,9 @@ export async function getAllBlogSlugs(): Promise<string[]> {
     console.error('Failed to fetch blog slugs:', err);
     return [];
   }
-}
+});
 
-export async function getAllBlogSlugsWithUpdatedAt(): Promise<{ slug: string; updatedAt: string }[]> {
+export const getAllBlogSlugsWithUpdatedAt = cache(async (): Promise<{ slug: string; updatedAt: string }[]> => {
   if (!adminDb) return [];
   try {
     const snapshot = await adminDb.collection('blogs').select('slug', 'updatedAt').get();
@@ -100,9 +100,9 @@ export async function getAllBlogSlugsWithUpdatedAt(): Promise<{ slug: string; up
     console.error('Failed to fetch blog slugs with dates:', err);
     return [];
   }
-}
+});
 
-export async function getExperience(): Promise<ExperienceItem[]> {
+export const getExperience = cache(async (): Promise<ExperienceItem[]> => {
   if (!adminDb) return [];
   try {
     const snapshot = await adminDb
@@ -116,9 +116,9 @@ export async function getExperience(): Promise<ExperienceItem[]> {
     console.error('Failed to fetch experience:', err);
     return [];
   }
-}
+});
 
-export async function getSkills(): Promise<SkillGroup[]> {
+export const getSkills = cache(async (): Promise<SkillGroup[]> => {
   if (!adminDb) return [];
   try {
     const snapshot = await adminDb
@@ -132,9 +132,9 @@ export async function getSkills(): Promise<SkillGroup[]> {
     console.error('Failed to fetch skills:', err);
     return [];
   }
-}
+});
 
-export async function getHeroContent(): Promise<HeroContent | null> {
+export const getHeroContent = cache(async (): Promise<HeroContent | null> => {
   if (!adminDb) return null;
   try {
     const doc = await adminDb.collection('siteContent').doc('hero').get();
@@ -144,9 +144,9 @@ export async function getHeroContent(): Promise<HeroContent | null> {
     console.error('Failed to fetch hero content:', err);
     return null;
   }
-}
+});
 
-export async function getAboutContent(): Promise<AboutContent | null> {
+export const getAboutContent = cache(async (): Promise<AboutContent | null> => {
   if (!adminDb) return null;
   try {
     const doc = await adminDb.collection('siteContent').doc('about').get();
@@ -156,7 +156,7 @@ export async function getAboutContent(): Promise<AboutContent | null> {
     console.error('Failed to fetch about content:', err);
     return null;
   }
-}
+});
 
 export const getContactContent = cache(async (): Promise<ContactContent | null> => {
   if (!adminDb) return null;
@@ -170,7 +170,7 @@ export const getContactContent = cache(async (): Promise<ContactContent | null> 
   }
 });
 
-export async function getFooterContent(): Promise<FooterContent | null> {
+export const getFooterContent = cache(async (): Promise<FooterContent | null> => {
   if (!adminDb) return null;
   try {
     const doc = await adminDb.collection('siteContent').doc('footer').get();
@@ -180,9 +180,9 @@ export async function getFooterContent(): Promise<FooterContent | null> {
     console.error('Failed to fetch footer content:', err);
     return null;
   }
-}
+});
 
-export async function getHireBannerContent(): Promise<HireBannerContent | null> {
+export const getHireBannerContent = cache(async (): Promise<HireBannerContent | null> => {
   if (!adminDb) return null;
   try {
     const doc = await adminDb.collection('siteContent').doc('hireBanner').get();
@@ -192,9 +192,9 @@ export async function getHireBannerContent(): Promise<HireBannerContent | null> 
     console.error('Failed to fetch hire banner content:', err);
     return null;
   }
-}
+});
 
-export async function getNavbarContent(): Promise<NavbarContent | null> {
+export const getNavbarContent = cache(async (): Promise<NavbarContent | null> => {
   if (!adminDb) return null;
   try {
     const doc = await adminDb.collection('siteContent').doc('navbar').get();
@@ -204,9 +204,9 @@ export async function getNavbarContent(): Promise<NavbarContent | null> {
     console.error('Failed to fetch navbar content:', err);
     return null;
   }
-}
+});
 
-export async function getLeaderboard(limit: number = 10): Promise<LeaderboardEntry[]> {
+export const getLeaderboard = cache(async (limit: number = 10): Promise<LeaderboardEntry[]> => {
   if (!adminDb) return [];
   try {
     const snapshot = await adminDb
@@ -219,4 +219,4 @@ export async function getLeaderboard(limit: number = 10): Promise<LeaderboardEnt
     console.error('Failed to fetch leaderboard:', err);
     return [];
   }
-}
+});
