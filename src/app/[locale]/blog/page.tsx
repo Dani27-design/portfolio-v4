@@ -3,7 +3,7 @@ import { getBlogs, getHireBannerContent } from '@/lib/firestore';
 import { BlogListPage } from '@/components/pages/BlogListPage';
 import { routing } from '@/i18n/routing';
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
 
 type Props = {
   params: Promise<{ locale: string }>;

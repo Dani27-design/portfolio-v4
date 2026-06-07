@@ -2,7 +2,7 @@ import { ImageResponse } from 'next/og';
 import { getProjectBySlug } from '@/lib/firestore';
 import type { Locale } from '@/types';
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
 export const alt = 'Project';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';

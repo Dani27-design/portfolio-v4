@@ -1,16 +1,11 @@
 import { setRequestLocale } from 'next-intl/server';
-import { getProjectBySlug, getAllProjectSlugs, getHireBannerContent } from '@/lib/firestore';
+import { getProjectBySlug, getHireBannerContent } from '@/lib/firestore';
 import { ProjectDetailsPage } from '@/components/pages/ProjectDetailsPage';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import type { Locale } from '@/types';
 
-export const revalidate = 3600;
-
-export async function generateStaticParams() {
-  const slugs = await getAllProjectSlugs();
-  return slugs.map((slug) => ({ slug }));
-}
+export const dynamic = 'force-dynamic';
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>;

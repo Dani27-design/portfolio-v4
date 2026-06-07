@@ -5,11 +5,6 @@ vi.mock('./firebase-admin', () => {
   return { adminDb: { collection: mockCollection }, __mockCollection: mockCollection };
 });
 
-vi.mock('react', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('react')>();
-  return { ...actual, cache: (fn: Function) => fn };
-});
-
 import {
   getProjects,
   getBlogs,

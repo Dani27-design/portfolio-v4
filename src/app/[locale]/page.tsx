@@ -11,7 +11,7 @@ import { SkipGameLink } from '@/components/ui/SkipGameLink';
 import { ClientSkyForceGame } from '@/components/game/ClientSkyForceGame';
 import { routing } from '@/i18n/routing';
 
-export const revalidate = 3600; // ISR: revalidate every 1 hour
+export const dynamic = 'force-dynamic';
 
 type Props = {
   params: Promise<{ locale: string }>;

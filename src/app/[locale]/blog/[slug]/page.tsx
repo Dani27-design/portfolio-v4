@@ -1,15 +1,10 @@
 import { setRequestLocale } from 'next-intl/server';
-import { getBlogBySlug, getAllBlogSlugs, getHireBannerContent } from '@/lib/firestore';
+import { getBlogBySlug, getHireBannerContent } from '@/lib/firestore';
 import { BlogDetailsPage } from '@/components/pages/BlogDetailsPage';
 import { notFound, redirect } from 'next/navigation';
 import type { Locale } from '@/types';
 
-export const revalidate = 3600;
-
-export async function generateStaticParams() {
-  const slugs = await getAllBlogSlugs();
-  return slugs.map((slug) => ({ slug }));
-}
+export const dynamic = 'force-dynamic';
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>;
