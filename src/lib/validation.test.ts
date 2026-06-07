@@ -61,6 +61,15 @@ describe('blogCreateSchema', () => {
     expect(() => validate(blogCreateSchema, { ...validBlog, order: 'abc' })).toThrow('Validation failed');
   });
 
+  it('rejects invalid date format', () => {
+    expect(() => validate(blogCreateSchema, { ...validBlog, date: 'January 2025' })).toThrow('Date must start with YYYY-MM-DD');
+  });
+
+  it('accepts valid ISO date', () => {
+    const result = validate(blogCreateSchema, { ...validBlog, date: '2025-05-17' });
+    expect(result.date).toBe('2025-05-17');
+  });
+
   it('strips unknown keys', () => {
     const result = validate(blogCreateSchema, { ...validBlog, malicious: 'injected' });
     expect((result as Record<string, unknown>).malicious).toBeUndefined();
@@ -283,6 +292,18 @@ describe('contactContentSchema', () => {
       socials: { github: 'https://github.com/x', linkedin: 'https://linkedin.com/x', instagram: 'https://instagram.com/x', whatsapp: 'https://wa.me/123' },
     });
     expect(result.email).toBe('test@test.com');
+  });
+
+  it('rejects invalid email format', () => {
+    expect(() => validate(contactContentSchema, {
+      headline: bilingual(),
+      desc: bilingual(),
+      email: 'not-an-email',
+      labels: { title: bilingual(), payload: bilingual() },
+      placeholders: { title: bilingual(), payload: bilingual() },
+      buttons: { transmit: bilingual(), copyUid: bilingual() },
+      socials: { github: '', linkedin: '', instagram: '', whatsapp: '' },
+    })).toThrow('Validation failed');
   });
 });
 

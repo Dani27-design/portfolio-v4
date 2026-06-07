@@ -112,7 +112,7 @@
   }
 
   /* Firefox support */
-  * {
+  html {
     scrollbar-width: thin;
     scrollbar-color: rgba(6, 182, 212, 0.4) transparent;
   }

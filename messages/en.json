@@ -65,10 +65,12 @@
     "headline": "Let's engineer solutions together.",
     "desc": "Got an idea that needs building? Send me the details below. I'm always open to interesting projects and new collaborations.",
     "labels": {
-      "title": "01 / Subject",
-      "payload": "02 / Message"
+      "email": "Email",
+      "title": "Subject",
+      "payload": "Message"
     },
     "placeholders": {
+      "email": "your@email.com",
       "title": "Enter project subject...",
       "payload": "Describe your project needs..."
     },
@@ -169,7 +171,11 @@
     "blogTitle": "Technical Logs",
     "blogDescription": "Technical documentation and engineering field logs by Daniansyah Chusyaidin.",
     "projectsTitle": "System Architecture Archives",
-    "projectsDescription": "Comprehensive technical case studies and system designs by Daniansyah Chusyaidin."
+    "projectsDescription": "Comprehensive technical case studies and system designs by Daniansyah Chusyaidin.",
+    "jobTitle": "Systems Architect & Fullstack Engineer",
+    "ogSubtitle": "Systems Architect & Fullstack Engineer",
+    "ogTag1": "Distributed Systems",
+    "ogTag2": "Mobile Architecture"
   },
   "dateFormat": {
     "locale": "en-US",

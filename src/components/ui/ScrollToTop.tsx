@@ -50,7 +50,7 @@ export const ScrollToTop = () => {
       if (!ticking) {
         ticking = true;
         requestAnimationFrame(() => {
-          const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+          const scrollY = window.scrollY;
           setIsVisible(scrollY > 300);
           ticking = false;
         });

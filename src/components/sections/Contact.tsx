@@ -4,7 +4,7 @@ import { useState } from "react";
 import dynamic from "next/dynamic";
 import { Reveal } from "@/components/ui/Reveal";
 import { LazyGimmick } from "@/components/ui/LazyGimmick";
-import { Github, Linkedin, Instagram, MessageCircle, Send, Copy, Check, Radio, Zap } from "lucide-react";
+import { Github, Linkedin, Instagram, MessageCircle, Send, Copy, Check, Radio, Zap, AtSign } from "lucide-react";
 import { motion } from "motion/react";
 import { useTranslations } from "next-intl";
 import type { ContactContent, Locale } from "@/types";
@@ -30,6 +30,7 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
   const buttonTransmit = contactContent?.buttons.transmit[loc] ?? t('buttons.transmit');
   const buttonCopyUid = contactContent?.buttons.copyUid[loc] ?? t('buttons.copyUid');
 
+  const [senderEmail, setSenderEmail] = useState("");
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
   const [activeMode, setActiveMode] = useState(false);
@@ -38,6 +39,8 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
   const [sendStatus, setSendStatus] = useState<'idle' | 'sent' | 'error' | 'rateLimited'>('idle');
 
   const handleSend = async () => {
+    const trimmedEmail = senderEmail.trim();
+    if (!trimmedEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) return;
     const subject = title || t('fallbackSubject');
     const body = message;
     if (!body.trim()) return;
@@ -49,7 +52,7 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ subject, message: body }),
+        body: JSON.stringify({ senderEmail: trimmedEmail, subject, message: body }),
       });
 
       if (res.status === 429) {
@@ -58,6 +61,7 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
         setSendStatus('error');
       } else {
         setSendStatus('sent');
+        setSenderEmail("");
         setTitle("");
         setMessage("");
         setTimeout(() => setSendStatus('idle'), 5000);
@@ -65,7 +69,7 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
     } catch {
       // Network error — fall back to mailto
       if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        window.location.href = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        window.location.href = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`From: ${trimmedEmail}\n\n${body}`)}`;
       } else {
         setSendStatus('error');
       }
@@ -74,11 +78,12 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
     }
   };
 
+  const whatsappUrl = contactContent?.socials.whatsapp;
   const socials = [
     { name: "GitHub", icon: <Github className="w-4 h-4" />, href: contactContent?.socials.github ?? "https://github.com/Dani27-design" },
     { name: "LinkedIn", icon: <Linkedin className="w-4 h-4" />, href: contactContent?.socials.linkedin ?? "https://www.linkedin.com/in/daniansyahchusyaidin/" },
     { name: "Instagram", icon: <Instagram className="w-4 h-4" />, href: contactContent?.socials.instagram ?? "https://www.instagram.com/danichusyaidin" },
-    { name: "WhatsApp", icon: <MessageCircle className="w-4 h-4" />, href: contactContent?.socials.whatsapp ?? "#" },
+    ...(whatsappUrl && whatsappUrl !== '#' ? [{ name: "WhatsApp", icon: <MessageCircle className="w-4 h-4" />, href: whatsappUrl }] : []),
   ];
 
   return (
@@ -136,7 +141,23 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
                <div className="p-4 md:p-12 space-y-4 md:space-y-12 flex-1">
                 <div className="space-y-5 md:space-y-10">
                   <div className="space-y-3 group/input">
-                    <label htmlFor="contact-title" className="text-xs font-mono text-text-muted uppercase tracking-wider font-bold block group-focus-within/input:text-cyan-600 dark:group-focus-within/input:text-cyan-400 transition-colors flex items-center gap-2">
+                    <label htmlFor="contact-email" className="text-xs font-mono text-text-muted uppercase tracking-wider font-bold group-focus-within/input:text-cyan-600 dark:group-focus-within/input:text-cyan-400 transition-colors flex items-center gap-2">
+                       <AtSign className="w-3 h-3 group-focus-within/input:text-cyan-500" aria-hidden="true" />
+                       {t('labels.email')}
+                    </label>
+                    <input
+                      id="contact-email"
+                      type="email"
+                      value={senderEmail}
+                      onChange={(e) => setSenderEmail(e.target.value)}
+                      placeholder={t('placeholders.email')}
+                      required
+                      aria-required="true"
+                      className="w-full bg-background dark:bg-background/50 border border-border/40 rounded-lg px-3 md:px-6 py-3 md:py-4 outline-none focus:border-cyan-500/60 focus:bg-cyan-500/5 transition-all text-sm font-mono placeholder:opacity-40 dark:placeholder:opacity-20 group-hover/form:border-border/60"
+                    />
+                  </div>
+                  <div className="space-y-3 group/input">
+                    <label htmlFor="contact-title" className="text-xs font-mono text-text-muted uppercase tracking-wider font-bold group-focus-within/input:text-cyan-600 dark:group-focus-within/input:text-cyan-400 transition-colors flex items-center gap-2">
                        <Zap className="w-3 h-3 group-focus-within/input:text-cyan-500" aria-hidden="true" />
                        {labelTitle}
                     </label>
@@ -150,7 +171,7 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
                     />
                   </div>
                   <div className="space-y-3 group/input">
-                    <label htmlFor="contact-message" className="text-xs font-mono text-text-muted uppercase tracking-wider font-bold block group-focus-within/input:text-cyan-600 dark:group-focus-within/input:text-cyan-400 transition-colors flex items-center gap-2">
+                    <label htmlFor="contact-message" className="text-xs font-mono text-text-muted uppercase tracking-wider font-bold group-focus-within/input:text-cyan-600 dark:group-focus-within/input:text-cyan-400 transition-colors flex items-center gap-2">
                        <Radio className="w-3 h-3 group-focus-within/input:text-cyan-500" aria-hidden="true" />
                        {labelPayload}
                     </label>
@@ -161,6 +182,8 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
                       onChange={(e) => setMessage(e.target.value)}
                       placeholder={placeholderPayload}
                       enterKeyHint="send"
+                      required
+                      aria-required="true"
                       className="w-full bg-background dark:bg-background/50 border border-border/40 rounded-lg px-3 md:px-6 py-3 md:py-4 outline-none focus:border-cyan-500/60 focus:bg-cyan-500/5 transition-all text-sm font-mono resize-none placeholder:opacity-40 dark:placeholder:opacity-20 group-hover/form:border-border/60"
                     />
                   </div>
@@ -175,13 +198,17 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
                   <span className="relative z-10">{sending ? t('sending') : buttonTransmit}</span>
                   <div className="absolute inset-x-0 h-full w-[200%] bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:animate-sweep pointer-events-none" />
                 </button>
-                {sendStatus !== 'idle' && (
-                  <div className={`text-center text-xs font-mono mt-3 ${sendStatus === 'sent' ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500 dark:text-red-400'}`}>
-                    {sendStatus === 'sent' && t('sent')}
-                    {sendStatus === 'error' && t('sendError')}
-                    {sendStatus === 'rateLimited' && t('rateLimited')}
-                  </div>
-                )}
+                <div aria-live="polite" aria-atomic="true" className="text-center text-xs font-mono mt-3">
+                  {sendStatus === 'sent' && (
+                    <span className="text-emerald-600 dark:text-emerald-400">{t('sent')}</span>
+                  )}
+                  {sendStatus === 'error' && (
+                    <span role="alert" className="text-red-500 dark:text-red-400">{t('sendError')}</span>
+                  )}
+                  {sendStatus === 'rateLimited' && (
+                    <span role="alert" className="text-red-500 dark:text-red-400">{t('rateLimited')}</span>
+                  )}
+                </div>
               </div>
 
               {/* Side Monitor Panel */}

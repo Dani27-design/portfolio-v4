@@ -52,7 +52,16 @@ export const Reveal = ({ children, delay = 0, width = "fit-content", className }
     );
 
     observer.observe(el);
-    return () => observer.disconnect();
+
+    const fallback = setTimeout(() => {
+      if (!hasAnimated.current) {
+        hasAnimated.current = true;
+        controls.set({ opacity: 1, y: 0, scale: 1 });
+        observer.disconnect();
+      }
+    }, 5000);
+
+    return () => { observer.disconnect(); clearTimeout(fallback); };
   }, [controls, delay]);
 
   return (

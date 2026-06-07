@@ -23,10 +23,10 @@ describe('Footer', () => {
     expect(container.textContent).toContain('Daniansyah Chusyaidin');
   });
 
-  it('renders social links with aria-labels', () => {
+  it('renders social links with aria-labels (excludes WhatsApp without valid URL)', () => {
     const { container } = render(<Footer />, { wrapper: Wrapper });
     const socialLinks = container.querySelectorAll('a[aria-label]');
-    expect(socialLinks.length).toBe(4);
+    expect(socialLinks.length).toBe(3);
   });
 
   it('uses Firestore content when provided', () => {

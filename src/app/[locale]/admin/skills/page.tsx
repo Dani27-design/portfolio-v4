@@ -32,8 +32,13 @@ export default function AdminSkillsPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this skill group?')) return;
-    await deleteSkillGroup(id);
-    fetchGroups();
+    try {
+      await deleteSkillGroup(id);
+      setToast({ type: 'success', message: 'Skill group deleted' });
+      fetchGroups();
+    } catch (err) {
+      setToast({ type: 'error', message: err instanceof Error ? err.message : 'Delete failed' });
+    }
   };
 
   if (loading) return <div className="text-slate-400">Loading...</div>;

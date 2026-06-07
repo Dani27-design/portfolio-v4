@@ -43,7 +43,7 @@ export const blogCreateSchema = z.object({
   content: z.string().max(200000),
   coverImage: z.string().max(2000).optional(),
   coverStoragePath: z.string().max(500).optional(),
-  date: z.string().min(1).max(50),
+  date: z.string().min(1).max(50).regex(/^\d{4}-\d{2}-\d{2}/, 'Date must start with YYYY-MM-DD format'),
   order: z.number().int(),
 });
 
@@ -109,7 +109,7 @@ export const aboutContentSchema = z.object({
 export const contactContentSchema = z.object({
   headline: bilingualShortSchema,
   desc: bilingualSchema,
-  email: z.string().min(1).max(500),
+  email: z.string().email().min(1).max(500),
   labels: z.object({
     title: bilingualShortSchema,
     payload: bilingualShortSchema,

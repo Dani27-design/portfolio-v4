@@ -65,10 +65,12 @@
     "headline": "Mari bangun solusi bersama.",
     "desc": "Punya ide yang perlu dibangun? Kirim detailnya di bawah. Saya selalu terbuka untuk proyek menarik dan kolaborasi baru.",
     "labels": {
-      "title": "01 / Subjek",
-      "payload": "02 / Pesan"
+      "email": "Email",
+      "title": "Subjek",
+      "payload": "Pesan"
     },
     "placeholders": {
+      "email": "email@anda.com",
       "title": "Tulis subjek proyek...",
       "payload": "Jelaskan kebutuhan proyek Anda..."
     },
@@ -169,7 +171,11 @@
     "blogTitle": "Catatan Teknis",
     "blogDescription": "Dokumentasi teknis dan catatan pengembangan oleh Daniansyah Chusyaidin.",
     "projectsTitle": "Arsip Proyek",
-    "projectsDescription": "Kumpulan proyek dan studi kasus teknis oleh Daniansyah Chusyaidin."
+    "projectsDescription": "Kumpulan proyek dan studi kasus teknis oleh Daniansyah Chusyaidin.",
+    "jobTitle": "Software Developer",
+    "ogSubtitle": "Software Developer",
+    "ogTag1": "Pengembangan Web",
+    "ogTag2": "Arsitektur Mobile"
   },
   "dateFormat": {
     "locale": "id-ID",

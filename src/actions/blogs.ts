@@ -1,6 +1,6 @@
 'use server';
 
-import { adminDb } from '@/lib/firebase-admin';
+import { adminDb, deleteStorageFile } from '@/lib/firebase-admin';
 import { revalidatePath } from 'next/cache';
 import { verifyAdmin } from '@/lib/auth';
 import { validate, blogCreateSchema, blogUpdateSchema } from '@/lib/validation';
@@ -33,6 +33,8 @@ export async function updateBlog(id: string, data: unknown) {
     const existing = await adminDb.collection('blogs').where('slug', '==', validated.slug).limit(1).get();
     if (!existing.empty && existing.docs[0].id !== id) throw new Error(`Blog with slug "${validated.slug}" already exists`);
   }
+  const oldDoc = await adminDb.collection('blogs').doc(id).get();
+  const oldSlug = oldDoc.exists ? (oldDoc.data()?.slug as string | undefined) : undefined;
   await adminDb.collection('blogs').doc(id).update({
     ...validated,
     updatedAt: new Date().toISOString(),
@@ -45,6 +47,10 @@ export async function updateBlog(id: string, data: unknown) {
     revalidatePath(`/en/blog/${validated.slug}`);
     revalidatePath(`/id/blog/${validated.slug}`);
   }
+  if (oldSlug && validated.slug && oldSlug !== validated.slug) {
+    revalidatePath(`/en/blog/${oldSlug}`);
+    revalidatePath(`/id/blog/${oldSlug}`);
+  }
 }
 
 export async function deleteBlog(id: string) {
@@ -53,6 +59,10 @@ export async function deleteBlog(id: string) {
   if (!id || typeof id !== 'string') throw new Error('Invalid ID');
   const doc = await adminDb.collection('blogs').doc(id).get();
   const slug = doc.exists ? (doc.data()?.slug as string) : null;
+  const coverStoragePath = doc.exists ? (doc.data()?.coverStoragePath as string | undefined) : undefined;
+  if (coverStoragePath) {
+    await deleteStorageFile(coverStoragePath);
+  }
   await adminDb.collection('blogs').doc(id).delete();
   revalidatePath('/en/blog');
   revalidatePath('/id/blog');

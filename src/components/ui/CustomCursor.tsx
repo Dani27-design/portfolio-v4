@@ -7,6 +7,8 @@ export const CustomCursor = () => {
   const followerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!window.matchMedia('(pointer: fine)').matches) return;
+
     const moveCursor = (e: MouseEvent) => {
       if (cursorRef.current && followerRef.current) {
         cursorRef.current.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;

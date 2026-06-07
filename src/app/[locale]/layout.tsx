@@ -80,6 +80,11 @@ export default async function LocaleLayout({ children, params }: Props) {
         />
       </head>
       <body className="bg-background text-text-main font-sans antialiased transition-colors duration-300">
+        <noscript>
+          <div style={{ padding: '2rem', textAlign: 'center', background: '#fef3c7', color: '#92400e', fontFamily: 'system-ui, sans-serif' }}>
+            This site requires JavaScript for full functionality. Please enable JavaScript to continue.
+          </div>
+        </noscript>
         <ThemeProvider>
           <NextIntlClientProvider>
             <PublicShell navbarContent={navbarContent} footerContent={footerContent} contactContent={contactContent} locale={locale}>{children}</PublicShell>

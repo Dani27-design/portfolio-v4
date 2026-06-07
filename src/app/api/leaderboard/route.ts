@@ -75,6 +75,12 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const origin = request.headers.get('origin');
+  const host = request.headers.get('host');
+  if (origin && host && new URL(origin).host !== host) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  }
+
   cleanupStaleEntries();
 
   const ip = getClientIp(request);

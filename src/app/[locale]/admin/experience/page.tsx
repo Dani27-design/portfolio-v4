@@ -32,8 +32,13 @@ export default function AdminExperiencePage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this experience entry?')) return;
-    await deleteExperience(id);
-    fetchItems();
+    try {
+      await deleteExperience(id);
+      setToast({ type: 'success', message: 'Experience entry deleted' });
+      fetchItems();
+    } catch (err) {
+      setToast({ type: 'error', message: err instanceof Error ? err.message : 'Delete failed' });
+    }
   };
 
   if (loading) return <div className="text-slate-400">Loading...</div>;

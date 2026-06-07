@@ -47,15 +47,14 @@ describe('firestore', () => {
       expect(result[0].id).toBe('1');
     });
 
-    it('returns empty array on error', async () => {
+    it('throws on Firestore error', async () => {
       mockCollection.mockReturnValueOnce({
         orderBy: vi.fn(() => ({
           get: vi.fn().mockRejectedValue(new Error('fail')),
         })),
       });
 
-      const result = await getProjects();
-      expect(result).toEqual([]);
+      await expect(getProjects()).rejects.toThrow('fail');
     });
   });
 

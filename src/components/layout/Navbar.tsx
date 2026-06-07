@@ -138,6 +138,11 @@ export const Navbar = ({ navbarContent, locale: localeProp }: NavbarProps = {}) 
               {navLinks.map((link) => {
                 const isHomePage = pathname === '/';
                 const hash = link.href.replace('/', '');
+                const sectionId = link.href.replace('/#', '');
+                const isCurrent = !isHomePage && (
+                  (sectionId === 'projects' && pathname.startsWith('/projects')) ||
+                  (sectionId === 'blog' && pathname.startsWith('/blog'))
+                );
 
                 if (isHomePage) {
                   return (
@@ -163,6 +168,7 @@ export const Navbar = ({ navbarContent, locale: localeProp }: NavbarProps = {}) 
                     key={link.code}
                     href={link.href}
                     className="hover:text-cyan-400 transition-all duration-300 relative group"
+                    aria-current={isCurrent ? 'page' : undefined}
                   >
                     <span className="opacity-20 group-hover:opacity-100 transition-opacity mr-1.5">[</span>
                     {link.name}
@@ -242,6 +248,7 @@ export const Navbar = ({ navbarContent, locale: localeProp }: NavbarProps = {}) 
                 className="p-2 text-text-main hover:bg-border/10 transition-colors border border-border/40 lg:hidden flex flex-col gap-1 items-end overflow-hidden group"
                 onClick={() => setIsMenuOpen(true)}
                 aria-label="Open menu"
+                aria-expanded={isMenuOpen}
               >
                 <div className="w-6 h-0.5 bg-text-main group-hover:w-4 transition-all" />
                 <div className="w-4 h-0.5 bg-text-main group-hover:w-6 transition-all" />

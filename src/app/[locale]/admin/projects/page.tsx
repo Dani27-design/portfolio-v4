@@ -33,8 +33,13 @@ export default function AdminProjectsPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this project?')) return;
-    await deleteProject(id);
-    fetchProjects();
+    try {
+      await deleteProject(id);
+      setToast({ type: 'success', message: 'Project deleted' });
+      fetchProjects();
+    } catch (err) {
+      setToast({ type: 'error', message: err instanceof Error ? err.message : 'Delete failed' });
+    }
   };
 
   if (loading) return <div className="text-slate-400">Loading...</div>;

@@ -57,12 +57,14 @@ export default async function Page({ params }: Props) {
     getContactContent(),
   ]);
 
+  const t = await getTranslations({ locale, namespace: 'seo' });
+
   const personJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: 'Daniansyah Chusyaidin',
     url: 'https://dani-chusyaidin.vercel.app',
-    jobTitle: 'Systems Architect & Fullstack Engineer',
+    jobTitle: t('jobTitle'),
     sameAs: [
       'https://github.com/Dani27-design',
       'https://www.linkedin.com/in/daniansyahchusyaidin/',

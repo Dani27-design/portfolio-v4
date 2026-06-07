@@ -25,7 +25,7 @@ export async function ProjectDetailsPage({ project, locale, hireBannerContent }:
     <section className="pb-8 md:pb-14 bg-surface relative min-h-screen overflow-hidden pt-24 md:pt-28">
       <ClientGimmick name="serviceCluster" />
 
-      <div className="container-custom relative z-10">
+      <article className="container-custom relative z-10">
         <Reveal width="100%">
           <div className="mb-6 md:mb-10">
             <Link
@@ -115,7 +115,7 @@ export async function ProjectDetailsPage({ project, locale, hireBannerContent }:
         )}
 
         <HireMeBanner hireBannerContent={hireBannerContent} locale={locale} />
-      </div>
+      </article>
     </section>
   );
 }

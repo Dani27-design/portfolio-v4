@@ -195,8 +195,10 @@ describe('Blog Section Translations', () => {
 describe('Contact Section Translations', () => {
   it('should have EN contact content', () => {
     expect(en.contact.headline).toBe("Let's engineer solutions together.");
-    expect(en.contact.labels.title).toBe('01 / Subject');
-    expect(en.contact.labels.payload).toBe('02 / Message');
+    expect(en.contact.labels.email).toBe('Email');
+    expect(en.contact.labels.title).toBe('Subject');
+    expect(en.contact.labels.payload).toBe('Message');
+    expect(en.contact.placeholders.email).toBe('your@email.com');
     expect(en.contact.placeholders.title).toBe('Enter project subject...');
     expect(en.contact.placeholders.payload).toBe('Describe your project needs...');
     expect(en.contact.buttons.transmit).toBe('Send Message');
@@ -210,8 +212,10 @@ describe('Contact Section Translations', () => {
 
   it('should have ID contact content', () => {
     expect(id.contact.headline).toBe('Mari bangun solusi bersama.');
-    expect(id.contact.labels.title).toBe('01 / Subjek');
-    expect(id.contact.labels.payload).toBe('02 / Pesan');
+    expect(id.contact.labels.email).toBe('Email');
+    expect(id.contact.labels.title).toBe('Subjek');
+    expect(id.contact.labels.payload).toBe('Pesan');
+    expect(id.contact.placeholders.email).toBe('email@anda.com');
     expect(id.contact.placeholders.title).toBe('Tulis subjek proyek...');
     expect(id.contact.placeholders.payload).toBe('Jelaskan kebutuhan proyek Anda...');
     expect(id.contact.buttons.transmit).toBe('Kirim Pesan');

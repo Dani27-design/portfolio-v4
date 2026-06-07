@@ -16,8 +16,19 @@ const TypewriterText = ({ phrases }: { phrases: string[] }) => {
   const [text, setText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [typingSpeed, setTypingSpeed] = useState(100);
+  const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setText(phrases[0] || '');
+      setReducedMotion(true);
+      return;
+    }
+  }, [phrases]);
+
+  useEffect(() => {
+    if (reducedMotion) return;
+
     const currentPhrase = phrases[phraseIndex % phrases.length];
 
     const timeout = setTimeout(() => {
@@ -42,7 +53,7 @@ const TypewriterText = ({ phrases }: { phrases: string[] }) => {
     }, typingSpeed);
 
     return () => clearTimeout(timeout);
-  }, [text, isDeleting, phraseIndex, typingSpeed, phrases]);
+  }, [text, isDeleting, phraseIndex, typingSpeed, phrases, reducedMotion]);
 
   const currentPhrase = phrases[phraseIndex % phrases.length];
 

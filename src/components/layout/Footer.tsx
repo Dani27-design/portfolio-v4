@@ -21,11 +21,12 @@ export function Footer({ footerContent, contactContent, locale }: FooterProps) {
   const ownerName = footerContent?.ownerName ?? 'Daniansyah Chusyaidin';
   const role = footerContent?.role[loc] ?? t('role');
 
+  const whatsappUrl = contactContent?.socials.whatsapp;
   const socials = [
     { name: "GitHub", icon: <Github className="w-3.5 h-3.5" />, href: contactContent?.socials.github ?? "https://github.com/Dani27-design" },
     { name: "LinkedIn", icon: <Linkedin className="w-3.5 h-3.5" />, href: contactContent?.socials.linkedin ?? "https://www.linkedin.com/in/daniansyahchusyaidin/" },
     { name: "Instagram", icon: <Instagram className="w-3.5 h-3.5" />, href: contactContent?.socials.instagram ?? "https://www.instagram.com/danichusyaidin" },
-    { name: "WhatsApp", icon: <MessageCircle className="w-3.5 h-3.5" />, href: contactContent?.socials.whatsapp ?? "#" },
+    ...(whatsappUrl && whatsappUrl !== '#' ? [{ name: "WhatsApp", icon: <MessageCircle className="w-3.5 h-3.5" />, href: whatsappUrl }] : []),
   ];
 
   return (
@@ -43,7 +44,7 @@ export function Footer({ footerContent, contactContent, locale }: FooterProps) {
               href={social.href}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={social.name}
+              aria-label={`${social.name} (opens in new tab)`}
               className="w-7 h-7 rounded flex items-center justify-center text-text-muted hover:text-cyan-500 transition-colors"
             >
               {social.icon}

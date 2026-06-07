@@ -5,7 +5,15 @@ export const alt = 'Daniansyah Chusyaidin - Systems Architect & Fullstack Engine
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
-export default function OgImage() {
+const localeText = {
+  en: { subtitle: 'Systems Architect & Fullstack Engineer', tag1: 'Distributed Systems', tag2: 'Mobile Architecture', bottom: 'Fullstack & Mobile Engineer' },
+  id: { subtitle: 'Software Developer', tag1: 'Pengembangan Web', tag2: 'Arsitektur Mobile', bottom: 'Fullstack & Mobile Engineer' },
+} as const;
+
+export default async function OgImage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const t = localeText[locale as keyof typeof localeText] ?? localeText.en;
+
   return new ImageResponse(
     (
       <div
@@ -65,14 +73,14 @@ export default function OgImage() {
               maxWidth: '700px',
             }}
           >
-            Systems Architect & Fullstack Engineer
+            {t.subtitle}
           </span>
           <div style={{ display: 'flex', gap: '16px', marginTop: '8px' }}>
             <span style={{ fontSize: '11px', color: '#06b6d4', fontWeight: 700, letterSpacing: '0.3em', textTransform: 'uppercase', padding: '6px 16px', border: '1px solid rgba(6,182,212,0.3)', backgroundColor: 'rgba(6,182,212,0.08)' }}>
-              Distributed Systems
+              {t.tag1}
             </span>
             <span style={{ fontSize: '11px', color: '#6366f1', fontWeight: 700, letterSpacing: '0.3em', textTransform: 'uppercase', padding: '6px 16px', border: '1px solid rgba(99,102,241,0.3)', backgroundColor: 'rgba(99,102,241,0.08)' }}>
-              Mobile Architecture
+              {t.tag2}
             </span>
           </div>
         </div>
@@ -82,7 +90,7 @@ export default function OgImage() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{ width: '24px', height: '3px', background: 'linear-gradient(to right, #06b6d4, #6366f1)' }} />
             <span style={{ fontSize: '12px', color: '#64748b', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase' }}>
-              Fullstack & Mobile Engineer
+              {t.bottom}
             </span>
           </div>
           <span style={{ fontSize: '12px', color: '#334155', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase' }}>

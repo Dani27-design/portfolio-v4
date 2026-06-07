@@ -31,14 +31,14 @@ export async function Blog({ blogs, locale }: BlogProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
           {blogs.slice(0, 3).map((blog, idx) => (
             <Reveal key={blog.id} delay={idx * 0.1} width="100%">
-              <Link href={`/blog/${blog.slug}`} className="block h-full">
+              <a href={`/id/blog/${blog.slug}`} className="block h-full">
                 <div
                   className="p-4 md:p-8 bg-surface border border-border/40 rounded-xl hover:border-cyan-500/40 hover:-translate-y-1 transition-all duration-300 cursor-pointer group h-full flex flex-col relative overflow-hidden"
                 >
                   <div className="mb-2 md:mb-5">
-                    <span className="text-xs font-mono text-cyan-600 dark:text-cyan-400 font-semibold">
+                    <time dateTime={blog.date} className="text-xs font-mono text-cyan-600 dark:text-cyan-400 font-semibold">
                       {blog.date}
-                    </span>
+                    </time>
                   </div>
 
                   <h3 className="text-base md:text-xl font-bold text-text-main group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors leading-snug tracking-tight">
@@ -56,7 +56,7 @@ export async function Blog({ blogs, locale }: BlogProps) {
                     <div className="w-6 h-[2px] bg-cyan-500/40 group-hover:w-10 group-hover:bg-cyan-500 transition-all duration-300 rounded-full" />
                   </div>
                 </div>
-              </Link>
+              </a>
             </Reveal>
           ))}
         </div>

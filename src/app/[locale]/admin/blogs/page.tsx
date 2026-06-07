@@ -34,8 +34,13 @@ export default function AdminBlogsPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this blog?')) return;
-    await deleteBlog(id);
-    fetchBlogs();
+    try {
+      await deleteBlog(id);
+      setToast({ type: 'success', message: 'Blog deleted' });
+      fetchBlogs();
+    } catch (err) {
+      setToast({ type: 'error', message: err instanceof Error ? err.message : 'Delete failed' });
+    }
   };
 
   if (loading) return <div className="text-slate-400">Loading...</div>;

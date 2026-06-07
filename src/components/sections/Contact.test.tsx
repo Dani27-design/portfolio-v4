@@ -13,18 +13,64 @@ describe('Contact', () => {
     expect(container.querySelector('#contact')).toBeTruthy();
   });
 
-  it('renders email input fields', () => {
+  it('renders all form input fields', () => {
     render(<Contact />, { wrapper: Wrapper });
+    const emailInput = document.querySelector('#contact-email');
     const titleInput = document.querySelector('#contact-title');
     const messageInput = document.querySelector('#contact-message');
+    expect(emailInput).toBeTruthy();
     expect(titleInput).toBeTruthy();
     expect(messageInput).toBeTruthy();
   });
 
-  it('renders social links', () => {
+  it('renders sender email input with correct attributes', () => {
+    render(<Contact />, { wrapper: Wrapper });
+    const emailInput = document.querySelector('#contact-email') as HTMLInputElement;
+    expect(emailInput).toBeTruthy();
+    expect(emailInput.type).toBe('email');
+    expect(emailInput.required).toBe(true);
+    expect(emailInput.getAttribute('aria-required')).toBe('true');
+  });
+
+  it('renders message textarea with required attributes', () => {
+    render(<Contact />, { wrapper: Wrapper });
+    const messageInput = document.querySelector('#contact-message') as HTMLTextAreaElement;
+    expect(messageInput).toBeTruthy();
+    expect(messageInput.required).toBe(true);
+    expect(messageInput.getAttribute('aria-required')).toBe('true');
+  });
+
+  it('renders aria-live region for form status', () => {
+    const { container } = render(<Contact />, { wrapper: Wrapper });
+    const liveRegion = container.querySelector('[aria-live="polite"]');
+    expect(liveRegion).toBeTruthy();
+  });
+
+  it('renders social links (excludes WhatsApp when URL is #)', () => {
     const { container } = render(<Contact />, { wrapper: Wrapper });
     const socialLinks = container.querySelectorAll('a[target="_blank"]');
-    expect(socialLinks.length).toBeGreaterThanOrEqual(4);
+    expect(socialLinks.length).toBeGreaterThanOrEqual(3);
+  });
+
+  it('renders WhatsApp link when valid URL is provided', () => {
+    const { container } = render(
+      <Contact
+        contactContent={{
+          id: '1',
+          headline: { en: 'H', id: 'H' },
+          desc: { en: 'D', id: 'D' },
+          email: 'a@b.com',
+          labels: { title: { en: 'T', id: 'T' }, payload: { en: 'P', id: 'P' } },
+          placeholders: { title: { en: 'T', id: 'T' }, payload: { en: 'P', id: 'P' } },
+          buttons: { transmit: { en: 'S', id: 'S' }, copyUid: { en: 'C', id: 'C' } },
+          socials: { github: '#', linkedin: '#', instagram: '#', whatsapp: 'https://wa.me/123' },
+          updatedAt: '',
+        }}
+        locale="en"
+      />,
+      { wrapper: Wrapper }
+    );
+    expect(container.querySelector('a[href="https://wa.me/123"]')).toBeTruthy();
   });
 
   it('renders with custom content', () => {

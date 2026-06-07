@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
+import Image from 'next/image';
 import { Upload, X, ImageIcon } from 'lucide-react';
 import { uploadImage } from '@/lib/upload';
 
@@ -81,9 +82,9 @@ export function ImageUpload({ currentUrl, storagePath, onUpload, onRemove, label
 
       <div className="flex items-start gap-4">
         {/* Preview */}
-        <div className="w-16 h-16 lg:w-20 lg:h-20 bg-slate-900 border border-slate-600 rounded flex items-center justify-center overflow-hidden shrink-0">
+        <div className="w-16 h-16 lg:w-20 lg:h-20 bg-slate-900 border border-slate-600 rounded flex items-center justify-center overflow-hidden shrink-0 relative">
           {displayUrl ? (
-            <img src={displayUrl} alt="Preview" className="w-full h-full object-cover" />
+            <Image src={displayUrl} alt="Preview" fill sizes="80px" className="object-cover" unoptimized />
           ) : (
             <ImageIcon className="w-6 h-6 text-slate-600" />
           )}

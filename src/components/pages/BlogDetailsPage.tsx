@@ -44,7 +44,7 @@ export async function BlogDetailsPage({ blog, locale, hireBannerContent }: BlogD
               <div className="flex flex-wrap gap-4 md:gap-6 items-center pt-4 border-t border-border/20">
                 <div className="flex items-center gap-2 text-text-muted">
                   <Calendar className="w-4 h-4 text-cyan-700 dark:text-cyan-500 shrink-0" />
-                  <span className="font-mono text-xs uppercase tracking-wider">{blog.date}</span>
+                  <time dateTime={blog.date} className="font-mono text-xs uppercase tracking-wider">{blog.date}</time>
                 </div>
                 <div className="flex items-center gap-2 text-text-muted">
                   <User className="w-4 h-4 text-cyan-700 dark:text-cyan-500 shrink-0" />
