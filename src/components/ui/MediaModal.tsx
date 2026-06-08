@@ -161,6 +161,7 @@ export function MediaModal({ items, currentIndex, onClose, onNavigate, projectNa
               onLoad={() => setLoaded(true)}
               className={`object-contain transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'}`}
               priority
+              unoptimized
             />
           </div>
         )}

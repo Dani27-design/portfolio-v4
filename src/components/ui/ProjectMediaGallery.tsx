@@ -40,7 +40,7 @@ export function ProjectMediaGallery({ items, projectName }: ProjectMediaGalleryP
             key={`${item.url}-${idx}`}
             type="button"
             onClick={() => setModalIndex(idx)}
-            className={`rounded-xl overflow-hidden border border-border/40 bg-background relative aspect-video cursor-zoom-in group ${
+            className={`w-full rounded-xl overflow-hidden border border-border/40 bg-background relative aspect-video cursor-zoom-in group ${
               items.length === 1 ? '' : idx === 0 && items.length > 2 ? 'md:col-span-2' : ''
             }`}
             aria-label={`View ${item.type === 'video' ? 'video' : 'image'} ${idx + 1} fullscreen`}
@@ -65,10 +65,10 @@ export function ProjectMediaGallery({ items, projectName }: ProjectMediaGalleryP
                 sizes={items.length === 1
                   ? '(max-width: 768px) 95vw, (max-width: 1280px) 80vw, 1200px'
                   : '(max-width: 768px) 95vw, (max-width: 1280px) 45vw, 600px'}
-                quality={80}
                 onLoad={() => markLoaded(idx)}
                 className={`object-cover group-hover:scale-[1.02] transition-[transform,opacity] duration-300 ${loadedSet.has(idx) ? 'opacity-100' : 'opacity-0'}`}
                 priority={idx === 0}
+                unoptimized
               />
             )}
             {/* Hover overlay hint */}
