@@ -7,6 +7,11 @@ const bilingualSchema = z.object({
   id: z.string().max(2000),
 });
 
+const bilingualLongSchema = z.object({
+  en: z.string().max(200000),
+  id: z.string().max(200000),
+});
+
 const bilingualShortSchema = z.object({
   en: z.string().max(500),
   id: z.string().max(500),
@@ -53,7 +58,7 @@ export const projectCreateSchema = z.object({
   slug: z.string().min(1).max(200).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Slug must be lowercase alphanumeric with hyphens'),
   name: bilingualShortSchema,
   desc: bilingualSchema,
-  content: bilingualSchema.optional(),
+  content: bilingualLongSchema.optional(),
   tech: z.array(z.string().max(200)).max(30),
   status: z.string().max(200),
   image: z.string().max(2000).optional(),
