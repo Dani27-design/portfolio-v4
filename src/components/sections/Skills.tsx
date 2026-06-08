@@ -21,8 +21,8 @@ export async function Skills({ skills, locale }: SkillsProps) {
 
       <div className="container-custom max-w-5xl relative z-10">
         <Reveal width="100%">
-          <div className="mb-6 md:mb-10 relative">
-            <h2 className="text-lg md:text-xl font-bold tracking-tighter text-text-main">
+          <div className="mb-6 md:mb-16 relative">
+            <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold tracking-tighter text-text-main">
               <CodeText tag="h2" type="html">{t('title')}</CodeText>
             </h2>
             <div className="h-1 w-16 bg-gradient-to-r from-cyan-500 to-indigo-500 mt-4 md:mt-6 rounded-full"></div>

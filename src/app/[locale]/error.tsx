@@ -17,7 +17,7 @@ export default function LocaleError({
       <span className="font-mono text-[10px] text-red-500 font-black uppercase tracking-[0.4em] mb-6">
         {t('page.badge')}
       </span>
-      <h1 className="text-lg md:text-xl font-bold tracking-tighter text-text-main mb-4">
+      <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold tracking-tighter text-text-main mb-4">
         {t('page.title')}
       </h1>
       <p className="text-sm text-text-muted max-w-md mb-8 leading-relaxed">

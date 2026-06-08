@@ -93,7 +93,7 @@ export const Contact = ({ contactContent, locale }: ContactProps = {}) => {
         <div className="container-custom max-w-4xl mx-auto relative z-10 px-0 md:px-6">
         <Reveal width="100%">
           <div className="text-center mb-6 md:mb-16 space-y-3 md:space-y-8 px-6">
-            <h2 className="text-lg md:text-xl font-bold tracking-tighter text-text-main leading-[1.1]">
+            <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold tracking-tighter text-text-main leading-[1.1]">
               {headline}
             </h2>
             <p className="text-sm md:text-base text-text-muted max-w-2xl mx-auto leading-relaxed text-center">

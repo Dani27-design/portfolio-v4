@@ -18,7 +18,7 @@ export default function ProjectDetailError({
       <span className="font-mono text-xs text-red-500 font-bold uppercase tracking-widest mb-6">
         {t('project.badge')}
       </span>
-      <h1 className="text-lg md:text-xl font-bold tracking-tighter text-text-main mb-4">
+      <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold tracking-tighter text-text-main mb-4">
         {t('project.title')}
       </h1>
       <p className="text-sm text-text-muted max-w-md mb-8 leading-relaxed">

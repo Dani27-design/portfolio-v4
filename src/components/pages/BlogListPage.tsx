@@ -31,7 +31,7 @@ export async function BlogListPage({ blogs, locale, hireBannerContent }: BlogLis
               <ArrowLeft className="w-4 h-4" />
               <span className="font-mono text-xs uppercase tracking-wider">{t('backToHome')}</span>
             </Link>
-            <h1 className="text-lg md:text-xl font-bold tracking-tighter text-text-main">{t('archiveTitle')}</h1>
+            <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold tracking-tighter text-text-main">{t('archiveTitle')}</h1>
             <p className="text-text-muted mt-3 md:mt-4 text-sm md:text-base">
               {t('archiveSubtitle')}
             </p>
@@ -52,7 +52,7 @@ export async function BlogListPage({ blogs, locale, hireBannerContent }: BlogLis
                     </time>
                   </div>
 
-                  <h3 className="text-sm md:text-base font-bold text-text-main group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors leading-snug tracking-tight">
+                  <h3 className="text-base md:text-lg font-bold text-text-main group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors leading-snug tracking-tight">
                     {blog.title[loc]}
                   </h3>
 
