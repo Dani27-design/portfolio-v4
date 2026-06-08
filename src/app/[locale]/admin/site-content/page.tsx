@@ -80,7 +80,7 @@ export default function AdminSiteContentPage() {
   return (
     <div>
       <AdminToast toast={toast} onDismiss={dismissToast} />
-      <h1 className="text-xl lg:text-2xl font-bold text-white mb-6 lg:mb-8">Site Content</h1>
+      <h1 className="text-lg md:text-xl font-bold text-white mb-6 lg:mb-8">Site Content</h1>
 
       {fetchError && (
         <div className="flex items-center justify-between p-3 mb-6 bg-red-500/10 border border-red-500/20 rounded text-red-400 text-sm">

@@ -23,8 +23,8 @@ export async function Projects({ projects, locale }: ProjectsProps) {
 
       <div className="container-custom relative z-10">
         <Reveal>
-          <div className="relative flex flex-col items-center md:items-start text-center md:text-left mb-6 md:mb-16 lg:mb-24">
-            <h2 className="text-2xl font-bold tracking-tighter text-text-main md:text-5xl lg:text-6xl">
+          <div className="relative flex flex-col items-center md:items-start text-center md:text-left mb-6 md:mb-10">
+            <h2 className="text-lg md:text-xl font-bold tracking-tighter text-text-main">
               <CodeText tag="h2" type="html">{t('title')}</CodeText>
             </h2>
             <div className="h-1 w-16 bg-gradient-to-r from-cyan-500 to-indigo-500 mt-4 md:mt-6 rounded-full mx-auto md:mx-0"></div>
@@ -38,11 +38,11 @@ export async function Projects({ projects, locale }: ProjectsProps) {
               <div
                 className="p-4 md:p-8 bg-background border border-border/40 rounded-xl hover:border-cyan-500/40 hover:-translate-y-1 transition-all duration-300 cursor-pointer group h-full flex flex-col relative overflow-hidden"
               >
-                <h3 className="text-base md:text-xl font-bold text-text-main group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors leading-snug tracking-tight">
+                <h3 className="text-sm md:text-base font-bold text-text-main group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors leading-snug tracking-tight">
                   <CodeText tag="h3">{project.name[loc]}</CodeText>
                 </h3>
 
-                <p className="text-xs md:text-sm text-text-muted line-clamp-3 leading-relaxed mt-2 md:mt-3 flex-grow group-hover:text-text-muted transition-colors">
+                <p className="text-xs md:text-sm text-text-muted line-clamp-3 leading-relaxed mt-2 flex-grow group-hover:text-text-muted transition-colors">
                   <CodeText type="js">{project.desc[loc]}</CodeText>
                 </p>
 

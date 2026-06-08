@@ -37,7 +37,7 @@ export async function BlogDetailsPage({ blog, locale, hireBannerContent }: BlogD
                 <span className="font-mono text-xs uppercase tracking-wider">{t('backToBlog')}</span>
               </Link>
 
-              <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-text-main tracking-tighter mb-4 md:mb-5 leading-tight break-words">
+              <h1 className="text-lg md:text-xl font-bold text-text-main tracking-tighter mb-4 md:mb-5 leading-tight break-words">
                 {blog.title[loc]}
               </h1>
 

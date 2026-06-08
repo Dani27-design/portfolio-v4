@@ -128,7 +128,7 @@ export const Navbar = ({ navbarContent, locale: localeProp }: NavbarProps = {}) 
               className="object-cover rounded-sm group-hover:scale-105 transition-transform shrink-0"
             />
             <div className="hidden sm:flex flex-col justify-center">
-              <span className="font-black tracking-tighter text-base xl:text-lg uppercase leading-none group-hover:text-cyan-400 transition-colors whitespace-nowrap">{navbarContent?.brandName ?? 'Daniansyah'}</span>
+              <span className="font-bold tracking-tighter text-sm md:text-base uppercase leading-none group-hover:text-cyan-400 transition-colors whitespace-nowrap">{navbarContent?.brandName ?? 'Daniansyah'}</span>
             </div>
           </Link>
 
@@ -322,7 +322,7 @@ export const Navbar = ({ navbarContent, locale: localeProp }: NavbarProps = {}) 
                   <>
                     <span className="font-mono text-xs text-cyan-500/40 mb-2 font-bold select-none">{link.code}</span>
                     <div className="flex flex-col">
-                      <span className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter text-text-main group-hover:text-cyan-400 transition-colors flex items-center gap-4">
+                      <span className="text-xl font-bold tracking-tighter text-text-main group-hover:text-cyan-400 transition-colors flex items-center gap-4">
                         {link.name}
                         <div className="w-0 h-[2px] bg-cyan-500 group-hover:w-12 transition-all duration-500 hidden sm:block" />
                       </span>

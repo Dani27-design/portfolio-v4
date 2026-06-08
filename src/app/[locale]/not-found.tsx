@@ -9,7 +9,7 @@ export default async function NotFound() {
       <span className="font-mono text-[10px] text-indigo-500 font-black uppercase tracking-[0.4em] mb-6">
         {t('notFound.badge')}
       </span>
-      <h1 className="text-4xl md:text-6xl font-black tracking-tighter text-text-main mb-4">
+      <h1 className="text-lg md:text-xl font-bold tracking-tighter text-text-main mb-4">
         {t('notFound.title')}
       </h1>
       <p className="text-sm text-text-muted max-w-md mb-8 leading-relaxed">

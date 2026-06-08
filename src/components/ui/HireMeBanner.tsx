@@ -42,7 +42,7 @@ export const HireMeBanner = ({ hireBannerContent, locale }: HireMeBannerProps = 
         <div className="border-t border-border/30 pt-6 md:pt-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-10">
             <div className="flex-grow">
-              <h2 className="text-lg md:text-2xl lg:text-3xl font-bold text-text-main tracking-tight mb-2 md:mb-3 leading-tight">
+              <h2 className="text-base md:text-lg font-bold text-text-main tracking-tight mb-2 md:mb-3 leading-tight">
                 {headlineText}
               </h2>
 

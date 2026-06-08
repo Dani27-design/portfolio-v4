@@ -47,7 +47,7 @@ export default function AdminExperiencePage() {
     <div>
       <AdminToast toast={toast} onDismiss={dismissToast} />
       <div className="flex items-center justify-between mb-6 lg:mb-8">
-        <h1 className="text-xl lg:text-2xl font-bold text-white">Experience</h1>
+        <h1 className="text-lg md:text-xl font-bold text-white">Experience</h1>
         <button
           onClick={() => setCreating(true)}
           className="flex items-center gap-2 px-3 py-2 text-xs lg:px-4 lg:py-2 lg:text-sm bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded transition-colors"

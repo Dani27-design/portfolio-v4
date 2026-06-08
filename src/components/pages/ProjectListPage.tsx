@@ -32,7 +32,7 @@ export async function ProjectListPage({ projects, locale, hireBannerContent }: P
               <ArrowLeft className="w-4 h-4" />
               <span className="font-mono text-xs uppercase tracking-wider">{t('backToHome')}</span>
             </Link>
-            <h1 className="text-3xl font-bold tracking-tighter text-text-main md:text-5xl lg:text-6xl">
+            <h1 className="text-lg md:text-xl font-bold tracking-tighter text-text-main">
               <CodeText tag="h1" type="html">{t('archiveTitle')}</CodeText>
             </h1>
             <p className="text-text-muted mt-3 md:mt-4 text-sm md:text-base">
@@ -49,7 +49,7 @@ export async function ProjectListPage({ projects, locale, hireBannerContent }: P
                 <div
                   className="p-5 md:p-8 bg-background border border-border/40 rounded-xl hover:border-cyan-500/40 hover:-translate-y-1 transition-all duration-300 cursor-pointer group h-full flex flex-col relative overflow-hidden"
                 >
-                  <h3 className="text-lg md:text-xl font-bold text-text-main group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors leading-snug tracking-tight">
+                  <h3 className="text-sm md:text-base font-bold text-text-main group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors leading-snug tracking-tight">
                     <CodeText tag="h3">{project.name[loc]}</CodeText>
                   </h3>
 

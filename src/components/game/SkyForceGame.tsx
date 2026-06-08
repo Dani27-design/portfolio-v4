@@ -886,7 +886,7 @@ export const SkyForceGame = () => {
             <span className="font-mono text-[10px] text-cyan-500 font-black uppercase tracking-[0.4em] mb-2 md:mb-4">
               {t('badge')}
             </span>
-            <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-text-main">
+            <h2 className="text-lg md:text-xl font-bold tracking-tighter text-text-main">
               {t('gameTitle')}
             </h2>
           </div>
@@ -1000,7 +1000,7 @@ export const SkyForceGame = () => {
                         transition={{ duration: 0.5 }}
                         className="flex flex-col items-center"
                       >
-                        <span className="text-7xl font-mono font-black text-cyan-400 drop-shadow-[0_0_20px_rgba(6,182,212,0.8)]">
+                        <span className="text-xl font-mono font-bold text-cyan-400 drop-shadow-[0_0_20px_rgba(6,182,212,0.8)]">
                           {countdown === 0 ? t('countdown.go') : countdown}
                         </span>
                         <span className="text-xs font-mono text-cyan-500/60 uppercase tracking-[0.3em] mt-4">
@@ -1027,7 +1027,7 @@ export const SkyForceGame = () => {
                     initial={{ y: -30, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.1 }}
-                    className="text-3xl md:text-4xl font-black text-white italic tracking-tight uppercase drop-shadow-[0_0_40px_rgba(239,68,68,0.5)]"
+                    className="text-lg md:text-xl font-bold text-white italic tracking-tight uppercase drop-shadow-[0_0_40px_rgba(239,68,68,0.5)]"
                   >
                     {t('gameOver.subtitle')}
                   </motion.h2>
@@ -1043,7 +1043,7 @@ export const SkyForceGame = () => {
                       {isNewRecord && <Award className="w-4 h-4" />}
                       {isNewRecord ? t('highScore.newMark') : t('gameOver.finalHarvest')}
                     </span>
-                    <span className={`block font-mono text-4xl md:text-5xl font-black tracking-wider leading-none ${isNewRecord ? 'text-yellow-400 drop-shadow-[0_0_30px_rgba(250,204,21,0.3)]' : 'text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.1)]'}`}>
+                    <span className={`block font-mono text-xl font-bold tracking-wider leading-none ${isNewRecord ? 'text-yellow-400 drop-shadow-[0_0_30px_rgba(250,204,21,0.3)]' : 'text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.1)]'}`}>
                       {score.toLocaleString()}
                     </span>
                   </motion.div>

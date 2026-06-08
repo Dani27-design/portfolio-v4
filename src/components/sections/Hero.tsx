@@ -59,7 +59,7 @@ const TypewriterText = ({ phrases }: { phrases: string[] }) => {
 
   return (
     <>
-      <span aria-hidden="true" className="text-base md:text-3xl font-mono text-primary typewriter">
+      <span aria-hidden="true" className="text-sm md:text-base font-mono text-primary typewriter">
         <CodeText type="js">
           {text}
         </CodeText>
@@ -105,7 +105,7 @@ export const Hero = ({ heroContent, locale }: HeroProps = {}) => {
         </Reveal>
 
         <Reveal delay={0.2} className="relative text-text-main">
-          <h1 className="text-3xl md:text-5xl lg:text-7xl font-bold tracking-tight leading-tight max-w-4xl relative z-10">
+          <h1 className="text-lg md:text-xl font-bold tracking-tight leading-tight max-w-4xl relative z-10">
             <CodeText tag="h1" type="html">
               {headline}
             </CodeText>
@@ -119,7 +119,7 @@ export const Hero = ({ heroContent, locale }: HeroProps = {}) => {
         </Reveal>
 
         <Reveal delay={0.4}>
-          <p className="mt-5 md:mt-8 text-sm md:text-xl max-w-2xl mx-auto">
+          <p className="mt-5 md:mt-8 text-sm md:text-base max-w-2xl mx-auto">
             <CodeText tag="p" type="css">
               {desc}
             </CodeText>

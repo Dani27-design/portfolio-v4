@@ -43,7 +43,7 @@ export default function AdminDashboard() {
 
   return (
     <div>
-      <h1 className="text-xl lg:text-2xl font-bold text-white mb-6 lg:mb-8">Dashboard</h1>
+      <h1 className="text-lg md:text-xl font-bold text-white mb-6 lg:mb-8">Dashboard</h1>
 
       {error && (
         <div className="flex items-center justify-between p-3 mb-6 bg-red-500/10 border border-red-500/20 rounded text-red-400 text-sm">
@@ -61,7 +61,7 @@ export default function AdminDashboard() {
           >
             <div className="flex items-center justify-between mb-4">
               <card.icon className={`w-5 h-5 ${card.color}`} />
-              <span className="text-3xl font-bold text-white">{card.count}</span>
+              <span className="text-xl font-bold text-white">{card.count}</span>
             </div>
             <p className="text-sm text-slate-400 font-medium group-hover:text-slate-300">{card.label}</p>
           </Link>

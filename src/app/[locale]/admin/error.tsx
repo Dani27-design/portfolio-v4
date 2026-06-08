@@ -12,7 +12,7 @@ export default function AdminError({
       <span className="font-mono text-[10px] text-red-500 font-black uppercase tracking-[0.3em] mb-4">
         ADMIN_ERROR
       </span>
-      <h1 className="text-2xl font-bold text-white mb-2">Something went wrong</h1>
+      <h1 className="text-lg md:text-xl font-bold text-white mb-2">Something went wrong</h1>
       <p className="text-sm text-slate-400 max-w-sm mb-6">
         An error occurred in the admin panel. This may be a temporary issue with the database connection.
       </p>

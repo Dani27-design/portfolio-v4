@@ -37,11 +37,11 @@ export async function ProjectDetailsPage({ project, locale, hireBannerContent }:
               <span className="font-mono text-xs uppercase tracking-wider">{t('backToProjects')}</span>
             </Link>
 
-            <h1 className="text-2xl md:text-5xl lg:text-6xl font-bold text-text-main tracking-tighter leading-tight break-words">
+            <h1 className="text-lg md:text-xl font-bold text-text-main tracking-tighter leading-tight break-words">
               <CodeText tag="h1" type="html">{project.name[loc]}</CodeText>
             </h1>
 
-            <p className="text-text-muted text-sm md:text-lg mt-3 md:mt-4 max-w-3xl leading-relaxed">
+            <p className="text-text-muted text-sm md:text-base mt-3 md:mt-4 max-w-3xl leading-relaxed">
               {project.desc[loc]}
             </p>
 
