@@ -3,6 +3,9 @@ import type { MetadataRoute } from 'next';
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: { userAgent: '*', allow: '/', disallow: '/*/admin/' },
-    sitemap: 'https://dani-chusyaidin.vercel.app/sitemap.xml',
+    sitemap: [
+      'https://dani-chusyaidin.vercel.app/sitemap.xml',
+      'https://dani-chusyaidin.vercel.app/server-sitemap-index.xml',
+    ],
   };
 }
