@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import Image from 'next/image';
 import { MediaModal } from './MediaModal';
 import type { MediaItem } from '@/types';
 
@@ -40,7 +39,9 @@ export function ProjectMediaGallery({ items, projectName }: ProjectMediaGalleryP
             key={`${item.url}-${idx}`}
             type="button"
             onClick={() => setModalIndex(idx)}
-            className={`w-full rounded-xl overflow-hidden border border-border/40 bg-background relative aspect-video cursor-zoom-in group ${
+            className={`w-full rounded-xl overflow-hidden border border-border/40 bg-background relative cursor-zoom-in group ${
+              item.type === 'video' ? 'aspect-video' : 'flex items-center justify-center min-h-[120px]'
+            } ${
               items.length === 1 ? '' : idx === 0 && items.length > 2 ? 'md:col-span-2' : ''
             }`}
             aria-label={`View ${item.type === 'video' ? 'video' : 'image'} ${idx + 1} fullscreen`}
@@ -58,17 +59,12 @@ export function ProjectMediaGallery({ items, projectName }: ProjectMediaGalleryP
                 className={`w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300 ${loadedSet.has(idx) ? '' : 'opacity-0'}`}
               />
             ) : (
-              <Image
+              <img
                 src={item.url}
                 alt={`${projectName} - ${idx + 1}`}
-                fill
-                sizes={items.length === 1
-                  ? '(max-width: 768px) 95vw, (max-width: 1280px) 80vw, 1200px'
-                  : '(max-width: 768px) 95vw, (max-width: 1280px) 45vw, 600px'}
+                loading={idx === 0 ? 'eager' : 'lazy'}
                 onLoad={() => markLoaded(idx)}
-                className={`object-cover group-hover:scale-[1.02] transition-[transform,opacity] duration-300 ${loadedSet.has(idx) ? 'opacity-100' : 'opacity-0'}`}
-                priority={idx === 0}
-                unoptimized
+                className={`max-w-full max-h-[500px] object-contain rounded group-hover:scale-[1.02] transition-[transform,opacity] duration-300 ${loadedSet.has(idx) ? 'opacity-100' : 'opacity-0'}`}
               />
             )}
             {/* Hover overlay hint */}

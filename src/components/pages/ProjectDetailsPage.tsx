@@ -22,10 +22,10 @@ export async function ProjectDetailsPage({ project, locale, hireBannerContent }:
   const loc = locale as Locale;
 
   return (
-    <section className="pb-8 md:pb-14 bg-surface relative min-h-screen overflow-hidden pt-24 md:pt-28">
+    <section className="pb-8 md:pb-12 bg-surface relative min-h-screen overflow-hidden pt-20 md:pt-24">
       <ClientGimmick name="serviceCluster" />
 
-      <article className="container-custom relative z-10">
+      <article className="max-w-5xl mx-auto px-6 md:px-10 relative z-10">
         <Reveal width="100%">
           <div className="mb-6 md:mb-10">
             <Link
@@ -37,7 +37,7 @@ export async function ProjectDetailsPage({ project, locale, hireBannerContent }:
               <span className="font-mono text-xs uppercase tracking-wider">{t('backToProjects')}</span>
             </Link>
 
-            <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-text-main tracking-tighter leading-tight break-words">
+            <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-text-main tracking-tighter leading-tight break-words">
               <CodeText tag="h1" type="html">{project.name[loc]}</CodeText>
             </h1>
 
@@ -103,7 +103,7 @@ export async function ProjectDetailsPage({ project, locale, hireBannerContent }:
         {/* Content (bilingual markdown) */}
         {project.content?.[loc] && (
           <Reveal delay={0.2} width="100%">
-            <div className="relative p-5 sm:p-8 md:p-12 bg-surface border border-border/40 rounded-xl overflow-hidden w-full min-w-0">
+            <div className="relative p-5 sm:p-6 md:p-8 bg-surface border border-border/40 rounded-xl overflow-hidden w-full min-w-0">
               <h2 className="text-xs font-bold text-text-muted uppercase tracking-wider mb-6">{t('overview')}</h2>
               <div className="markdown-body prose prose-sm md:prose-base dark:prose-invert max-w-none w-full min-w-0 text-text-muted prose-headings:text-text-main prose-headings:tracking-tighter prose-strong:text-cyan-700 dark:prose-strong:text-cyan-400 prose-code:text-indigo-600 dark:prose-code:text-indigo-400 prose-pre:bg-surface-hover dark:prose-pre:bg-background/80 prose-pre:border prose-pre:border-border/40 prose-pre:overflow-x-auto prose-pre:rounded-lg prose-img:rounded-lg prose-img:max-w-full [&_pre]:overflow-x-auto [&_pre]:max-w-full [&_:not(pre)>code]:break-words [&_pre]:whitespace-pre [&_pre_code]:break-normal [&_a]:break-all [&_p]:break-words [&>h1:first-child]:hidden">
                 <Markdown remarkPlugins={[remarkBreaks]} rehypePlugins={[rehypeSanitize]}>

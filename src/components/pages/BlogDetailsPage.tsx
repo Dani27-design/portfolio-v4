@@ -1,5 +1,4 @@
 import { Reveal } from "@/components/ui/Reveal";
-import { LoadingImage } from "@/components/ui/LoadingImage";
 import { ClientGimmick } from "@/components/ui/ClientGimmick";
 import { HireMeBanner } from "@/components/ui/HireMeBanner";
 import { ArrowLeft, Calendar, User } from "lucide-react";
@@ -21,10 +20,10 @@ export async function BlogDetailsPage({ blog, locale, hireBannerContent }: BlogD
   const loc = locale as Locale;
 
   return (
-    <section className="pb-8 md:pb-14 bg-background relative min-h-screen overflow-hidden pt-24 md:pt-28">
+    <section className="pb-8 md:pb-12 bg-background relative min-h-screen overflow-hidden pt-20 md:pt-24">
       <ClientGimmick name="logStream" />
 
-      <div className="container-custom relative z-10">
+      <div className="max-w-5xl mx-auto px-6 md:px-10 relative z-10">
         <article>
           <Reveal width="100%">
             <div className="mb-6 md:mb-8">
@@ -37,7 +36,7 @@ export async function BlogDetailsPage({ blog, locale, hireBannerContent }: BlogD
                 <span className="font-mono text-xs uppercase tracking-wider">{t('backToBlog')}</span>
               </Link>
 
-              <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-text-main tracking-tighter mb-4 md:mb-5 leading-tight break-words">
+              <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-text-main tracking-tighter mb-4 md:mb-5 leading-tight break-words">
                 {blog.title[loc]}
               </h1>
 
@@ -56,15 +55,11 @@ export async function BlogDetailsPage({ blog, locale, hireBannerContent }: BlogD
 
           {blog.coverImage && (
             <Reveal delay={0.1} width="100%">
-              <div className="mb-8 md:mb-12 rounded-xl overflow-hidden border border-border/40 bg-surface relative aspect-video">
-                <LoadingImage
+              <div className="mb-8 md:mb-10 rounded-xl overflow-hidden border border-border/40 bg-surface relative flex items-center justify-center min-h-[120px]">
+                <img
                   src={blog.coverImage}
                   alt={blog.title[loc]}
-                  fill
-                  sizes="(max-width: 768px) 95vw, (max-width: 1280px) 80vw, 1200px"
-                  quality={80}
-                  className="object-cover"
-                  priority
+                  className="max-w-full max-h-[500px] object-contain rounded"
                 />
               </div>
             </Reveal>
@@ -78,7 +73,7 @@ export async function BlogDetailsPage({ blog, locale, hireBannerContent }: BlogD
                  </Markdown>
                </div>
 
-               <div className="mt-10 md:mt-16 pt-10 md:pt-16 border-t border-border/20">
+               <div className="mt-8 md:mt-12 pt-8 md:pt-12 border-t border-border/20">
                   <div className="h-1 w-16 bg-gradient-to-r from-cyan-500 to-indigo-500 rounded-full"></div>
                </div>
             </div>
