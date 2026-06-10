@@ -271,21 +271,22 @@ export const SkyForceGame = () => {
   };
 
   const handleShare = async () => {
-    const shareText = `${t('shareText', { score })} ${window.location.origin}`;
-    
+    const gameUrl = `${window.location.href.split('#')[0]}#mini-game`;
+    const shareText = t('shareText', { score });
+
     if (navigator.share) {
       try {
         await navigator.share({
           title: t('shareTitle'),
           text: shareText,
-          url: window.location.href,
+          url: gameUrl,
         });
       } catch {
         // User cancelled share dialog — expected, no action needed
       }
     } else {
       try {
-        await navigator.clipboard.writeText(shareText);
+        await navigator.clipboard.writeText(`${shareText} ${gameUrl}`);
         setShowCopied(true);
         setTimeout(() => setShowCopied(false), 2000);
       } catch {
