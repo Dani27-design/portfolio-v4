@@ -36,7 +36,7 @@ vi.mock('@/lib/firestore', () => ({
 describe('generateMetadata - Homepage', () => {
   it('returns correct metadata for EN locale', async () => {
     const { generateMetadata } = await import('@/app/[locale]/page');
-    const metadata = await generateMetadata({ params: Promise.resolve({ locale: 'en' }) });
+    const metadata = await generateMetadata({ params: Promise.resolve({ locale: 'en' }), searchParams: Promise.resolve({}) });
 
     expect(metadata.title).toContain('Daniansyah');
     expect(metadata.description).toContain('Systems Architect');
@@ -49,7 +49,7 @@ describe('generateMetadata - Homepage', () => {
 
   it('returns correct metadata for ID locale', async () => {
     const { generateMetadata } = await import('@/app/[locale]/page');
-    const metadata = await generateMetadata({ params: Promise.resolve({ locale: 'id' }) });
+    const metadata = await generateMetadata({ params: Promise.resolve({ locale: 'id' }), searchParams: Promise.resolve({}) });
 
     expect(metadata.title).toContain('Arsitek Sistem');
     expect(metadata.alternates?.canonical).toBe('https://dani-chusyaidin.vercel.app/id');

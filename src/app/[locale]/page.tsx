@@ -15,10 +15,33 @@ export const dynamic = 'force-dynamic';
 
 type Props = {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata({ params, searchParams }: Props) {
   const { locale } = await params;
+  const sp = await searchParams;
+
+  // Game-specific OG metadata for share links
+  if (sp?.share === 'game') {
+    const gameTitle = 'Sky Defender';
+    const gameDesc = locale === 'id'
+      ? 'Bisa kalahkan skor tertinggi? Mainkan Sky Defender sekarang!'
+      : 'Can you beat the high score? Play Sky Defender now!';
+
+    return {
+      title: gameTitle,
+      description: gameDesc,
+      openGraph: {
+        title: gameTitle,
+        description: gameDesc,
+        url: `https://dani-chusyaidin.vercel.app/${locale}?share=game#mini-game`,
+        locale: locale === 'id' ? 'id_ID' : 'en_US',
+        images: [{ url: 'https://dani-chusyaidin.vercel.app/api/og/game', width: 1200, height: 630 }],
+      },
+    };
+  }
+
   const t = await getTranslations({ locale, namespace: 'seo' });
 
   const languages: Record<string, string> = {};

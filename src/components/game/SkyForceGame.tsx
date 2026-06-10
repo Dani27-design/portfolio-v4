@@ -271,7 +271,8 @@ export const SkyForceGame = () => {
   };
 
   const handleShare = async () => {
-    const gameUrl = `${window.location.href.split('#')[0]}#mini-game`;
+    const baseUrl = window.location.href.split('#')[0].split('?')[0];
+    const gameUrl = `${baseUrl}?share=game#mini-game`;
     const shareText = t('shareText', { score });
 
     if (navigator.share) {
