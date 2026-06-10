@@ -875,7 +875,7 @@ export const SkyForceGame = () => {
     };
 
   // Derived from live leaderboard — no stale state
-  const isNewRecord = gameOver && score > leaderTop.score && leaderTop.score > 0;
+  const isNewRecord = gameOver && score > 0 && score > leaderTop.score;
   const highScoreName = hasSubmittedName ? tempPlayerName : '';
 
   return (
