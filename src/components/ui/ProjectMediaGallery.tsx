@@ -33,16 +33,16 @@ export function ProjectMediaGallery({ items, projectName }: ProjectMediaGalleryP
 
   return (
     <>
-      <div className={`mb-8 md:mb-12 ${items.length === 1 ? '' : 'grid grid-cols-1 md:grid-cols-2 gap-4'}`}>
+      <div className="mb-6 md:mb-10 flex flex-wrap gap-3 justify-center">
         {items.map((item, idx) => (
           <button
             key={`${item.url}-${idx}`}
             type="button"
             onClick={() => setModalIndex(idx)}
-            className={`w-full rounded-xl overflow-hidden border border-border/40 bg-background relative cursor-zoom-in group ${
-              item.type === 'video' ? 'aspect-video' : 'flex items-center justify-center min-h-[120px]'
-            } ${
-              items.length === 1 ? '' : idx === 0 && items.length > 2 ? 'md:col-span-2' : ''
+            className={`rounded-xl overflow-hidden border border-border/40 bg-background relative cursor-zoom-in group max-w-full ${
+              item.type === 'video'
+                ? 'w-full aspect-video'
+                : 'flex items-center justify-center min-h-[120px] min-w-[100px]'
             }`}
             aria-label={`View ${item.type === 'video' ? 'video' : 'image'} ${idx + 1} fullscreen`}
           >
@@ -64,11 +64,10 @@ export function ProjectMediaGallery({ items, projectName }: ProjectMediaGalleryP
                 alt={`${projectName} - ${idx + 1}`}
                 loading={idx === 0 ? 'eager' : 'lazy'}
                 onLoad={() => markLoaded(idx)}
-                className={`max-w-full max-h-[500px] object-contain rounded group-hover:scale-[1.02] transition-[transform,opacity] duration-300 ${loadedSet.has(idx) ? 'opacity-100' : 'opacity-0'}`}
+                className={`max-w-full max-h-[420px] w-auto object-contain group-hover:scale-[1.02] transition-[transform,opacity] duration-300 ${loadedSet.has(idx) ? 'opacity-100' : 'opacity-0'}`}
               />
             )}
-            {/* Hover overlay hint */}
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors pointer-events-none" />
           </button>
         ))}
       </div>
