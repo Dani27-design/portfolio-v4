@@ -31,6 +31,8 @@ export function ProjectMediaGallery({ items, projectName }: ProjectMediaGalleryP
 
   if (items.length === 0) return null;
 
+  const isMultiple = items.length > 1;
+
   return (
     <>
       <div className="mb-6 md:mb-10 flex flex-wrap gap-3 justify-center">
@@ -42,7 +44,7 @@ export function ProjectMediaGallery({ items, projectName }: ProjectMediaGalleryP
             className={`rounded-xl overflow-hidden border border-border/40 bg-background relative cursor-zoom-in group max-w-full ${
               item.type === 'video'
                 ? 'w-full aspect-video'
-                : 'flex items-center justify-center min-h-[120px] min-w-[100px]'
+                : `flex items-center justify-center min-h-[100px]${isMultiple ? ' sm:max-w-[calc(50%-6px)]' : ''}`
             }`}
             aria-label={`View ${item.type === 'video' ? 'video' : 'image'} ${idx + 1} fullscreen`}
           >
@@ -64,7 +66,7 @@ export function ProjectMediaGallery({ items, projectName }: ProjectMediaGalleryP
                 alt={`${projectName} - ${idx + 1}`}
                 loading={idx === 0 ? 'eager' : 'lazy'}
                 onLoad={() => markLoaded(idx)}
-                className={`max-w-full max-h-[420px] w-auto object-contain group-hover:scale-[1.02] transition-[transform,opacity] duration-300 ${loadedSet.has(idx) ? 'opacity-100' : 'opacity-0'}`}
+                className={`max-w-full ${isMultiple ? 'max-h-[350px]' : 'max-h-[400px]'} w-auto object-contain group-hover:scale-[1.02] transition-[transform,opacity] duration-300 ${loadedSet.has(idx) ? 'opacity-100' : 'opacity-0'}`}
               />
             )}
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors pointer-events-none" />
